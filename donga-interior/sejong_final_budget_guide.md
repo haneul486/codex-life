@@ -1,6 +1,6 @@
 # 인테리어 예산표 작성/수정 지침
 
-이 문서는 [sejong_final_budget.html](C:/Users/haneu/OneDrive/문서/New project/sejong_final_budget.html) 파일을 유지보수할 때 참고하는 상세 작업 지침이다.
+이 문서는 [sejong_final_budget.html](C:/sky/project/codex-life/donga-interior/sejong_final_budget.html) 파일을 유지보수할 때 참고하는 상세 작업 지침이다.
 
 ## 1. 문서 목적
 
@@ -324,12 +324,12 @@ CSS에서는 `body.printing-mode .detail-section`을 숨긴다.
 
 원본 작업 파일:
 
-- `C:\Users\haneu\OneDrive\문서\New project\sejong_final_budget.html`
+- `C:\sky\project\codex-life\donga-interior\sejong_final_budget.html`
 
-복사본:
+비교 견적 파일:
 
-- `C:\Users\haneu\OneDrive\Desktop\sejong_final_budget.html`
+- `C:\sky\project\codex-life\donga-interior\interior_price_comparison.html`
 
 이 지침 파일:
 
-- `C:\Users\haneu\OneDrive\문서\New project\sejong_final_budget_guide.md`
+- `C:\sky\project\codex-life\donga-interior\sejong_final_budget_guide.md`
