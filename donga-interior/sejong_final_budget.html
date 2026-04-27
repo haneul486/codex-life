@@ -6,101 +6,95 @@
   <title>인테리어 예산표</title>
   <style>
     :root {
-      --ink: #17202a;
-      --muted: #64748b;
-      --line: #dce5ed;
-      --paper: #f4f6f8;
-      --white: #ffffff;
-      --steel: #4f6578;
-      --slate: #5b6f7f;
-      --sand: #9a7a42;
-      --clay: #b2644b;
+      --bg: #f3f5f7;
+      --panel: #ffffff;
+      --line: #dde4ea;
+      --ink: #18212b;
+      --muted: #66768a;
+      --navy: #314355;
+      --blue: #4d6379;
+      --sand: #8d7447;
+      --clay: #af644d;
       --green: #1f7a5a;
-      --blue: #2f6ea3;
-      --soft-red: #b45309;
-      --shadow: 0 18px 50px rgba(23, 32, 42, 0.1);
-      --soft-shadow: 0 10px 28px rgba(23, 32, 42, 0.07);
+      --shadow: 0 14px 34px rgba(24, 33, 43, 0.08);
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background: linear-gradient(180deg, #eef3f6 0, #f8fafb 340px, var(--paper) 100%);
+      background: var(--bg);
       color: var(--ink);
       font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
-      line-height: 1.55;
+      line-height: 1.5;
     }
 
     .page {
-      width: min(1240px, calc(100% - 32px));
+      width: min(1160px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 34px 0 56px;
+      padding: 24px 0 40px;
     }
 
     header {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 24px;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
       align-items: end;
-      padding: 34px;
+      padding: 24px 28px;
       border-radius: 8px;
+      background: linear-gradient(135deg, #23303c, var(--navy));
       color: #fff;
-      background: linear-gradient(135deg, #1f2a33, var(--steel));
       box-shadow: var(--shadow);
     }
 
     h1, h2, p { margin: 0; }
 
     h1 {
-      font-size: clamp(30px, 4vw, 46px);
-      line-height: 1.12;
+      font-size: clamp(28px, 3.5vw, 38px);
+      line-height: 1.1;
       font-weight: 900;
-      letter-spacing: 0;
     }
 
     .subtitle {
-      margin-top: 12px;
+      margin-top: 8px;
       color: rgba(255, 255, 255, 0.78);
-      font-size: 15px;
+      font-size: 14px;
     }
 
     .meta {
       display: grid;
-      gap: 10px;
+      gap: 8px;
       justify-items: end;
-      color: rgba(255, 255, 255, 0.78);
-      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 13px;
     }
 
     .pill {
       display: inline-flex;
       align-items: center;
-      padding: 8px 13px;
+      padding: 7px 12px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.16);
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.14);
       font-weight: 800;
-      white-space: nowrap;
     }
 
-    section { margin-top: 24px; }
+    section { margin-top: 20px; }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
+      gap: 12px;
     }
 
     .card {
       position: relative;
-      overflow: hidden;
-      background: var(--white);
+      background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 20px;
-      box-shadow: var(--soft-shadow);
+      padding: 16px 18px;
+      box-shadow: 0 8px 22px rgba(24, 33, 43, 0.05);
+      overflow: hidden;
     }
 
     .card::before {
@@ -108,49 +102,54 @@
       position: absolute;
       inset: 0 0 auto;
       height: 4px;
-      background: var(--steel);
+      background: var(--navy);
     }
 
-    .accent-slate::before { background: var(--slate); }
+    .accent-blue::before { background: var(--blue); }
     .accent-sand::before { background: var(--sand); }
     .accent-clay::before { background: var(--clay); }
 
     .metric-label {
       color: var(--muted);
-      font-size: 13px;
-      font-weight: 850;
+      font-size: 12px;
+      font-weight: 800;
     }
 
     .metric {
-      margin-top: 10px;
-      font-size: clamp(24px, 3vw, 34px);
+      margin-top: 8px;
+      font-size: clamp(22px, 2.6vw, 30px);
       font-weight: 900;
-      line-height: 1.14;
-      letter-spacing: 0;
+      line-height: 1.15;
       font-variant-numeric: tabular-nums;
     }
 
     .metric small {
       display: inline-block;
-      margin-left: 8px;
+      margin-left: 6px;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items: start;
     }
 
     .section-head {
       display: flex;
       justify-content: space-between;
-      gap: 14px;
+      gap: 12px;
       align-items: end;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       padding: 0 2px;
     }
 
     h2 {
-      font-size: 24px;
+      font-size: 21px;
       font-weight: 900;
-      letter-spacing: 0;
     }
 
     .note {
@@ -161,11 +160,11 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      overflow: hidden;
-      background: var(--white);
+      background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 8px;
-      box-shadow: var(--soft-shadow);
+      overflow: hidden;
+      box-shadow: 0 8px 22px rgba(24, 33, 43, 0.05);
     }
 
     th, td {
@@ -176,14 +175,13 @@
     }
 
     th {
-      background: #e9eef3;
-      color: #334155;
+      background: #ecf1f5;
+      color: #344355;
       text-align: left;
       font-size: 13px;
       font-weight: 900;
     }
 
-    tbody tr:hover td { background: #fbfcfd; }
     tr:last-child td { border-bottom: 0; }
 
     .money, th.money {
@@ -192,95 +190,43 @@
     }
 
     .total-row td {
-      background: #f2f5f7;
+      background: #f4f7f9;
       font-weight: 900;
-      font-size: 15px;
     }
-
-    .status-badge {
-      display: inline-flex;
-      min-width: 72px;
-      justify-content: center;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid #d8e1eb;
-      background: #f8fafc;
-      color: #475569;
-      font-size: 12px;
-      font-weight: 850;
-    }
-
-    .status-paid {
-      background: #eef7f3;
-      color: var(--green);
-      border-color: #cae7da;
-    }
-
-    .status-planned {
-      background: #eef4fb;
-      color: var(--blue);
-      border-color: #cfe0f4;
-    }
-
-    .status-open {
-      background: #fff7ed;
-      color: var(--soft-red);
-      border-color: #fed7aa;
-    }
-
-    .summary-table th:nth-child(2),
-    .summary-table th:nth-child(4),
-    .summary-table td:nth-child(2),
-    .summary-table td:nth-child(4) {
-      width: 170px;
-    }
-
-    .summary-table td { height: 56px; }
 
     .category-row td {
-      padding: 12px 14px;
-      background: #f2f5f7;
-      color: var(--steel);
+      background: #f4f7f9;
+      color: var(--navy);
       font-weight: 900;
     }
 
     .item-name {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 850;
+      font-weight: 800;
     }
 
     .paid-item {
       color: var(--green);
     }
 
-    .controls {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin: 10px 0 14px;
+    .done-badge {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 8px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: #edf8f2;
+      color: var(--green);
+      border: 1px solid #cfe8da;
+      font-size: 11px;
+      font-weight: 800;
+      vertical-align: middle;
     }
-
-    button {
-      border: 1px solid rgba(79, 101, 120, 0.26);
-      background: var(--steel);
-      color: #fff;
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-weight: 850;
-      cursor: pointer;
-      box-shadow: 0 10px 22px rgba(79, 101, 120, 0.16);
-    }
-
-    button:hover { background: #43586a; }
 
     input[type="number"],
     input[type="date"],
     input[type="text"],
     select {
       width: 100%;
-      max-width: 100%;
       padding: 8px 9px;
       border: 1px solid #cbd6e2;
       border-radius: 6px;
@@ -291,57 +237,64 @@
 
     input[type="number"] {
       text-align: right;
+      font-weight: 800;
       font-variant-numeric: tabular-nums;
-      font-weight: 850;
     }
 
-    input:focus,
-    select:focus {
-      outline: 3px solid rgba(79, 101, 120, 0.14);
-      border-color: var(--steel);
+    input[type="date"].is-empty::-webkit-datetime-edit {
+      color: transparent;
     }
 
-    .purchase-table td:nth-child(1) { width: 88px; }
+    input[type="date"]:focus::-webkit-datetime-edit,
+    input[type="date"]:valid::-webkit-datetime-edit,
+    input[type="date"]:not(.is-empty)::-webkit-datetime-edit {
+      color: var(--ink);
+    }
+
+    .controls {
+      display: flex;
+      justify-content: flex-end;
+      margin: 10px 0 14px;
+    }
+
+    button {
+      border: 1px solid rgba(49, 67, 85, 0.2);
+      background: var(--navy);
+      color: #fff;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .purchase-table td:nth-child(1) { width: 86px; }
     .purchase-table td:nth-child(4),
-    .purchase-table td:nth-child(5) { width: 120px; }
-    .purchase-table td:nth-child(6) { width: 120px; }
-    .purchase-table td:nth-child(7) { width: 135px; }
+    .purchase-table td:nth-child(5) { width: 124px; }
+    .purchase-table td:nth-child(6) { width: 110px; }
+    .purchase-table td:nth-child(7) { width: 130px; }
     .purchase-table td:nth-child(8) { width: 150px; }
 
     .payment-table td:nth-child(1) { width: 110px; }
-    .payment-table td:nth-child(2) { width: 130px; }
+    .payment-table td:nth-child(2) { width: 128px; }
     .payment-table td:nth-child(3) { width: 120px; }
-    .payment-table td:nth-child(5) { width: 120px; }
-
-    .split {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 18px;
-      align-items: start;
-    }
+    .payment-table td:nth-child(5) { width: 110px; }
 
     body.printing-mode .detail-section {
       display: none;
     }
 
     @media (max-width: 960px) {
-      header,
-      .split {
-        grid-template-columns: 1fr;
-      }
+      header { grid-template-columns: 1fr; }
       .meta { justify-items: start; }
       .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       table { display: block; overflow-x: auto; white-space: nowrap; }
-      .controls { justify-content: flex-start; }
     }
 
     @media (max-width: 560px) {
-      .page { width: min(100% - 20px, 1180px); padding-top: 16px; }
-      header { padding: 22px; }
+      .page { width: min(100% - 20px, 1160px); padding-top: 16px; }
       .grid { grid-template-columns: 1fr; }
       .section-head { display: block; }
       .note { margin-top: 6px; }
-      th, td { padding: 11px 12px; }
     }
 
     @page {
@@ -350,93 +303,17 @@
     }
 
     @media print {
-      html, body {
-        width: 210mm;
-        background: #fff;
-      }
-
-      body {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        font-size: 10px;
-      }
-
-      .page {
-        width: 190mm;
-        padding: 0;
-      }
-
-      header, .card, table {
-        box-shadow: none;
-      }
-
-      header {
-        grid-template-columns: 1.2fr 0.8fr;
-        padding: 12mm 10mm;
-        break-inside: avoid;
-      }
-
-      h1 { font-size: 28px; }
-      h2 { font-size: 18px; }
-      .subtitle, .meta, .note { font-size: 10px; }
-      section { margin-top: 12px; }
-
-      .grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 7px;
-        break-inside: avoid;
-      }
-
-      .card {
-        padding: 10px;
-        min-height: 72px;
-      }
-
-      .metric {
-        font-size: 22px;
-        margin-top: 5px;
-      }
-
-      .metric small {
-        display: block;
-        margin: 3px 0 0;
-        font-size: 9px;
-      }
-
-      table {
-        display: table;
-        width: 100%;
-        white-space: normal;
-        page-break-inside: auto;
-      }
-
-      thead { display: table-header-group; }
-      tr { break-inside: avoid; page-break-inside: avoid; }
-
-      th, td {
-        padding: 5px 6px;
-        font-size: 9px;
-        line-height: 1.25;
-      }
-
-      input,
-      select {
-        border: 0;
-        background: transparent;
-        padding: 1px 2px;
-        font-size: 9px;
-      }
-
-      .status-badge {
-        min-width: auto;
-        padding: 2px 5px;
-        font-size: 8px;
-      }
-
-      .summary-table td { height: auto; }
-      .category-row td { padding: 5px 6px; }
-      .controls, button { display: none; }
-      .detail-section { display: none; }
+      html, body { width: 210mm; background: #fff; }
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 10px; }
+      .page { width: 190mm; padding: 0; }
+      header, .card, table { box-shadow: none; }
+      .detail-section, .controls, button { display: none; }
+      .grid { gap: 6px; }
+      .card { padding: 10px; }
+      .metric { font-size: 20px; }
+      th, td { padding: 5px 6px; font-size: 9px; }
+      input, select { border: 0; background: transparent; padding: 1px 2px; font-size: 9px; }
+      table { display: table; white-space: normal; }
     }
   </style>
 </head>
@@ -444,21 +321,19 @@
   <main class="page">
     <header>
       <div>
-        <h1>인테리어 예산표</h1>
-        <p class="subtitle">공사비 지급 현황과 구매 상태를 함께 관리하는 최종 예산표</p>
+        <h1>동아 인테리어 예산표</h1>
       </div>
       <div class="meta">
         <span class="pill">기준일 2026-04-27</span>
-        <span>부평 동아2단지 28동 901호 / 세종인테리어 진행</span>
       </div>
     </header>
 
-    <section class="grid" aria-label="총액 요약">
+    <section class="grid" aria-label="요약">
       <article class="card">
         <div class="metric-label">확정 공사비</div>
         <div class="metric" id="constructionMetric"></div>
       </article>
-      <article class="card accent-slate">
+      <article class="card accent-blue">
         <div class="metric-label">기구매 합계</div>
         <div class="metric" id="purchasedMetric"></div>
       </article>
@@ -472,29 +347,11 @@
       </article>
     </section>
 
-    <section>
-      <div class="section-head">
-        <h2>구매 상태 요약</h2>
-        <p class="note">이미 구매한 항목과 아직 구매 예정인 항목을 나눠서 표시합니다.</p>
-      </div>
-      <table class="summary-table">
-        <thead>
-          <tr>
-            <th>항목</th>
-            <th class="money">금액</th>
-            <th>항목</th>
-            <th class="money">금액</th>
-          </tr>
-        </thead>
-        <tbody id="pricedItemsSummary"></tbody>
-      </table>
-    </section>
-
     <section class="split">
       <div>
         <div class="section-head">
           <h2>공사비 지급 현황</h2>
-          <p class="note">계약금, 중도금, 잔금 단위로 언제 어떻게 지급했는지 표시합니다.</p>
+          <p class="note">계약금, 중도금, 잔금 기준</p>
         </div>
         <table class="payment-table" id="constructionTable">
           <thead>
@@ -546,7 +403,7 @@
             <tr>
               <td>잔금</td>
               <td><input type="date" value=""></td>
-              <td class="money"><input type="number" value="1300"></td>
+              <td class="money"><input type="number" value="1000"></td>
               <td><input type="text" value=""></td>
               <td>
                 <select class="payment-status">
@@ -563,34 +420,30 @@
           </tbody>
         </table>
       </div>
+    </section>
 
-      <div>
-        <div class="section-head">
-          <h2>비용 부담 요약</h2>
-          <p class="note">실지출과 아직 남은 예정 지출을 함께 봅니다.</p>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>구분</th>
-              <th class="money">금액</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>공사비 지급완료</td><td class="money" id="constructionPaidText"></td></tr>
-            <tr><td>공사비 미지급 예정</td><td class="money" id="constructionPlannedText"></td></tr>
-            <tr><td>기구매 합계</td><td class="money" id="purchasedTotalText"></td></tr>
-            <tr><td>미구매 예정 합계</td><td class="money" id="plannedTotalText"></td></tr>
-            <tr class="total-row"><td>총 예상 필요금</td><td class="money" id="grandTotalText"></td></tr>
-          </tbody>
-        </table>
+    <section>
+      <div class="section-head">
+        <h2>구매 상태 요약</h2>
+        <p class="note">예상 금액이 있는 항목과 구매완료 항목을 함께 봅니다.</p>
       </div>
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th class="money">금액</th>
+            <th>항목</th>
+            <th class="money">금액</th>
+          </tr>
+        </thead>
+        <tbody id="pricedItemsSummary"></tbody>
+      </table>
     </section>
 
     <section class="detail-section">
       <div class="section-head">
         <h2>구매 필요항목</h2>
-        <p class="note">구매 여부, 구매일, 결제 경로, 실제 결제금액까지 기록합니다.</p>
+        <p class="note">구매일, 결제 경로, 실결제금액 기록</p>
       </div>
       <div class="controls">
         <button type="button" id="printButton">인쇄</button>
@@ -609,42 +462,35 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-status="planned"><td>가전</td><td>냉장고</td><td>구매 예정</td><td class="money"><input type="number" value="165"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가전</td><td>김치냉장고</td><td>구매 예정</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가전</td><td>워시타워</td><td>세탁기 / 건조기</td><td class="money"><input type="number" value="192"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가전</td><td>로봇청소기</td><td>구매 예정</td><td class="money"><input type="number" value="50"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="purchased"><td>가전</td><td>게이트맨 도어락</td><td>오늘 구매</td><td class="money"><input type="number" value="25"></td><td class="money"><input type="number" value="234740"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased" selected>구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value="2026-04-27"></td><td><input type="text" value="쿠팡 결제"></td></tr>
-          <tr data-status="planned"><td>가전</td><td>에어컨</td><td>제품 + 기본 설치 기준</td><td class="money"><input type="number" value="185"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가구</td><td>붙박이장</td><td>안방장</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가구</td><td>TV장</td><td>거실장</td><td class="money"><input type="number" value="100"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>가구</td><td>쇼파</td><td>기존 사용 또는 추후 구매</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가구</td><td>퀸침대</td><td>프레임 + 매트리스</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가구</td><td>슈퍼싱글침대</td><td>프레임 + 매트리스</td><td class="money"><input type="number" value="150"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가구</td><td>협탁 2개</td><td>2개 합산</td><td class="money"><input type="number" value="40"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가구</td><td>화장대</td><td>거울 포함 기준</td><td class="money"><input type="number" value="50"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가구</td><td>식탁 / 의자 세트</td><td>4~6인용</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가구</td><td>아일랜드장</td><td>주방 보조 수납</td><td class="money"><input type="number" value="30"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>가구</td><td>낮은 수납장</td><td>옷 보관용 서랍장/수납장</td><td class="money"><input type="number" value="70"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>수납</td><td>발코니 수납 선반 3개</td><td>3개 합산</td><td class="money"><input type="number" value="30"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>임시비</td><td>한달숙소비 / 복비 등</td><td>공사 기간 임시비</td><td class="money"><input type="number" value="150"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>생활</td><td>매트리스 커버 2개</td><td>퀸 + 슈퍼싱글 기준</td><td class="money"><input type="number" value="10"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="planned"><td>생활</td><td>생활살림</td><td>냄비, 팬, 식기, 칼, 도마, 수납</td><td class="money"><input type="number" value="50"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>가전</td><td>전자레인지 / 오븐 / 에어프라이어</td><td>기존 보유 여부 확인</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>가전</td><td>공기청정기 / 제습기</td><td>계절가전, 필요 시 추가</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>가전</td><td>정수기 / 생수 / 커피머신</td><td>렌탈 또는 구매 선택</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>가구</td><td>책상 / 의자</td><td>작업방 또는 아이방</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>가구</td><td>서랍장 / 수납장</td><td>옷, 생활용품 보조 수납</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>관리</td><td>방충망 / 미세방충망 보수</td><td>창호 상태 확인 후 선택</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>관리</td><td>인터넷 / TV 이전 설치비</td><td>통신사 이전 및 기사 방문</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>가전</td><td>가전 이전 설치 / 앵글 / 배관</td><td>에어컨, 워시타워 부자재</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>생활</td><td>욕실 / 세탁 / 청소용품</td><td>수건, 욕실용품, 세제, 청소도구</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>생활</td><td>멀티탭 / 공유기 / 소형공구</td><td>입주 직후 자주 빠지는 품목</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>생활</td><td>쓰레기통 / 분리수거함</td><td>주방, 욕실, 베란다</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>생활</td><td>옷걸이 / 행거 / 리빙박스</td><td>수납 정리용</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>주방</td><td>밥솥 / 토스터 / 전기포트</td><td>기존 보유 여부 확인</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>관리</td><td>폐기물 스티커 / 대형폐기물</td><td>기존 가구, 포장재 처리</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr data-status="skip"><td>예비</td><td>예비비</td><td>추가 공정, 배송비, 설치 부자재</td><td class="money"><input type="number" value="0"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased">구매완료</option><option value="skip" selected>보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr class="total-row"><td colspan="3">구매 예상 총액</td><td class="money" id="purchaseExpectedText"></td><td class="money" id="purchaseActualText"></td><td colspan="3"></td></tr>
+          <tr><td>가전</td><td>냉장고</td><td>구매 예정</td><td class="money"><input type="number" value="165"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>가전</td><td>김치냉장고</td><td>구매 예정</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>가전</td><td>워시타워</td><td>구매 예정</td><td class="money"><input type="number" value="192"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>가전</td><td>로봇청소기</td><td>구매 예정</td><td class="money"><input type="number" value="50"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>가전</td><td>게이트맨 도어락</td><td>오늘 결제</td><td class="money"><input type="number" value="25"></td><td class="money"><input type="number" value="234740"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased" selected>구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value="2026-04-27"></td><td><input type="text" value="쿠팡 결제"></td></tr>
+          <tr><td>가전</td><td>에어컨</td><td>구매 예정</td><td class="money"><input type="number" value="185"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+
+          <tr><td>가구</td><td>붙박이장</td><td>구매 예정</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>가구</td><td>TV장</td><td>구매 예정</td><td class="money"><input type="number" value="100"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>가구</td><td>퀸침대</td><td>구매 예정</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>가구</td><td>슈퍼싱글침대</td><td>구매 예정</td><td class="money"><input type="number" value="150"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>가구</td><td>협탁 2개</td><td>구매 예정</td><td class="money"><input type="number" value="40"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>가구</td><td>화장대</td><td>구매 예정</td><td class="money"><input type="number" value="50"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>가구</td><td>식탁 / 의자 세트</td><td>구매 예정</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>가구</td><td>아일랜드장</td><td>구매 예정</td><td class="money"><input type="number" value="30"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+
+          <tr><td>수납</td><td>낮은 수납장</td><td>옷 보관용</td><td class="money"><input type="number" value="70"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>수납</td><td>발코니 수납 선반 3개</td><td>구매 예정</td><td class="money"><input type="number" value="30"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+
+          <tr><td>생활</td><td>한달숙소비 / 복비 등</td><td>입주 전 비용</td><td class="money"><input type="number" value="150"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>생활</td><td>매트리스 커버 2개</td><td>구매 예정</td><td class="money"><input type="number" value="10"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+          <tr><td>생활</td><td>생활살림</td><td>주방 / 생활 기본</td><td class="money"><input type="number" value="50"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
+
+          <tr class="total-row">
+            <td colspan="3">구매 예상 총액</td>
+            <td class="money" id="purchaseExpectedText"></td>
+            <td class="money" id="purchaseActualText"></td>
+            <td colspan="3"></td>
+          </tr>
         </tbody>
       </table>
     </section>
@@ -653,6 +499,8 @@
   <script>
     const fmt = new Intl.NumberFormat("ko-KR");
 
+    // 큰 금액을 상단 카드에서 보기 쉽게 "만원 / 억원" 단위로 줄여서 보여줍니다.
+    // 예: 1650000 -> 165만원, 46000000 -> 4,600만원, 더 커지면 억 단위까지 표시합니다.
     function formatCompactWon(krw) {
       const man = Math.round(krw / 10000);
       if (man >= 10000) {
@@ -663,15 +511,27 @@
       return `${fmt.format(man)}만원`;
     }
 
+    // 표와 요약 영역에 공통으로 쓰는 기본 원화 표기 함수입니다.
+    // 내부 계산은 모두 원 단위로 맞춘 뒤, 화면에 출력할 때만 이 함수를 거칩니다.
+    function formatWon(krw) {
+      return `${fmt.format(krw)}원`;
+    }
+
+    // 공사비 지급 현황 표에서 계산에 필요한 값만 읽어옵니다.
+    // 마지막 합계 행은 number input이 없기 때문에 자동으로 제외됩니다.
     function getConstructionRows() {
       return [...document.querySelectorAll("#constructionTable tbody tr")]
         .filter((row) => row.querySelector("input[type='number']"))
         .map((row) => ({
+          // 공사비 표는 만원 단위 입력이므로 계산 전에 원 단위로 변환합니다.
           amount: (Number(row.querySelector("input[type='number']").value) || 0) * 10000,
+          // 지급완료 / 예정 상태는 공사비 세부 집계에 사용됩니다.
           status: row.querySelector(".payment-status").value
         }));
     }
 
+    // 구매 필요항목 표를 계산용 데이터 배열로 바꿉니다.
+    // 예상 금액과 실결제 금액의 단위가 다르므로 여기서 한 번 정리합니다.
     function getPurchaseRows() {
       return [...document.querySelectorAll("#purchaseTable tbody tr")]
         .filter((row) => row.querySelector("input[type='number']"))
@@ -679,52 +539,80 @@
           const cells = row.querySelectorAll("td");
           const numberInputs = row.querySelectorAll("input[type='number']");
           return {
+            // 카테고리는 상단 구매 상태 요약에서 그룹핑 기준으로 사용합니다.
             category: cells[0]?.textContent.trim() || "",
+            // 항목명은 요약표와 상세표를 연결하는 표시용 값입니다.
             item: cells[1]?.textContent.trim() || "",
-            memo: cells[2]?.textContent.trim() || "",
+            // 예상 금액은 만원 단위 입력이므로 원 단위로 환산합니다.
             expected: (Number(numberInputs[0].value) || 0) * 10000,
+            // 실결제 금액은 원 단위 입력이므로 그대로 사용합니다.
             actual: Number(numberInputs[1].value) || 0,
+            // 구매예정 / 구매완료 / 보류 상태에 따라 집계 방식이 달라집니다.
             status: row.querySelector(".purchase-status").value
           };
         });
     }
 
+    // 구매 상태 요약 표를 다시 그립니다.
+    // 이 표는 직접 수정하는 표가 아니라, 아래 상세표를 읽어 자동으로 생성되는 요약본입니다.
     function updatePurchaseSummary() {
       const summary = document.getElementById("pricedItemsSummary");
+
+      // 완전히 비어 있는 보류 항목까지 전부 올리면 요약표가 너무 길어지므로,
+      // 예상 금액이 있거나 실제 결제가 발생한 항목만 일단 후보로 가져옵니다.
       const rows = getPurchaseRows().filter((row) => row.expected > 0 || row.actual > 0);
-      const categories = [...new Set(rows.map((row) => row.category))];
+
+      if (!rows.length) {
+        summary.innerHTML = `<tr><td colspan="4" class="note">표시할 항목이 없습니다.</td></tr>`;
+        return;
+      }
+
+      // 현재 요약 표는 "예상 금액이 잡혀 있는 항목" 중심으로 보여주기 때문에
+      // 카테고리 목록도 expected > 0 인 행만 기준으로 만듭니다.
+      const categories = [...new Set(rows.filter((row) => row.expected > 0).map((row) => row.category))];
       const html = [];
 
       categories.forEach((category) => {
-        const items = rows.filter((row) => row.category === category);
+        // 같은 카테고리 안에서도 예상 금액이 잡혀 있는 항목만 표시합니다.
+        const items = rows.filter((row) => row.category === category && row.expected > 0);
+
+        // 구매완료 항목은 실결제가 있으면 그 값을 우선 반영합니다.
+        // 실결제가 아직 비어 있으면 임시로 예상 금액을 사용합니다.
         const subtotal = items.reduce((sum, row) => {
           return sum + (row.status === "purchased" && row.actual > 0 ? row.actual : row.expected);
         }, 0);
 
+        // 카테고리 제목행과 카테고리 소계를 먼저 추가합니다.
         html.push(`
           <tr class="category-row">
             <td colspan="3">${category}</td>
-            <td class="money">${fmt.format(subtotal)}원</td>
+            <td class="money">${formatWon(subtotal)}</td>
           </tr>
         `);
 
+        // 가로 폭을 줄이기 위해 한 줄에 항목 2개씩 배치합니다.
         for (let i = 0; i < items.length; i += 2) {
           const left = items[i];
           const right = items[i + 1];
+
+          // 왼쪽 항목 금액은 구매완료 시 실결제 우선 규칙을 적용합니다.
           const leftAmount = left.status === "purchased" && left.actual > 0 ? left.actual : left.expected;
           const leftClass = left.status === "purchased" ? "item-name paid-item" : "item-name";
+          const leftLabel = left.status === "purchased" ? `<span class="done-badge">구매완료</span>` : "";
 
+          // 오른쪽 셀이 비어 있을 수 있으므로 기본 빈 칸을 먼저 준비합니다.
           let rightCell = "<td></td><td class='money'></td>";
           if (right) {
             const rightAmount = right.status === "purchased" && right.actual > 0 ? right.actual : right.expected;
             const rightClass = right.status === "purchased" ? "item-name paid-item" : "item-name";
-            rightCell = `<td><span class="${rightClass}">${right.item}</span></td><td class="money">${fmt.format(rightAmount)}원</td>`;
+            const rightLabel = right.status === "purchased" ? `<span class="done-badge">구매완료</span>` : "";
+            rightCell = `<td><span class="${rightClass}">${right.item}</span>${rightLabel}</td><td class="money">${formatWon(rightAmount)}</td>`;
           }
 
           html.push(`
             <tr>
-              <td><span class="${leftClass}">${left.item}</span></td>
-              <td class="money">${fmt.format(leftAmount)}원</td>
+              <td><span class="${leftClass}">${left.item}</span>${leftLabel}</td>
+              <td class="money">${formatWon(leftAmount)}</td>
               ${rightCell}
             </tr>
           `);
@@ -734,64 +622,94 @@
       summary.innerHTML = html.join("");
     }
 
+    // 상단 카드, 공사비 합계, 구매표 하단 합계를 한 번에 갱신하는 메인 계산 함수입니다.
+    // 어떤 입력값이 바뀌든 결국 이 함수 하나가 다시 실행되어 화면 전체를 맞춥니다.
     function updateTotals() {
       const constructionRows = getConstructionRows();
       const purchaseRows = getPurchaseRows();
 
+      // 공사비 총액 = 계약금 + 중도금1 + 중도금2 + 잔금
       const constructionTotal = constructionRows.reduce((sum, row) => sum + row.amount, 0);
-      const constructionPaid = constructionRows.filter((row) => row.status === "paid").reduce((sum, row) => sum + row.amount, 0);
-      const constructionPlanned = constructionRows.filter((row) => row.status !== "paid").reduce((sum, row) => sum + row.amount, 0);
 
+      // 공사비 중 이미 지급완료된 금액만 별도로 계산합니다.
+      const constructionPaid = constructionRows
+        .filter((row) => row.status === "paid")
+        .reduce((sum, row) => sum + row.amount, 0);
+
+      // 공사비 중 아직 예정 상태인 금액만 따로 계산합니다.
+      const constructionPlanned = constructionRows
+        .filter((row) => row.status !== "paid")
+        .reduce((sum, row) => sum + row.amount, 0);
+
+      // 기구매 합계는 구매완료 항목만 대상으로 합니다.
+      // 실결제 금액이 입력되어 있으면 그 값을 우선 사용합니다.
       const purchasedTotal = purchaseRows
         .filter((row) => row.status === "purchased")
         .reduce((sum, row) => sum + (row.actual > 0 ? row.actual : row.expected), 0);
 
+      // 미구매 예정 합계는 구매예정 항목만 대상으로 합니다.
+      // 아직 사지 않았으므로 예상 금액만 반영합니다.
       const plannedTotal = purchaseRows
         .filter((row) => row.status === "planned")
         .reduce((sum, row) => sum + row.expected, 0);
 
+      // 총 예상 필요금은 현재 기준으로 앞으로 필요한 전체 자금을 의미합니다.
       const grandTotal = constructionTotal + purchasedTotal + plannedTotal;
-      const openCount = purchaseRows.filter((row) => row.status !== "purchased" && row.expected === 0).length;
 
-      document.getElementById("constructionMetric").innerHTML = `${formatCompactWon(constructionTotal)} <small>${fmt.format(constructionTotal)}원</small>`;
-      document.getElementById("purchasedMetric").innerHTML = `${formatCompactWon(purchasedTotal)} <small>${fmt.format(purchasedTotal)}원</small>`;
-      document.getElementById("plannedMetric").innerHTML = `${formatCompactWon(plannedTotal)} <small>${fmt.format(plannedTotal)}원</small>`;
-      document.getElementById("grandMetric").innerHTML = `${formatCompactWon(grandTotal)} <small>${fmt.format(grandTotal)}원</small>`;
+      // 상단 4개 카드 숫자를 모두 현재 값으로 갱신합니다.
+      document.getElementById("constructionMetric").innerHTML = `${formatCompactWon(constructionTotal)} <small>${formatWon(constructionTotal)}</small>`;
+      document.getElementById("purchasedMetric").innerHTML = `${formatCompactWon(purchasedTotal)} <small>${formatWon(purchasedTotal)}</small>`;
+      document.getElementById("plannedMetric").innerHTML = `${formatCompactWon(plannedTotal)} <small>${formatWon(plannedTotal)}</small>`;
+      document.getElementById("grandMetric").innerHTML = `${formatCompactWon(grandTotal)} <small>${formatWon(grandTotal)}</small>`;
 
-      document.getElementById("constructionTotalText").textContent = `${fmt.format(constructionTotal)}원`;
-      document.getElementById("constructionPaidText").textContent = `${fmt.format(constructionPaid)}원`;
-      document.getElementById("constructionPlannedText").textContent = `${fmt.format(constructionPlanned)}원`;
-      document.getElementById("purchasedTotalText").textContent = `${fmt.format(purchasedTotal)}원`;
-      document.getElementById("plannedTotalText").textContent = `${fmt.format(plannedTotal)}원`;
-      document.getElementById("grandTotalText").textContent = `${fmt.format(grandTotal)}원`;
-      document.getElementById("purchaseExpectedText").textContent = `${formatCompactWon(plannedTotal + purchasedTotal)} (${fmt.format(plannedTotal + purchasedTotal)}원)`;
-      document.getElementById("purchaseActualText").textContent = `${fmt.format(purchasedTotal)}원`;
+      // 공사비 표 맨 아래 합계 행을 갱신합니다.
+      document.getElementById("constructionTotalText").textContent = formatWon(constructionTotal);
 
-      document.querySelectorAll(".purchase-status").forEach((select) => {
-        const row = select.closest("tr");
-        row.dataset.status = select.value;
-      });
+      // 예전 버전의 요약 DOM이 남아 있어도 오류가 나지 않도록 안전하게 값을 넣는 헬퍼입니다.
+      const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+      };
 
-      document.querySelectorAll(".payment-status").forEach((select) => {
-        const badgeCell = select.closest("td");
-        badgeCell.className = "";
-      });
+      // 현재 화면에서 숨겨졌거나 제거된 보조 요약 영역이 있더라도 스크립트가 깨지지 않게 합니다.
+      setText("constructionPaidText", formatWon(constructionPaid));
+      setText("constructionPlannedText", formatWon(constructionPlanned));
+      setText("purchasedTotalText", formatWon(purchasedTotal));
+      setText("plannedTotalText", formatWon(plannedTotal));
+      setText("grandTotalText", formatWon(grandTotal));
 
-      const zeroCard = document.getElementById("zeroMetric");
-      zeroCard.innerHTML = `${openCount}개 <small>미입력 항목</small>`;
+      // 구매 필요항목 표 하단 합계 행:
+      // 왼쪽은 전체 구매 예산(기구매 + 미구매 예정), 오른쪽은 현재까지의 기구매 금액입니다.
+      document.getElementById("purchaseExpectedText").textContent = `${formatCompactWon(plannedTotal + purchasedTotal)} (${formatWon(plannedTotal + purchasedTotal)})`;
+      document.getElementById("purchaseActualText").textContent = formatWon(purchasedTotal);
 
+      // 날짜 입력칸의 빈 상태 표시와 구매 상태 요약 표도 함께 다시 맞춥니다.
+      updateDateInputs();
       updatePurchaseSummary();
     }
 
+    // 인쇄 버튼을 누르면 상세 구매표를 숨긴 상태로 브라우저 인쇄를 호출합니다.
+    // 실제 숨김은 CSS의 printing-mode 규칙이 담당합니다.
     function handlePrint() {
       document.body.classList.add("printing-mode");
       window.print();
     }
 
+    // 빈 날짜 입력칸은 브라우저 기본 placeholder가 보이지 않도록 is-empty 클래스를 토글합니다.
+    // 날짜를 실제로 선택하면 클래스가 빠지면서 정상 날짜 표시가 보입니다.
+    function updateDateInputs() {
+      document.querySelectorAll('input[type="date"]').forEach((el) => {
+        el.classList.toggle("is-empty", !el.value);
+      });
+    }
+
+    // 인쇄가 끝나면 printing-mode를 제거해서 화면을 원래 상태로 되돌립니다.
     window.addEventListener("afterprint", () => {
       document.body.classList.remove("printing-mode");
     });
 
+    // 모든 입력 컨트롤을 하나의 계산 흐름에 연결합니다.
+    // 숫자, 날짜, 텍스트, select 어느 하나가 바뀌어도 전체 요약이 다시 계산됩니다.
     document.querySelectorAll("input, select").forEach((el) => {
       el.addEventListener("input", updateTotals);
       el.addEventListener("change", updateTotals);
@@ -799,6 +717,8 @@
 
     document.getElementById("printButton").addEventListener("click", handlePrint);
 
+    // 첫 로딩 시에도 빈 날짜 상태와 합계를 한 번 맞춰 줘야 화면이 정상 시작됩니다.
+    updateDateInputs();
     updateTotals();
   </script>
 </body>
