@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>인테리어 예산표</title>
+  <title>동아 인테리어 예산표</title>
   <style>
     :root {
       --bg: #f3f5f7;
@@ -13,7 +13,6 @@
       --muted: #66768a;
       --navy: #314355;
       --blue: #4d6379;
-      --sand: #8d7447;
       --clay: #af644d;
       --green: #1f7a5a;
       --shadow: 0 14px 34px rgba(24, 33, 43, 0.08);
@@ -55,17 +54,11 @@
       font-weight: 900;
     }
 
-    .subtitle {
-      margin-top: 8px;
-      color: rgba(255, 255, 255, 0.78);
-      font-size: 14px;
-    }
-
     .meta {
       display: grid;
       gap: 8px;
       justify-items: end;
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.82);
       font-size: 13px;
     }
 
@@ -254,8 +247,8 @@
     }
 
     select {
-      min-width: 116px;
-      width: max(100%, 116px);
+      min-width: 120px;
+      width: max(100%, 120px);
     }
 
     input[type="date"].is-empty::-webkit-datetime-edit {
@@ -287,14 +280,14 @@
     .purchase-table td:nth-child(1) { width: 86px; }
     .purchase-table td:nth-child(4),
     .purchase-table td:nth-child(5) { width: 124px; }
-    .purchase-table td:nth-child(6) { width: 116px; }
+    .purchase-table td:nth-child(6) { width: 120px; }
     .purchase-table td:nth-child(7) { width: 130px; }
     .purchase-table td:nth-child(8) { width: 150px; }
 
     .payment-table td:nth-child(1) { width: 110px; }
     .payment-table td:nth-child(2) { width: 128px; }
     .payment-table td:nth-child(3) { width: 120px; }
-    .payment-table td:nth-child(5) { width: 116px; }
+    .payment-table td:nth-child(5) { width: 120px; }
 
     body.printing-mode .detail-section {
       display: none;
@@ -338,12 +331,10 @@
   <main class="page">
     <header>
       <div>
-        <h1>인테리어 예산표</h1>
-        <p class="subtitle">공사비와 생활 준비 비용을 함께 관리합니다.</p>
+        <h1>동아 인테리어 예산표</h1>
       </div>
       <div class="meta">
         <span class="pill">기준일 2026-04-27</span>
-        <span>부평 동아2단지 28동 901호</span>
       </div>
     </header>
 
@@ -371,7 +362,7 @@
           <h2>공사비 지급 현황</h2>
           <p class="note">계약금, 중도금, 잔금 기준</p>
         </div>
-        <table class="payment-table" id="constructionTable">
+        <table class="payment-table">
           <thead>
             <tr>
               <th>구분</th>
@@ -381,61 +372,7 @@
               <th>상태</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>계약금</td>
-              <td><input type="date" value="2026-04-25"></td>
-              <td class="money"><input type="number" value="300"></td>
-              <td><input type="text" value="국민 632902-01-074940 이하종"></td>
-              <td>
-                <select class="payment-status">
-                  <option value="paid" selected>지급완료</option>
-                  <option value="planned">예정</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>중도금 1</td>
-              <td><input type="date" value=""></td>
-              <td class="money"><input type="number" value="1000"></td>
-              <td><input type="text" value=""></td>
-              <td>
-                <select class="payment-status">
-                  <option value="planned" selected>예정</option>
-                  <option value="paid">지급완료</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>중도금 2</td>
-              <td><input type="date" value=""></td>
-              <td class="money"><input type="number" value="1500"></td>
-              <td><input type="text" value=""></td>
-              <td>
-                <select class="payment-status">
-                  <option value="planned" selected>예정</option>
-                  <option value="paid">지급완료</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>잔금</td>
-              <td><input type="date" value=""></td>
-              <td class="money"><input type="number" value="1800"></td>
-              <td><input type="text" value=""></td>
-              <td>
-                <select class="payment-status">
-                  <option value="planned" selected>예정</option>
-                  <option value="paid">지급완료</option>
-                </select>
-              </td>
-            </tr>
-            <tr class="total-row">
-              <td colspan="2">공사비 합계</td>
-              <td class="money" id="constructionTotalText"></td>
-              <td colspan="2"></td>
-            </tr>
-          </tbody>
+          <tbody id="constructionTableBody"></tbody>
         </table>
       </div>
     </section>
@@ -466,7 +403,7 @@
       <div class="controls">
         <button type="button" id="printButton">인쇄</button>
       </div>
-      <table class="purchase-table" id="purchaseTable">
+      <table class="purchase-table">
         <thead>
           <tr>
             <th>분류</th>
@@ -479,37 +416,7 @@
             <th>결제 경로</th>
           </tr>
         </thead>
-        <tbody>
-          <tr><td>가전</td><td>냉장고</td><td>구매 예정</td><td class="money"><input type="number" value="165"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>가전</td><td>김치냉장고</td><td>구매 예정</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>가전</td><td>워시타워</td><td>구매 예정</td><td class="money"><input type="number" value="192"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>가전</td><td>로봇청소기</td><td>구매 예정</td><td class="money"><input type="number" value="50"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>가전</td><td>게이트맨 도어락</td><td>오늘 결제</td><td class="money"><input type="number" value="25"></td><td class="money"><input type="number" value="234740"></td><td><select class="purchase-status"><option value="planned">구매예정</option><option value="purchased" selected>구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value="2026-04-27"></td><td><input type="text" value="쿠팡 결제"></td></tr>
-          <tr><td>가전</td><td>에어컨</td><td>구매 예정</td><td class="money"><input type="number" value="185"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-
-          <tr><td>가구</td><td>붙박이장</td><td>구매 예정</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>가구</td><td>TV장</td><td>구매 예정</td><td class="money"><input type="number" value="100"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>가구</td><td>퀸침대</td><td>구매 예정</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>가구</td><td>슈퍼싱글침대</td><td>구매 예정</td><td class="money"><input type="number" value="150"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>가구</td><td>협탁 2개</td><td>구매 예정</td><td class="money"><input type="number" value="40"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>가구</td><td>화장대</td><td>구매 예정</td><td class="money"><input type="number" value="50"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>가구</td><td>식탁 / 의자 세트</td><td>구매 예정</td><td class="money"><input type="number" value="200"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>가구</td><td>아일랜드장</td><td>구매 예정</td><td class="money"><input type="number" value="30"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-
-          <tr><td>수납</td><td>낮은 수납장</td><td>옷 보관용</td><td class="money"><input type="number" value="70"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>수납</td><td>발코니 수납 선반 3개</td><td>구매 예정</td><td class="money"><input type="number" value="30"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-
-          <tr><td>생활</td><td>한달숙소비 / 복비 등</td><td>입주 전 비용</td><td class="money"><input type="number" value="150"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>생활</td><td>매트리스 커버 2개</td><td>구매 예정</td><td class="money"><input type="number" value="10"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-          <tr><td>생활</td><td>생활살림</td><td>주방 / 생활 기본</td><td class="money"><input type="number" value="50"></td><td class="money"><input type="number" value="0"></td><td><select class="purchase-status"><option value="planned" selected>구매예정</option><option value="purchased">구매완료</option><option value="skip">보류</option></select></td><td><input type="date" value=""></td><td><input type="text" value=""></td></tr>
-
-          <tr class="total-row">
-            <td colspan="3">구매 예상 총액</td>
-            <td class="money" id="purchaseExpectedText"></td>
-            <td class="money" id="purchaseActualText"></td>
-            <td colspan="3"></td>
-          </tr>
-        </tbody>
+        <tbody id="purchaseTableBody"></tbody>
       </table>
     </section>
   </main>
@@ -517,8 +424,6 @@
   <script>
     const fmt = new Intl.NumberFormat("ko-KR");
 
-    // 큰 금액을 상단 카드에서 보기 쉽게 "만원 / 억원" 단위로 줄여서 보여줍니다.
-    // 예: 1650000 -> 165만원, 46000000 -> 4,600만원, 더 커지면 억 단위까지 표시합니다.
     function formatCompactWon(krw) {
       const man = Math.round(krw / 10000);
       if (man >= 10000) {
@@ -529,78 +434,86 @@
       return `${fmt.format(man)}만원`;
     }
 
-    // 표와 요약 영역에 공통으로 쓰는 기본 원화 표기 함수입니다.
-    // 내부 계산은 모두 원 단위로 맞춘 뒤, 화면에 출력할 때만 이 함수를 거칩니다.
     function formatWon(krw) {
       return `${fmt.format(krw)}원`;
     }
 
-    // 공사비 지급 현황 표에서 계산에 필요한 값만 읽어옵니다.
-    // 마지막 합계 행은 number input이 없기 때문에 자동으로 제외됩니다.
-    function getConstructionRows() {
-      return [...document.querySelectorAll("#constructionTable tbody tr")]
-        .filter((row) => row.querySelector("input[type='number']"))
-        .map((row) => ({
-          // 공사비 표는 만원 단위 입력이므로 계산 전에 원 단위로 변환합니다.
-          amount: (Number(row.querySelector("input[type='number']").value) || 0) * 10000,
-          // 지급완료 / 예정 상태는 공사비 세부 집계에 사용됩니다.
-          status: row.querySelector(".payment-status").value
-        }));
+    function renderConstructionTable() {
+      const tbody = document.getElementById("constructionTableBody");
+      const rows = constructionData.map((item) => `
+        <tr data-id="${item.id}">
+          <td>${item.label}</td>
+          <td><input type="date" data-field="date" value="${item.date}"></td>
+          <td class="money"><input type="number" data-field="amountManwon" value="${item.amountManwon}"></td>
+          <td><input type="text" data-field="route" value="${item.route}"></td>
+          <td>
+            <select class="payment-status" data-field="status">
+              <option value="paid" ${item.status === "paid" ? "selected" : ""}>지급완료</option>
+              <option value="planned" ${item.status === "planned" ? "selected" : ""}>예정</option>
+            </select>
+          </td>
+        </tr>
+      `).join("");
+
+      tbody.innerHTML = rows + `
+        <tr class="total-row">
+          <td colspan="2">공사비 합계</td>
+          <td class="money" id="constructionTotalText"></td>
+          <td colspan="2"></td>
+        </tr>
+      `;
     }
 
-    // 구매 필요항목 표를 계산용 데이터 배열로 바꿉니다.
-    // 예상 금액과 실결제 금액의 단위가 다르므로 여기서 한 번 정리합니다.
-    function getPurchaseRows() {
-      return [...document.querySelectorAll("#purchaseTable tbody tr")]
-        .filter((row) => row.querySelector("input[type='number']"))
-        .map((row) => {
-          const cells = row.querySelectorAll("td");
-          const numberInputs = row.querySelectorAll("input[type='number']");
-          return {
-            // 카테고리는 상단 구매 상태 요약에서 그룹핑 기준으로 사용합니다.
-            category: cells[0]?.textContent.trim() || "",
-            // 항목명은 요약표와 상세표를 연결하는 표시용 값입니다.
-            item: cells[1]?.textContent.trim() || "",
-            // 예상 금액은 만원 단위 입력이므로 원 단위로 환산합니다.
-            expected: (Number(numberInputs[0].value) || 0) * 10000,
-            // 실결제 금액은 원 단위 입력이므로 그대로 사용합니다.
-            actual: Number(numberInputs[1].value) || 0,
-            // 구매예정 / 구매완료 / 보류 상태에 따라 집계 방식이 달라집니다.
-            status: row.querySelector(".purchase-status").value
-          };
-        });
+    function renderPurchaseTable() {
+      const tbody = document.getElementById("purchaseTableBody");
+      const rows = purchaseData.map((item) => `
+        <tr data-id="${item.id}">
+          <td>${item.category}</td>
+          <td>${item.item}</td>
+          <td>${item.memo}</td>
+          <td class="money"><input type="number" data-field="expectedManwon" value="${item.expectedManwon}"></td>
+          <td class="money"><input type="number" data-field="actualWon" value="${item.actualWon}"></td>
+          <td>
+            <select class="purchase-status" data-field="status">
+              <option value="planned" ${item.status === "planned" ? "selected" : ""}>구매예정</option>
+              <option value="purchased" ${item.status === "purchased" ? "selected" : ""}>구매완료</option>
+              <option value="skip" ${item.status === "skip" ? "selected" : ""}>보류</option>
+            </select>
+          </td>
+          <td><input type="date" data-field="purchaseDate" value="${item.purchaseDate}"></td>
+          <td><input type="text" data-field="paymentRoute" value="${item.paymentRoute}"></td>
+        </tr>
+      `).join("");
+
+      tbody.innerHTML = rows + `
+        <tr class="total-row">
+          <td colspan="3">구매 예상 총액</td>
+          <td class="money" id="purchaseExpectedText"></td>
+          <td class="money" id="purchaseActualText"></td>
+          <td colspan="3"></td>
+        </tr>
+      `;
     }
 
-    // 구매 상태 요약 표를 다시 그립니다.
-    // 이 표는 직접 수정하는 표가 아니라, 아래 상세표를 읽어 자동으로 생성되는 요약본입니다.
     function updatePurchaseSummary() {
       const summary = document.getElementById("pricedItemsSummary");
-
-      // 완전히 비어 있는 보류 항목까지 전부 올리면 요약표가 너무 길어지므로,
-      // 예상 금액이 있거나 실제 결제가 발생한 항목만 일단 후보로 가져옵니다.
-      const rows = getPurchaseRows().filter((row) => row.expected > 0 || row.actual > 0);
+      const rows = purchaseData.filter((row) => row.expectedManwon > 0 || row.actualWon > 0);
 
       if (!rows.length) {
         summary.innerHTML = `<tr><td colspan="4" class="note">표시할 항목이 없습니다.</td></tr>`;
         return;
       }
 
-      // 현재 요약 표는 "예상 금액이 잡혀 있는 항목" 중심으로 보여주기 때문에
-      // 카테고리 목록도 expected > 0 인 행만 기준으로 만듭니다.
-      const categories = [...new Set(rows.filter((row) => row.expected > 0).map((row) => row.category))];
+      const categories = [...new Set(rows.filter((row) => row.expectedManwon > 0).map((row) => row.category))];
       const html = [];
 
       categories.forEach((category) => {
-        // 같은 카테고리 안에서도 예상 금액이 잡혀 있는 항목만 표시합니다.
-        const items = rows.filter((row) => row.category === category && row.expected > 0);
-
-        // 구매완료 항목은 실결제가 있으면 그 값을 우선 반영합니다.
-        // 실결제가 아직 비어 있으면 임시로 예상 금액을 사용합니다.
+        const items = rows.filter((row) => row.category === category && row.expectedManwon > 0);
         const subtotal = items.reduce((sum, row) => {
-          return sum + (row.status === "purchased" && row.actual > 0 ? row.actual : row.expected);
+          const expectedWon = row.expectedManwon * 10000;
+          return sum + (row.status === "purchased" && row.actualWon > 0 ? row.actualWon : expectedWon);
         }, 0);
 
-        // 카테고리 제목행과 카테고리 소계를 먼저 추가합니다.
         html.push(`
           <tr class="category-row">
             <td colspan="3">${category}</td>
@@ -608,20 +521,18 @@
           </tr>
         `);
 
-        // 가로 폭을 줄이기 위해 한 줄에 항목 2개씩 배치합니다.
         for (let i = 0; i < items.length; i += 2) {
           const left = items[i];
           const right = items[i + 1];
-
-          // 왼쪽 항목 금액은 구매완료 시 실결제 우선 규칙을 적용합니다.
-          const leftAmount = left.status === "purchased" && left.actual > 0 ? left.actual : left.expected;
+          const leftExpectedWon = left.expectedManwon * 10000;
+          const leftAmount = left.status === "purchased" && left.actualWon > 0 ? left.actualWon : leftExpectedWon;
           const leftClass = left.status === "purchased" ? "item-name paid-item" : "item-name";
           const leftLabel = left.status === "purchased" ? `<span class="done-badge">구매완료</span>` : "";
 
-          // 오른쪽 셀이 비어 있을 수 있으므로 기본 빈 칸을 먼저 준비합니다.
           let rightCell = "<td></td><td class='money'></td>";
           if (right) {
-            const rightAmount = right.status === "purchased" && right.actual > 0 ? right.actual : right.expected;
+            const rightExpectedWon = right.expectedManwon * 10000;
+            const rightAmount = right.status === "purchased" && right.actualWon > 0 ? right.actualWon : rightExpectedWon;
             const rightClass = right.status === "purchased" ? "item-name paid-item" : "item-name";
             const rightLabel = right.status === "purchased" ? `<span class="done-badge">구매완료</span>` : "";
             rightCell = `<td><span class="${rightClass}">${right.item}</span>${rightLabel}</td><td class="money">${formatWon(rightAmount)}</td>`;
@@ -640,92 +551,190 @@
       summary.innerHTML = html.join("");
     }
 
-    // 상단 카드, 공사비 합계, 구매표 하단 합계를 한 번에 갱신하는 메인 계산 함수입니다.
-    // 어떤 입력값이 바뀌든 결국 이 함수 하나가 다시 실행되어 화면 전체를 맞춥니다.
-    function updateTotals() {
-      const constructionRows = getConstructionRows();
-      const purchaseRows = getPurchaseRows();
-
-      // 공사비 총액 = 계약금 + 중도금1 + 중도금2 + 잔금
-      const constructionTotal = constructionRows.reduce((sum, row) => sum + row.amount, 0);
-
-      // 공사비 중 이미 지급완료된 금액만 별도로 계산합니다.
-      const constructionPaid = constructionRows
-        .filter((row) => row.status === "paid")
-        .reduce((sum, row) => sum + row.amount, 0);
-
-      // 공사비 중 아직 예정 상태인 금액만 따로 계산합니다.
-      const constructionPlanned = constructionRows
-        .filter((row) => row.status !== "paid")
-        .reduce((sum, row) => sum + row.amount, 0);
-
-      // 생활 준비 비용은 구매 항목 전체를 뜻하므로 기구매와 미구매 예정 둘 다 합산합니다.
-      const purchasedTotal = purchaseRows
-        .filter((row) => row.status === "purchased")
-        .reduce((sum, row) => sum + (row.actual > 0 ? row.actual : row.expected), 0);
-
-      const plannedTotal = purchaseRows
-        .filter((row) => row.status === "planned")
-        .reduce((sum, row) => sum + row.expected, 0);
-
-      const livingTotal = purchasedTotal + plannedTotal;
-      const grandTotal = constructionTotal + livingTotal;
-
-      // 1번 카드: 공사비
-      document.getElementById("constructionMetric").innerHTML = `${formatCompactWon(constructionTotal)} <small>${formatWon(constructionTotal)}</small>`;
-      document.getElementById("constructionSub").textContent = `${formatWon(constructionPaid)} 지출 / ${formatWon(constructionPlanned)} 남은 금액`;
-
-      // 2번 카드: 생활 준비 비용
-      document.getElementById("livingMetric").innerHTML = `${formatCompactWon(livingTotal)} <small>${formatWon(livingTotal)}</small>`;
-      document.getElementById("livingSub").textContent = `${formatWon(plannedTotal)} 예정 / ${formatWon(purchasedTotal)} 지출`;
-
-      // 3번 카드: 전체 비용
-      document.getElementById("grandMetric").innerHTML = `${formatCompactWon(grandTotal)} <small>${formatWon(grandTotal)}</small>`;
-      document.getElementById("grandSub").textContent = `${formatWon(constructionTotal)} 공사비 / ${formatWon(livingTotal)} 생활 준비 비용`;
-
-      // 공사비 표 맨 아래 합계 행을 갱신합니다.
-      document.getElementById("constructionTotalText").textContent = formatWon(constructionTotal);
-
-      // 구매 필요항목 표 하단 합계 행:
-      // 왼쪽은 전체 구매 예산(기구매 + 미구매 예정), 오른쪽은 현재까지의 기구매 금액입니다.
-      document.getElementById("purchaseExpectedText").textContent = `${formatCompactWon(livingTotal)} (${formatWon(livingTotal)})`;
-      document.getElementById("purchaseActualText").textContent = formatWon(purchasedTotal);
-
-      // 날짜 입력칸의 빈 상태 표시와 구매 상태 요약 표도 함께 다시 맞춥니다.
-      updateDateInputs();
-      updatePurchaseSummary();
-    }
-
-    // 인쇄 버튼을 누르면 상세 구매표를 숨긴 상태로 브라우저 인쇄를 호출합니다.
-    // 실제 숨김은 CSS의 printing-mode 규칙이 담당합니다.
-    function handlePrint() {
-      document.body.classList.add("printing-mode");
-      window.print();
-    }
-
-    // 빈 날짜 입력칸은 브라우저 기본 placeholder가 보이지 않도록 is-empty 클래스를 토글합니다.
-    // 날짜를 실제로 선택하면 클래스가 빠지면서 정상 날짜 표시가 보입니다.
     function updateDateInputs() {
       document.querySelectorAll('input[type="date"]').forEach((el) => {
         el.classList.toggle("is-empty", !el.value);
       });
     }
 
-    // 인쇄가 끝나면 printing-mode를 제거해서 화면을 원래 상태로 되돌립니다.
+    function updateTotals() {
+      const constructionTotal = constructionData.reduce((sum, row) => sum + row.amountManwon * 10000, 0);
+      const constructionPaid = constructionData
+        .filter((row) => row.status === "paid")
+        .reduce((sum, row) => sum + row.amountManwon * 10000, 0);
+      const constructionPlanned = constructionData
+        .filter((row) => row.status !== "paid")
+        .reduce((sum, row) => sum + row.amountManwon * 10000, 0);
+
+      const purchasedTotal = purchaseData
+        .filter((row) => row.status === "purchased")
+        .reduce((sum, row) => sum + (row.actualWon > 0 ? row.actualWon : row.expectedManwon * 10000), 0);
+      const plannedTotal = purchaseData
+        .filter((row) => row.status === "planned")
+        .reduce((sum, row) => sum + row.expectedManwon * 10000, 0);
+
+      const livingTotal = purchasedTotal + plannedTotal;
+      const grandTotal = constructionTotal + livingTotal;
+
+      document.getElementById("constructionMetric").innerHTML = `${formatCompactWon(constructionTotal)} <small>${formatWon(constructionTotal)}</small>`;
+      document.getElementById("constructionSub").textContent = `지출 ${formatWon(constructionPaid)} / 남은 금액 ${formatWon(constructionPlanned)}`;
+
+      document.getElementById("livingMetric").innerHTML = `${formatCompactWon(livingTotal)} <small>${formatWon(livingTotal)}</small>`;
+      document.getElementById("livingSub").textContent = `예정 ${formatWon(plannedTotal)} / 지출 ${formatWon(purchasedTotal)}`;
+
+      document.getElementById("grandMetric").innerHTML = `${formatCompactWon(grandTotal)} <small>${formatWon(grandTotal)}</small>`;
+      document.getElementById("grandSub").textContent = `공사비 ${formatWon(constructionTotal)} / 생활 준비 비용 ${formatWon(livingTotal)}`;
+
+      document.getElementById("constructionTotalText").textContent = formatWon(constructionTotal);
+      document.getElementById("purchaseExpectedText").textContent = `${formatCompactWon(livingTotal)} (${formatWon(livingTotal)})`;
+      document.getElementById("purchaseActualText").textContent = formatWon(purchasedTotal);
+
+      updateDateInputs();
+      updatePurchaseSummary();
+    }
+
+    function syncConstructionField(id, field, rawValue) {
+      const target = constructionData.find((item) => item.id === id);
+      if (!target) return;
+
+      if (field === "amountManwon") {
+        target[field] = Number(rawValue) || 0;
+        return;
+      }
+
+      target[field] = rawValue;
+    }
+
+    function syncPurchaseField(id, field, rawValue) {
+      const target = purchaseData.find((item) => item.id === id);
+      if (!target) return;
+
+      if (field === "expectedManwon" || field === "actualWon") {
+        target[field] = Number(rawValue) || 0;
+        return;
+      }
+
+      target[field] = rawValue;
+    }
+
+    function handlePrint() {
+      document.body.classList.add("printing-mode");
+      window.print();
+    }
+
+    document.addEventListener("input", (event) => {
+      const input = event.target;
+      if (!(input instanceof HTMLInputElement || input instanceof HTMLSelectElement)) return;
+
+      const row = input.closest("tr[data-id]");
+      if (!row) return;
+
+      const field = input.dataset.field;
+      if (!field) return;
+
+      if (row.closest("#constructionTableBody")) {
+        syncConstructionField(row.dataset.id, field, input.value);
+      }
+
+      if (row.closest("#purchaseTableBody")) {
+        syncPurchaseField(row.dataset.id, field, input.value);
+      }
+
+      updateTotals();
+    });
+
+    document.addEventListener("change", (event) => {
+      const input = event.target;
+      if (!(input instanceof HTMLInputElement || input instanceof HTMLSelectElement)) return;
+
+      const row = input.closest("tr[data-id]");
+      if (!row) return;
+
+      const field = input.dataset.field;
+      if (!field) return;
+
+      if (row.closest("#constructionTableBody")) {
+        syncConstructionField(row.dataset.id, field, input.value);
+      }
+
+      if (row.closest("#purchaseTableBody")) {
+        syncPurchaseField(row.dataset.id, field, input.value);
+      }
+
+      updateTotals();
+    });
+
     window.addEventListener("afterprint", () => {
       document.body.classList.remove("printing-mode");
     });
 
-    // 모든 입력 컨트롤을 하나의 계산 흐름에 연결합니다.
-    // 숫자, 날짜, 텍스트, select 어느 하나가 바뀌어도 전체 요약이 다시 계산됩니다.
-    document.querySelectorAll("input, select").forEach((el) => {
-      el.addEventListener("input", updateTotals);
-      el.addEventListener("change", updateTotals);
-    });
-
     document.getElementById("printButton").addEventListener("click", handlePrint);
 
-    // 첫 로딩 시에도 빈 날짜 상태와 합계를 한 번 맞춰 줘야 화면이 정상 시작됩니다.
+    // JSON 원본 데이터는 스크립트 하단에 둡니다.
+    // 앞으로는 이 두 배열을 기준으로 카드, 요약표, 상세표가 모두 렌더링됩니다.
+    const constructionData = [
+      {
+        id: "construction-contract",
+        label: "계약금",
+        date: "2026-04-25",
+        amountManwon: 300,
+        route: "국민 632902-01-074940 이하종",
+        status: "paid"
+      },
+      {
+        id: "construction-middle-1",
+        label: "중도금 1",
+        date: "",
+        amountManwon: 1000,
+        route: "",
+        status: "planned"
+      },
+      {
+        id: "construction-middle-2",
+        label: "중도금 2",
+        date: "",
+        amountManwon: 1500,
+        route: "",
+        status: "planned"
+      },
+      {
+        id: "construction-balance",
+        label: "잔금",
+        date: "",
+        amountManwon: 1800,
+        route: "",
+        status: "planned"
+      }
+    ];
+
+    const purchaseData = [
+      { id: "purchase-fridge", category: "가전", item: "냉장고", memo: "구매 예정", expectedManwon: 165, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-kimchi-fridge", category: "가전", item: "김치냉장고", memo: "구매 예정", expectedManwon: 200, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-washtower", category: "가전", item: "워시타워", memo: "구매 예정", expectedManwon: 192, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-robot-cleaner", category: "가전", item: "로봇청소기", memo: "구매 예정", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-doorlock", category: "가전", item: "게이트맨 도어락", memo: "오늘 결제", expectedManwon: 25, actualWon: 234740, status: "purchased", purchaseDate: "2026-04-27", paymentRoute: "쿠팡 결제" },
+      { id: "purchase-aircon", category: "가전", item: "에어컨", memo: "구매 예정", expectedManwon: 185, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+
+      { id: "purchase-built-in-closet", category: "가구", item: "붙박이장", memo: "구매 예정", expectedManwon: 200, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-tv-stand", category: "가구", item: "TV장", memo: "구매 예정", expectedManwon: 100, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-queen-bed", category: "가구", item: "퀸침대", memo: "구매 예정", expectedManwon: 200, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-super-single-bed", category: "가구", item: "슈퍼싱글침대", memo: "구매 예정", expectedManwon: 150, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-side-table", category: "가구", item: "협탁 2개", memo: "구매 예정", expectedManwon: 40, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-dresser", category: "가구", item: "화장대", memo: "구매 예정", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-dining-set", category: "가구", item: "식탁 / 의자 세트", memo: "구매 예정", expectedManwon: 200, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-island-cabinet", category: "가구", item: "아일랜드장", memo: "구매 예정", expectedManwon: 30, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+
+      { id: "purchase-low-storage", category: "수납", item: "낮은 수납장", memo: "옷 보관용", expectedManwon: 70, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-balcony-shelf", category: "수납", item: "발코니 수납 선반 3개", memo: "구매 예정", expectedManwon: 30, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+
+      { id: "purchase-housing-cost", category: "생활", item: "한달숙소비 / 복비 등", memo: "입주 전 비용", expectedManwon: 150, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-mattress-cover", category: "생활", item: "매트리스 커버 2개", memo: "예산 조정", expectedManwon: 3, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-home-mats", category: "생활", item: "주방 매트 / 화장실 매트 2개 / 세탁실 매트", memo: "총 4개", expectedManwon: 6, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-home-supplies", category: "생활", item: "생활살림", memo: "주방 / 생활 기본", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" }
+    ];
+
+    renderConstructionTable();
+    renderPurchaseTable();
     updateDateInputs();
     updateTotals();
   </script>
