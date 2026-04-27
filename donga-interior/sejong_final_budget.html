@@ -706,7 +706,7 @@
         status: "planned"
       }
     ];
-
+    
     const purchaseData = [
       { id: "purchase-fridge", category: "가전", item: "냉장고", memo: "구매 예정", expectedManwon: 165, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
       { id: "purchase-kimchi-fridge", category: "가전", item: "김치냉장고", memo: "구매 예정", expectedManwon: 200, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
@@ -715,22 +715,33 @@
       { id: "purchase-doorlock", category: "가전", item: "게이트맨 도어락", memo: "오늘 결제", expectedManwon: 25, actualWon: 234740, status: "purchased", purchaseDate: "2026-04-27", paymentRoute: "쿠팡 결제" },
       { id: "purchase-aircon", category: "가전", item: "에어컨", memo: "구매 예정", expectedManwon: 185, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
 
-      { id: "purchase-built-in-closet", category: "가구", item: "붙박이장", memo: "구매 예정", expectedManwon: 200, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-tv-stand", category: "가구", item: "TV장", memo: "구매 예정", expectedManwon: 100, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-queen-bed", category: "가구", item: "퀸침대", memo: "구매 예정", expectedManwon: 200, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-super-single-bed", category: "가구", item: "슈퍼싱글침대", memo: "구매 예정", expectedManwon: 150, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-side-table", category: "가구", item: "협탁 2개", memo: "구매 예정", expectedManwon: 40, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-dresser", category: "가구", item: "화장대", memo: "구매 예정", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-dining-set", category: "가구", item: "식탁 / 의자 세트", memo: "구매 예정", expectedManwon: 200, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-built-in-closet", category: "가구", item: "붙박이장", memo: "구매 예정", expectedManwon: 180, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-tv-stand", category: "가구", item: "TV장", memo: "구매 예정", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-queen-bed", category: "가구", item: "퀸침대", memo: "구매 예정", expectedManwon: 120, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-super-single-bed", category: "가구", item: "슈퍼싱글침대", memo: "구매 예정", expectedManwon: 80, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-side-table", category: "가구", item: "협탁 2개", memo: "구매 예정", expectedManwon: 20, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-dresser", category: "가구", item: "화장대", memo: "구매 예정", expectedManwon: 30, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-dining-set", category: "가구", item: "식탁 / 의자 세트", memo: "구매 예정", expectedManwon: 120, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
       { id: "purchase-island-cabinet", category: "가구", item: "아일랜드장", memo: "구매 예정", expectedManwon: 30, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
 
-      { id: "purchase-low-storage", category: "수납", item: "낮은 수납장", memo: "옷 보관용", expectedManwon: 70, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-balcony-shelf", category: "수납", item: "발코니 수납 선반 3개", memo: "구매 예정", expectedManwon: 30, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-low-storage", category: "수납", item: "낮은 수납장", memo: "옷 보관용", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { id: "purchase-balcony-shelf", category: "수납", item: "발코니 수납 선반 3개", memo: "구매 예정", expectedManwon: 20, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
 
       { id: "purchase-housing-cost", category: "생활", item: "한달숙소비 / 복비 등", memo: "입주 전 비용", expectedManwon: 150, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
       { id: "purchase-mattress-cover", category: "생활", item: "매트리스 커버 2개", memo: "예산 조정", expectedManwon: 3, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
       { id: "purchase-home-mats", category: "생활", item: "주방 매트 / 화장실 매트 2개 / 세탁실 매트", memo: "총 4개", expectedManwon: 6, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-home-supplies", category: "생활", item: "생활살림", memo: "주방 / 생활 기본", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" }
+      { id: "purchase-home-supplies", category: "생활", item: "생활살림", memo: "주방 / 생활 기본", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+
+      { id: "purchase-curtain", category: "생활", item: "커튼 / 블라인드", memo: "거실 + 방", expectedManwon: 50, actualWon: 0, status: "planned" },
+      { id: "purchase-lighting", category: "생활", item: "조명 (무드등)", memo: "포인트 조명", expectedManwon: 15, actualWon: 0, status: "planned" },
+
+      { id: "purchase-rug", category: "생활", item: "거실 러그", memo: "인테리어용", expectedManwon: 10, actualWon: 0, status: "planned" },
+      { id: "purchase-trash-bin", category: "생활", item: "분리수거함", memo: "디자인형 추천", expectedManwon: 10, actualWon: 0, status: "planned" },
+      { id: "purchase-hanger", category: "생활", item: "옷걸이 세트", memo: "통일 중요", expectedManwon: 5, actualWon: 0, status: "planned" },
+      { id: "purchase-drying-rack", category: "생활", item: "빨래건조대", memo: "베란다 or 실내", expectedManwon: 7, actualWon: 0, status: "planned" },
+      { id: "purchase-cleaning-tools", category: "생활", item: "청소도구 (밀대, 쓰레받기 등)", memo: "기본 세트", expectedManwon: 5, actualWon: 0, status: "planned" },
+      { id: "purchase-bath-supplies", category: "생활", item: "욕실용품 (디스펜서, 휴지걸이 등)", memo: "통일 추천", expectedManwon: 10, actualWon: 0, status: "planned" },
+      { id: "purchase-kitchen-tools", category: "생활", item: "주방 정리용품 (수저통, 도마 등)", memo: "기본 교체", expectedManwon: 10, actualWon: 0, status: "planned" }
     ];
 
     renderConstructionTable();
