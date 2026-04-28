@@ -1,249 +1,419 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>동아 인테리어 예산표</title>
   <style>
     :root {
-      --bg: #f3f5f7;
-      --panel: #ffffff;
-      --line: #dde4ea;
-      --ink: #18212b;
-      --muted: #66768a;
-      --navy: #314355;
-      --blue: #4d6379;
-      --clay: #af644d;
-      --green: #1f7a5a;
-      --shadow: 0 14px 34px rgba(24, 33, 43, 0.08);
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --surface-soft: #f6f8fb;
+      --line: #e6ebf2;
+      --text: #1b2430;
+      --muted: #677489;
+      --primary: #3b6ff6;
+      --primary-soft: #eaf1ff;
+      --accent: #e57b45;
+      --success: #1f8a5b;
+      --success-soft: #eaf8f1;
+      --warning: #c18b16;
+      --warning-soft: #fff6dc;
+      --timeline-past: #c6cfdb;
+      --timeline-current: #3b6ff6;
+      --timeline-future: #d9e2ef;
+      --shadow: 0 12px 30px rgba(18, 35, 58, 0.07);
+      --radius: 20px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
+      font-family: "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
       background: var(--bg);
-      color: var(--ink);
-      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
-      line-height: 1.5;
+      color: var(--text);
     }
 
     .page {
-      width: min(1160px, calc(100% - 32px));
+      max-width: 1180px;
       margin: 0 auto;
-      padding: 24px 0 40px;
+      padding: 24px 20px 64px;
     }
 
     header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 16px;
-      align-items: end;
-      padding: 24px 28px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #23303c, var(--navy));
-      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 22px 26px;
+      border-radius: 22px;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--line);
       box-shadow: var(--shadow);
     }
 
-    h1, h2, p { margin: 0; }
-
     h1 {
-      font-size: clamp(28px, 3.5vw, 38px);
-      line-height: 1.1;
-      font-weight: 900;
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.08;
+      letter-spacing: 0;
     }
 
     .meta {
-      display: grid;
-      gap: 8px;
-      justify-items: end;
-      color: rgba(255, 255, 255, 0.82);
-      font-size: 13px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
     }
 
     .pill {
       display: inline-flex;
       align-items: center;
-      padding: 7px 12px;
+      min-height: 42px;
+      padding: 0 16px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.14);
-      font-weight: 800;
-    }
-
-    section { margin-top: 20px; }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 162px;
-      background: var(--panel);
+      background: var(--surface-soft);
       border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 16px 18px;
-      box-shadow: 0 8px 22px rgba(24, 33, 43, 0.05);
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto;
-      height: 4px;
-      background: var(--navy);
-    }
-
-    .accent-blue::before { background: var(--blue); }
-    .accent-clay::before { background: var(--clay); }
-
-    .metric-label {
       color: var(--muted);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .metric {
-      margin-top: 10px;
-      font-size: clamp(24px, 2.8vw, 32px);
-      font-weight: 900;
-      line-height: 1.12;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .metric small {
-      display: inline-block;
-      margin-left: 6px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .metric-sub {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 13px;
       font-weight: 700;
-      line-height: 1.45;
-      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
     }
 
-    .split {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      align-items: start;
+    .toolbar-button {
+      appearance: none;
+      border: 0;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(59, 111, 246, 0.24);
+    }
+
+    .milestone-card,
+    .panel,
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+    }
+
+    .milestone-card {
+      margin-top: 18px;
+      padding: 20px 22px;
     }
 
     .section-head {
       display: flex;
       justify-content: space-between;
-      gap: 12px;
-      align-items: end;
-      margin-bottom: 10px;
-      padding: 0 2px;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 14px;
     }
 
-    h2 {
-      font-size: 21px;
-      font-weight: 900;
+    .section-title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 800;
     }
 
-    .note {
+    .section-note {
       color: var(--muted);
-      font-size: 13px;
+      font-size: 0.95rem;
+    }
+
+    .milestone-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0;
+      position: relative;
+      align-items: start;
+    }
+
+    .milestone-grid::before {
+      content: "";
+      position: absolute;
+      left: 44px;
+      right: 44px;
+      top: 24px;
+      height: 2px;
+      background: var(--timeline-future);
+      z-index: 0;
+    }
+
+    .milestone-item {
+      position: relative;
+      padding: 0 10px;
+      min-height: 136px;
+      z-index: 1;
+    }
+
+    .milestone-step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      border: 5px solid var(--bg);
+      background: var(--timeline-future);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(18, 35, 58, 0.08);
+    }
+
+    .milestone-name {
+      margin-top: 14px;
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .milestone-date {
+      margin-top: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .milestone-range {
+      margin-top: 6px;
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .milestone-item.is-past .milestone-step {
+      background: var(--timeline-past);
+    }
+
+    .milestone-item.is-current .milestone-step {
+      background: var(--timeline-current);
+    }
+
+    .milestone-item.is-current .milestone-name {
+      color: var(--timeline-current);
+    }
+
+    .milestone-item.is-future .milestone-step {
+      background: var(--timeline-future);
+      color: #7f8ba0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .card {
+      padding: 20px 22px;
+      border-top: 4px solid #2f5d8a;
+    }
+
+    .card.accent-living {
+      border-top-color: #7c5fb2;
+    }
+
+    .card.accent-total {
+      border-top-color: var(--accent);
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .metric {
+      margin-top: 12px;
+      font-size: clamp(1.85rem, 3vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: 0;
+      color: #1f2b3d;
+    }
+
+    .metric-sub {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.5;
+      font-weight: 650;
+    }
+
+    .progress {
+      margin-top: 14px;
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: #edf1f6;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--primary) 0%, #5a88ff 100%);
+      transition: width 0.2s ease;
+    }
+
+    .card.accent-living .progress-bar {
+      background: linear-gradient(90deg, #7c5fb2 0%, #9a7be0 100%);
+    }
+
+    .card.accent-total .progress-bar {
+      background: linear-gradient(90deg, var(--accent) 0%, #ef9568 100%);
+    }
+
+    .panel {
+      margin-top: 18px;
+      padding: 20px 22px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 8px 22px rgba(24, 33, 43, 0.05);
     }
 
-    th, td {
-      padding: 12px 14px;
+    th,
+    td {
+      padding: 14px 12px;
       border-bottom: 1px solid var(--line);
+      text-align: left;
       vertical-align: middle;
-      font-size: 14px;
     }
 
     th {
-      background: #ecf1f5;
-      color: #344355;
-      text-align: left;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    tr:last-child td { border-bottom: 0; }
-
-    .money, th.money {
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .total-row td {
-      background: #f4f7f9;
-      font-weight: 900;
-    }
-
-    .category-row td {
-      background: #f4f7f9;
-      color: var(--navy);
-      font-weight: 900;
-    }
-
-    .item-name {
+      color: var(--muted);
+      font-size: 0.94rem;
       font-weight: 800;
+      background: var(--surface-soft);
     }
 
-    .paid-item {
-      color: var(--green);
+    tbody tr:last-child td {
+      border-bottom: 0;
     }
 
-    .done-badge {
+    tbody tr {
+      transition: background-color 0.16s ease;
+    }
+
+    tbody tr:hover {
+      background: #f8fbff;
+    }
+
+    .amount-cell {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-badge {
       display: inline-flex;
       align-items: center;
-      margin-left: 8px;
-      padding: 2px 7px;
+      justify-content: center;
+      padding: 7px 12px;
       border-radius: 999px;
-      background: #edf8f2;
-      color: var(--green);
-      border: 1px solid #cfe8da;
-      font-size: 11px;
+      font-size: 0.86rem;
       font-weight: 800;
-      vertical-align: middle;
+      white-space: nowrap;
     }
 
-    input[type="number"],
-    input[type="date"],
-    input[type="text"],
+    .status-planned {
+      color: #7d5a19;
+      background: #fff3dc;
+    }
+
+    .status-purchased,
+    .status-paid {
+      color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .summary-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .summary-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(18, 35, 58, 0.06);
+    }
+
+    .summary-item-main {
+      min-width: 0;
+    }
+
+    .summary-item-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .summary-item-meta {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .summary-item-amount {
+      flex-shrink: 0;
+      text-align: right;
+      font-weight: 750;
+      font-size: 1.05rem;
+      white-space: nowrap;
+    }
+
+    .detail-section {
+      margin-top: 18px;
+    }
+
+    input,
     select {
       width: 100%;
-      padding: 8px 9px;
-      border: 1px solid #cbd6e2;
-      border-radius: 6px;
-      background: #fbfdff;
-      color: var(--ink);
+      min-height: 40px;
+      padding: 8px 10px;
+      border: 1px solid #c8d2e0;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
       font: inherit;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
     }
 
-    input[type="number"] {
-      text-align: right;
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: rgba(59, 111, 246, 0.55);
+      box-shadow: 0 0 0 4px rgba(59, 111, 246, 0.12);
+      background: #fcfdff;
     }
 
     select {
@@ -251,79 +421,94 @@
       width: max(100%, 120px);
     }
 
-    input[type="date"].is-empty::-webkit-datetime-edit {
+    input::placeholder {
       color: transparent;
     }
 
-    input[type="date"]:focus::-webkit-datetime-edit,
-    input[type="date"]:valid::-webkit-datetime-edit,
-    input[type="date"]:not(.is-empty)::-webkit-datetime-edit {
-      color: var(--ink);
-    }
-
-    .controls {
+    .helper-row {
       display: flex;
-      justify-content: flex-end;
-      margin: 10px 0 14px;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-top: 18px;
+      margin-bottom: 10px;
     }
 
-    button {
-      border: 1px solid rgba(49, 67, 85, 0.2);
-      background: var(--navy);
-      color: #fff;
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-weight: 800;
-      cursor: pointer;
+    .muted {
+      color: var(--muted);
+      font-size: 0.94rem;
     }
 
-    .purchase-table td:nth-child(1) { width: 86px; }
-    .purchase-table td:nth-child(4),
-    .purchase-table td:nth-child(5) { width: 124px; }
-    .purchase-table td:nth-child(6) { width: 120px; }
-    .purchase-table td:nth-child(7) { width: 130px; }
-    .purchase-table td:nth-child(8) { width: 150px; }
+    @media (max-width: 980px) {
+      .milestone-grid,
+      .grid,
+      .summary-list {
+        grid-template-columns: 1fr;
+      }
 
-    .payment-table td:nth-child(1) { width: 110px; }
-    .payment-table td:nth-child(2) { width: 128px; }
-    .payment-table td:nth-child(3) { width: 120px; }
-    .payment-table td:nth-child(5) { width: 120px; }
+      .milestone-grid::before {
+        display: none;
+      }
 
-    body.printing-mode .detail-section {
-      display: none;
+      .milestone-item {
+        padding: 0;
+      }
     }
 
-    @media (max-width: 960px) {
-      header { grid-template-columns: 1fr; }
-      .meta { justify-items: start; }
-      .grid { grid-template-columns: 1fr; }
-      table { display: block; overflow-x: auto; white-space: nowrap; }
-    }
+    @media (max-width: 720px) {
+      .page {
+        padding: 16px 14px 44px;
+      }
 
-    @media (max-width: 560px) {
-      .page { width: min(100% - 20px, 1160px); padding-top: 16px; }
-      .section-head { display: block; }
-      .note { margin-top: 6px; }
-    }
+      header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 20px 18px;
+      }
 
-    @page {
-      size: A4;
-      margin: 10mm;
+      .meta {
+        justify-content: flex-start;
+      }
+
+      .section-head,
+      .helper-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      th,
+      td {
+        padding: 12px 10px;
+      }
     }
 
     @media print {
-      html, body { width: 210mm; background: #fff; }
-      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 10px; }
-      .page { width: 190mm; padding: 0; }
-      header, .card, table { box-shadow: none; }
-      .detail-section, .controls, button { display: none; }
-      .grid { gap: 6px; }
-      .card { padding: 10px; min-height: 110px; }
-      .metric { font-size: 20px; }
-      .metric-sub { font-size: 9px; }
-      th, td { padding: 5px 6px; font-size: 9px; }
-      input, select { border: 0; background: transparent; padding: 1px 2px; font-size: 9px; }
-      table { display: table; white-space: normal; }
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .page {
+        max-width: none;
+        padding: 0;
+      }
+
+      header,
+      .milestone-card,
+      .card,
+      .panel {
+        box-shadow: none;
+        border: 1px solid #d7dfeb;
+      }
+
+      .detail-section,
+      .toolbar-button {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -334,42 +519,55 @@
         <h1>동아 인테리어 예산표</h1>
       </div>
       <div class="meta">
-        <span class="pill">기준일 2026-04-27</span>
+        <span class="pill" id="todayLabel">기준일</span>
+        <button class="toolbar-button" id="printButton" type="button">인쇄</button>
       </div>
     </header>
 
-    <section class="grid" aria-label="요약">
+    <section class="milestone-card" aria-label="진행 일정">
+      <div class="section-head">
+        <h2 class="section-title">진행 일정</h2>
+        <div class="section-note">주요 마일스톤을 일정 순서대로 표시합니다.</div>
+      </div>
+      <div class="milestone-grid" id="milestoneGrid"></div>
+    </section>
+
+    <section class="grid" aria-label="상단 요약">
       <article class="card">
         <div class="metric-label">공사비</div>
         <div class="metric" id="constructionMetric"></div>
         <div class="metric-sub" id="constructionSub"></div>
+        <div class="progress" aria-hidden="true"><div class="progress-bar" id="constructionProgress"></div></div>
       </article>
-      <article class="card accent-blue">
+      <article class="card accent-living">
         <div class="metric-label">생활 준비 비용</div>
         <div class="metric" id="livingMetric"></div>
         <div class="metric-sub" id="livingSub"></div>
+        <div class="progress" aria-hidden="true"><div class="progress-bar" id="livingProgress"></div></div>
       </article>
-      <article class="card accent-clay">
+      <article class="card accent-total">
         <div class="metric-label">전체 비용</div>
         <div class="metric" id="grandMetric"></div>
         <div class="metric-sub" id="grandSub"></div>
+        <div class="progress" aria-hidden="true"><div class="progress-bar" id="grandProgress"></div></div>
       </article>
     </section>
 
-    <section class="split">
-      <div>
-        <div class="section-head">
-          <h2>공사비 지급 현황</h2>
-          <p class="note">계약금, 중도금, 잔금 기준</p>
-        </div>
-        <table class="payment-table">
+    <section class="panel" aria-label="공사비 지급 현황">
+      <div class="section-head">
+        <h2 class="section-title">공사비 지급 현황</h2>
+        <div class="section-note">공사비는 단계별 일정과 지급 여부를 기록합니다.</div>
+      </div>
+      <div class="table-wrap">
+        <table>
           <thead>
             <tr>
-              <th>구분</th>
-              <th>지급일</th>
-              <th class="money">금액(만원)</th>
-              <th>지급 경로</th>
+              <th>단계</th>
+              <th>예정 금액</th>
               <th>상태</th>
+              <th>지급일</th>
+              <th>지급 경로</th>
+              <th>메모</th>
             </tr>
           </thead>
           <tbody id="constructionTableBody"></tbody>
@@ -377,377 +575,354 @@
       </div>
     </section>
 
-    <section>
+    <section class="panel" aria-label="구매 상태 요약">
       <div class="section-head">
-        <h2>구매 상태 요약</h2>
-        <p class="note">예상 금액이 있는 항목과 구매완료 항목을 함께 봅니다.</p>
+        <h2 class="section-title">구매 상태 요약</h2>
+        <div class="section-note">예상 금액이 있는 항목만 표시하고 구매완료 여부를 함께 보여줍니다.</div>
       </div>
-      <table class="summary-table">
-        <thead>
-          <tr>
-            <th>항목</th>
-            <th class="money">금액</th>
-            <th>항목</th>
-            <th class="money">금액</th>
-          </tr>
-        </thead>
-        <tbody id="pricedItemsSummary"></tbody>
-      </table>
+      <div class="summary-list" id="pricedItemsSummary"></div>
     </section>
 
-    <section class="detail-section">
+    <div class="helper-row">
+      <div class="muted">인쇄 시에는 아래 구매 필요항목 상세표가 자동으로 숨겨집니다.</div>
+    </div>
+
+    <section class="panel detail-section" aria-label="구매 필요항목">
       <div class="section-head">
-        <h2>구매 필요항목</h2>
-        <p class="note">구매일, 결제 경로, 실결제금액 기록</p>
+        <h2 class="section-title">구매 필요항목</h2>
+        <div class="section-note">HTML 화면의 실제 항목과 값이 현재 작업 기준입니다.</div>
       </div>
-      <div class="controls">
-        <button type="button" id="printButton">인쇄</button>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>카테고리</th>
+              <th>항목</th>
+              <th>예상 금액(원)</th>
+              <th>상태</th>
+              <th>실결제 금액(원)</th>
+              <th>구매일</th>
+              <th>결제 경로</th>
+              <th>메모</th>
+            </tr>
+          </thead>
+          <tbody id="purchaseTableBody"></tbody>
+        </table>
       </div>
-      <table class="purchase-table">
-        <thead>
-          <tr>
-            <th>분류</th>
-            <th>항목</th>
-            <th>메모</th>
-            <th class="money">예상(만원)</th>
-            <th class="money">실결제(원)</th>
-            <th>상태</th>
-            <th>구매일</th>
-            <th>결제 경로</th>
-          </tr>
-        </thead>
-        <tbody id="purchaseTableBody"></tbody>
-      </table>
     </section>
   </main>
 
   <script>
-    const fmt = new Intl.NumberFormat("ko-KR");
-
-    function formatCompactWon(krw) {
-      const man = Math.round(krw / 10000);
-      if (man >= 10000) {
-        const eok = Math.floor(man / 10000);
-        const rest = man % 10000;
-        return rest ? `${eok}억 ${fmt.format(rest)}만원` : `${eok}억원`;
-      }
-      return `${fmt.format(man)}만원`;
+    function formatTodayLabel(date) {
+      const formatter = new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long"
+      });
+      return `기준일 ${formatter.format(date)}`;
     }
 
-    function formatWon(krw) {
-      return `${fmt.format(krw)}원`;
+    function formatDateLabel(value) {
+      if (!value) return "";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return new Intl.DateTimeFormat("ko-KR", {
+        month: "long",
+        day: "numeric",
+        weekday: "short"
+      }).format(date);
+    }
+
+    function formatWon(value) {
+      const number = Number(value || 0);
+      return `${number.toLocaleString("ko-KR")}원`;
+    }
+
+    function parseWonInput(value) {
+      const numeric = String(value || "").replace(/,/g, "").trim();
+      if (!numeric) return 0;
+      return Number(numeric) || 0;
+    }
+
+    function formatInputNumber(value) {
+      const numeric = Number(value || 0);
+      if (!numeric) return "";
+      return numeric.toLocaleString("ko-KR");
+    }
+
+    function getStatusMeta(status) {
+      if (status === "purchased") {
+        return { label: "구매완료", className: "status-badge status-purchased" };
+      }
+      if (status === "paid") {
+        return { label: "지급완료", className: "status-badge status-paid" };
+      }
+      return { label: "예정", className: "status-badge status-planned" };
+    }
+
+    function getMilestoneState(item) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const start = new Date(item.startDate);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(item.endDate || item.startDate);
+      end.setHours(0, 0, 0, 0);
+
+      if (today > end) return "past";
+      if (today >= start && today <= end) return "current";
+      return "future";
+    }
+
+    function renderMilestones() {
+      const container = document.getElementById("milestoneGrid");
+      container.innerHTML = scheduleData.map((item, index) => {
+        const state = getMilestoneState(item);
+        const startLabel = formatDateLabel(item.startDate);
+        const endLabel = item.endDate ? formatDateLabel(item.endDate) : "";
+        const rangeLabel = endLabel ? `${startLabel} ~ ${endLabel}` : startLabel;
+
+        return `
+          <article class="milestone-item is-${state}">
+            <div class="milestone-step">${index + 1}</div>
+            <div class="milestone-name">${item.name}</div>
+            <div class="milestone-date">${rangeLabel}</div>
+            <div class="milestone-range">${item.note || ""}</div>
+          </article>
+        `;
+      }).join("");
     }
 
     function renderConstructionTable() {
       const tbody = document.getElementById("constructionTableBody");
-      const rows = constructionData.map((item) => `
-        <tr data-id="${item.id}">
-          <td>${item.label}</td>
-          <td><input type="date" data-field="date" value="${item.date}"></td>
-          <td class="money"><input type="number" data-field="amountManwon" value="${item.amountManwon}"></td>
-          <td><input type="text" data-field="route" value="${item.route}"></td>
-          <td>
-            <select class="payment-status" data-field="status">
-              <option value="paid" ${item.status === "paid" ? "selected" : ""}>지급완료</option>
-              <option value="planned" ${item.status === "planned" ? "selected" : ""}>예정</option>
-            </select>
-          </td>
-        </tr>
-      `).join("");
-
-      tbody.innerHTML = rows + `
-        <tr class="total-row">
-          <td colspan="2">공사비 합계</td>
-          <td class="money" id="constructionTotalText"></td>
-          <td colspan="2"></td>
-        </tr>
-      `;
+      tbody.innerHTML = constructionData.map((item) => {
+        const statusMeta = getStatusMeta(item.status);
+        return `
+          <tr>
+            <td>${item.stage}</td>
+            <td class="amount-cell">${formatWon(item.amountWon)}</td>
+            <td><span class="${statusMeta.className}">${statusMeta.label}</span></td>
+            <td>${item.date ? formatDateLabel(item.date) : "-"}</td>
+            <td>${item.route || "-"}</td>
+            <td>${item.memo || "-"}</td>
+          </tr>
+        `;
+      }).join("");
     }
 
     function renderPurchaseTable() {
       const tbody = document.getElementById("purchaseTableBody");
-      const rows = purchaseData.map((item) => `
-        <tr data-id="${item.id}">
+      tbody.innerHTML = purchaseData.map((item, index) => `
+        <tr data-purchase-index="${index}">
           <td>${item.category}</td>
-          <td>${item.item}</td>
-          <td>${item.memo}</td>
-          <td class="money"><input type="number" data-field="expectedManwon" value="${item.expectedManwon}"></td>
-          <td class="money"><input type="number" data-field="actualWon" value="${item.actualWon}"></td>
+          <td>${item.name}</td>
+          <td><input type="text" inputmode="numeric" value="${formatInputNumber(item.expectedWon)}" data-field="expectedWon" /></td>
           <td>
-            <select class="purchase-status" data-field="status">
-              <option value="planned" ${item.status === "planned" ? "selected" : ""}>구매예정</option>
+            <select data-field="status">
+              <option value="planned" ${item.status === "planned" ? "selected" : ""}>예정</option>
               <option value="purchased" ${item.status === "purchased" ? "selected" : ""}>구매완료</option>
-              <option value="skip" ${item.status === "skip" ? "selected" : ""}>보류</option>
             </select>
           </td>
-          <td><input type="date" data-field="purchaseDate" value="${item.purchaseDate}"></td>
-          <td><input type="text" data-field="paymentRoute" value="${item.paymentRoute}"></td>
+          <td><input type="text" inputmode="numeric" value="${formatInputNumber(item.actualWon)}" data-field="actualWon" /></td>
+          <td><input type="date" value="${item.purchaseDate || ""}" data-field="purchaseDate" /></td>
+          <td><input type="text" value="${item.purchaseRoute || ""}" data-field="purchaseRoute" /></td>
+          <td><input type="text" value="${item.memo || ""}" data-field="memo" /></td>
         </tr>
       `).join("");
-
-      tbody.innerHTML = rows + `
-        <tr class="total-row">
-          <td colspan="3">구매 예상 총액</td>
-          <td class="money" id="purchaseExpectedText"></td>
-          <td class="money" id="purchaseActualText"></td>
-          <td colspan="3"></td>
-        </tr>
-      `;
     }
 
-    function updatePurchaseSummary() {
-      const summary = document.getElementById("pricedItemsSummary");
-      const rows = purchaseData.filter((row) => row.expectedManwon > 0 || row.actualWon > 0);
+    function renderPurchaseSummary() {
+      const container = document.getElementById("pricedItemsSummary");
+      const visibleItems = purchaseData.filter((item) => Number(item.expectedWon) > 0);
 
-      if (!rows.length) {
-        summary.innerHTML = `<tr><td colspan="4" class="note">표시할 항목이 없습니다.</td></tr>`;
-        return;
-      }
+      container.innerHTML = visibleItems.map((item) => {
+        const statusMeta = getStatusMeta(item.status);
+        const amount = item.status === "purchased" && Number(item.actualWon) > 0
+          ? Number(item.actualWon)
+          : Number(item.expectedWon || 0);
 
-      const categories = [...new Set(rows.filter((row) => row.expectedManwon > 0).map((row) => row.category))];
-      const html = [];
-
-      categories.forEach((category) => {
-        const items = rows.filter((row) => row.category === category && row.expectedManwon > 0);
-        const subtotal = items.reduce((sum, row) => {
-          const expectedWon = row.expectedManwon * 10000;
-          return sum + (row.status === "purchased" && row.actualWon > 0 ? row.actualWon : expectedWon);
-        }, 0);
-
-        html.push(`
-          <tr class="category-row">
-            <td colspan="3">${category}</td>
-            <td class="money">${formatWon(subtotal)}</td>
-          </tr>
-        `);
-
-        for (let i = 0; i < items.length; i += 2) {
-          const left = items[i];
-          const right = items[i + 1];
-          const leftExpectedWon = left.expectedManwon * 10000;
-          const leftAmount = left.status === "purchased" && left.actualWon > 0 ? left.actualWon : leftExpectedWon;
-          const leftClass = left.status === "purchased" ? "item-name paid-item" : "item-name";
-          const leftLabel = left.status === "purchased" ? `<span class="done-badge">구매완료</span>` : "";
-
-          let rightCell = "<td></td><td class='money'></td>";
-          if (right) {
-            const rightExpectedWon = right.expectedManwon * 10000;
-            const rightAmount = right.status === "purchased" && right.actualWon > 0 ? right.actualWon : rightExpectedWon;
-            const rightClass = right.status === "purchased" ? "item-name paid-item" : "item-name";
-            const rightLabel = right.status === "purchased" ? `<span class="done-badge">구매완료</span>` : "";
-            rightCell = `<td><span class="${rightClass}">${right.item}</span>${rightLabel}</td><td class="money">${formatWon(rightAmount)}</td>`;
-          }
-
-          html.push(`
-            <tr>
-              <td><span class="${leftClass}">${left.item}</span>${leftLabel}</td>
-              <td class="money">${formatWon(leftAmount)}</td>
-              ${rightCell}
-            </tr>
-          `);
-        }
-      });
-
-      summary.innerHTML = html.join("");
+        return `
+          <article class="summary-item">
+            <div class="summary-item-main">
+              <div class="summary-item-name">
+                <span>${item.name}</span>
+                <span class="${statusMeta.className}">${statusMeta.label}</span>
+              </div>
+              <div class="summary-item-meta">${item.category}${item.purchaseRoute ? ` · ${item.purchaseRoute}` : ""}</div>
+            </div>
+            <div class="summary-item-amount">${formatWon(amount)}</div>
+          </article>
+        `;
+      }).join("");
     }
 
-    function updateDateInputs() {
-      document.querySelectorAll('input[type="date"]').forEach((el) => {
-        el.classList.toggle("is-empty", !el.value);
-      });
-    }
-
-    function updateTotals() {
-      const constructionTotal = constructionData.reduce((sum, row) => sum + row.amountManwon * 10000, 0);
-      const constructionPaid = constructionData
-        .filter((row) => row.status === "paid")
-        .reduce((sum, row) => sum + row.amountManwon * 10000, 0);
-      const constructionPlanned = constructionData
-        .filter((row) => row.status !== "paid")
-        .reduce((sum, row) => sum + row.amountManwon * 10000, 0);
+    function calculateTotals() {
+      const constructionTotal = constructionData.reduce((sum, item) => sum + Number(item.amountWon || 0), 0);
+      const constructionSpent = constructionData
+        .filter((item) => item.status === "paid")
+        .reduce((sum, item) => sum + Number(item.amountWon || 0), 0);
+      const constructionRemaining = constructionTotal - constructionSpent;
 
       const purchasedTotal = purchaseData
-        .filter((row) => row.status === "purchased")
-        .reduce((sum, row) => sum + (row.actualWon > 0 ? row.actualWon : row.expectedManwon * 10000), 0);
+        .filter((item) => item.status === "purchased")
+        .reduce((sum, item) => {
+          const actual = Number(item.actualWon || 0);
+          return sum + (actual > 0 ? actual : Number(item.expectedWon || 0));
+        }, 0);
+
       const plannedTotal = purchaseData
-        .filter((row) => row.status === "planned")
-        .reduce((sum, row) => sum + row.expectedManwon * 10000, 0);
+        .filter((item) => item.status !== "purchased")
+        .reduce((sum, item) => sum + Number(item.expectedWon || 0), 0);
 
       const livingTotal = purchasedTotal + plannedTotal;
       const grandTotal = constructionTotal + livingTotal;
 
-      document.getElementById("constructionMetric").innerHTML = `${formatCompactWon(constructionTotal)} <small>${formatWon(constructionTotal)}</small>`;
-      document.getElementById("constructionSub").textContent = `지출 ${formatWon(constructionPaid)} / 남은 금액 ${formatWon(constructionPlanned)}`;
-
-      document.getElementById("livingMetric").innerHTML = `${formatCompactWon(livingTotal)} <small>${formatWon(livingTotal)}</small>`;
-      document.getElementById("livingSub").textContent = `예정 ${formatWon(plannedTotal)} / 지출 ${formatWon(purchasedTotal)}`;
-
-      document.getElementById("grandMetric").innerHTML = `${formatCompactWon(grandTotal)} <small>${formatWon(grandTotal)}</small>`;
-      document.getElementById("grandSub").textContent = `공사비 ${formatWon(constructionTotal)} / 생활 준비 비용 ${formatWon(livingTotal)}`;
-
-      document.getElementById("constructionTotalText").textContent = formatWon(constructionTotal);
-      document.getElementById("purchaseExpectedText").textContent = `${formatCompactWon(livingTotal)} (${formatWon(livingTotal)})`;
-      document.getElementById("purchaseActualText").textContent = formatWon(purchasedTotal);
-
-      updateDateInputs();
-      updatePurchaseSummary();
+      return {
+        constructionTotal,
+        constructionSpent,
+        constructionRemaining,
+        purchasedTotal,
+        plannedTotal,
+        livingTotal,
+        grandTotal
+      };
     }
 
-    function syncConstructionField(id, field, rawValue) {
-      const target = constructionData.find((item) => item.id === id);
-      if (!target) return;
+    function renderDashboard() {
+      const totals = calculateTotals();
+      const constructionRatio = totals.constructionTotal > 0
+        ? (totals.constructionSpent / totals.constructionTotal) * 100
+        : 0;
+      const livingRatio = totals.livingTotal > 0
+        ? (totals.purchasedTotal / totals.livingTotal) * 100
+        : 0;
+      const grandSpent = totals.constructionSpent + totals.purchasedTotal;
+      const grandRatio = totals.grandTotal > 0
+        ? (grandSpent / totals.grandTotal) * 100
+        : 0;
 
-      if (field === "amountManwon") {
-        target[field] = Number(rawValue) || 0;
-        return;
-      }
+      document.getElementById("constructionMetric").textContent = formatWon(totals.constructionTotal);
+      document.getElementById("constructionSub").textContent =
+        `지출 ${formatWon(totals.constructionSpent)} / 남은 금액 ${formatWon(totals.constructionRemaining)}`;
+      document.getElementById("constructionProgress").style.width = `${Math.min(constructionRatio, 100)}%`;
 
-      target[field] = rawValue;
+      document.getElementById("livingMetric").textContent = formatWon(totals.livingTotal);
+      document.getElementById("livingSub").textContent =
+        `예정 ${formatWon(totals.plannedTotal)} / 지출 ${formatWon(totals.purchasedTotal)}`;
+      document.getElementById("livingProgress").style.width = `${Math.min(livingRatio, 100)}%`;
+
+      document.getElementById("grandMetric").textContent = formatWon(totals.grandTotal);
+      document.getElementById("grandSub").textContent =
+        `공사비 ${formatWon(totals.constructionTotal)} / 생활 준비 비용 ${formatWon(totals.livingTotal)}`;
+      document.getElementById("grandProgress").style.width = `${Math.min(grandRatio, 100)}%`;
     }
 
-    function syncPurchaseField(id, field, rawValue) {
-      const target = purchaseData.find((item) => item.id === id);
-      if (!target) return;
+    function bindPurchaseTableEvents() {
+      const tbody = document.getElementById("purchaseTableBody");
 
-      if (field === "expectedManwon" || field === "actualWon") {
-        target[field] = Number(rawValue) || 0;
-        return;
-      }
+      tbody.addEventListener("input", (event) => {
+        const target = event.target;
+        const row = target.closest("tr");
+        if (!row) return;
 
-      target[field] = rawValue;
+        const index = Number(row.dataset.purchaseIndex);
+        const field = target.dataset.field;
+        if (Number.isNaN(index) || !field) return;
+
+        if (field === "expectedWon" || field === "actualWon") {
+          purchaseData[index][field] = parseWonInput(target.value);
+        } else {
+          purchaseData[index][field] = target.value;
+        }
+
+        renderPurchaseSummary();
+        renderDashboard();
+      });
+
+      tbody.addEventListener("change", (event) => {
+        const target = event.target;
+        const row = target.closest("tr");
+        if (!row) return;
+
+        const index = Number(row.dataset.purchaseIndex);
+        const field = target.dataset.field;
+        if (Number.isNaN(index) || !field) return;
+
+        purchaseData[index][field] = target.value;
+        renderPurchaseSummary();
+        renderDashboard();
+        renderPurchaseTable();
+      });
+
+      tbody.addEventListener("blur", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement)) return;
+        const field = target.dataset.field;
+        if (field !== "expectedWon" && field !== "actualWon") return;
+        target.value = formatInputNumber(parseWonInput(target.value));
+      }, true);
     }
 
-    function handlePrint() {
-      document.body.classList.add("printing-mode");
-      window.print();
+    function bindPrintButton() {
+      document.getElementById("printButton").addEventListener("click", () => {
+        window.print();
+      });
     }
 
-    document.addEventListener("input", (event) => {
-      const input = event.target;
-      if (!(input instanceof HTMLInputElement || input instanceof HTMLSelectElement)) return;
+    function renderTodayLabel() {
+      document.getElementById("todayLabel").textContent = formatTodayLabel(new Date());
+    }
 
-      const row = input.closest("tr[data-id]");
-      if (!row) return;
+    function initializePage() {
+      renderTodayLabel();
+      renderMilestones();
+      renderConstructionTable();
+      renderPurchaseTable();
+      renderPurchaseSummary();
+      renderDashboard();
+      bindPurchaseTableEvents();
+      bindPrintButton();
+    }
 
-      const field = input.dataset.field;
-      if (!field) return;
+    const scheduleData = [
+      { name: "이사 짐싸기", startDate: "2026-05-04", endDate: "2026-05-09", note: "포장과 분류를 진행하는 기간" },
+      { name: "임시집으로 이사", startDate: "2026-05-10", endDate: "", note: "임시 거주지로 이동" },
+      { name: "공사 시작", startDate: "2026-05-11", endDate: "", note: "세종인테리어 공사 시작일" },
+      { name: "공사 종료", startDate: "2026-06-04", endDate: "", note: "현장 마감 및 점검" },
+      { name: "입주", startDate: "2026-06-06", endDate: "", note: "최종 입주 예정일" }
+    ];
 
-      if (row.closest("#constructionTableBody")) {
-        syncConstructionField(row.dataset.id, field, input.value);
-      }
-
-      if (row.closest("#purchaseTableBody")) {
-        syncPurchaseField(row.dataset.id, field, input.value);
-      }
-
-      updateTotals();
-    });
-
-    document.addEventListener("change", (event) => {
-      const input = event.target;
-      if (!(input instanceof HTMLInputElement || input instanceof HTMLSelectElement)) return;
-
-      const row = input.closest("tr[data-id]");
-      if (!row) return;
-
-      const field = input.dataset.field;
-      if (!field) return;
-
-      if (row.closest("#constructionTableBody")) {
-        syncConstructionField(row.dataset.id, field, input.value);
-      }
-
-      if (row.closest("#purchaseTableBody")) {
-        syncPurchaseField(row.dataset.id, field, input.value);
-      }
-
-      updateTotals();
-    });
-
-    window.addEventListener("afterprint", () => {
-      document.body.classList.remove("printing-mode");
-    });
-
-    document.getElementById("printButton").addEventListener("click", handlePrint);
-
-    // JSON 원본 데이터는 스크립트 하단에 둡니다.
-    // 앞으로는 이 두 배열을 기준으로 카드, 요약표, 상세표가 모두 렌더링됩니다.
     const constructionData = [
-      {
-        id: "construction-contract",
-        label: "계약금",
-        date: "2026-04-25",
-        amountManwon: 300,
-        route: "국민 632902-01-074940 이하종",
-        status: "paid"
-      },
-      {
-        id: "construction-middle-1",
-        label: "중도금 1",
-        date: "",
-        amountManwon: 1000,
-        route: "",
-        status: "planned"
-      },
-      {
-        id: "construction-middle-2",
-        label: "중도금 2",
-        date: "",
-        amountManwon: 1500,
-        route: "",
-        status: "planned"
-      },
-      {
-        id: "construction-balance",
-        label: "잔금",
-        date: "",
-        amountManwon: 1800,
-        route: "",
-        status: "planned"
-      }
+      { stage: "계약금", amountWon: 3000000, status: "paid", date: "2026-04-25", route: "국민 632902-01-074940 이하종", memo: "입금 완료" },
+      { stage: "중도금 1", amountWon: 10000000, status: "planned", date: "", route: "", memo: "" },
+      { stage: "중도금 2", amountWon: 15000000, status: "planned", date: "", route: "", memo: "" },
+      { stage: "잔금", amountWon: 18000000, status: "planned", date: "", route: "", memo: "" }
     ];
 
     const purchaseData = [
-      { id: "purchase-fridge", category: "가전", item: "냉장고", memo: "구매 예정", expectedManwon: 165, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-kimchi-fridge", category: "가전", item: "김치냉장고", memo: "구매 예정", expectedManwon: 200, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-washtower", category: "가전", item: "워시타워", memo: "구매 예정", expectedManwon: 192, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-robot-cleaner", category: "가전", item: "로봇청소기", memo: "구매 예정", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-doorlock", category: "가전", item: "게이트맨 도어락", memo: "무5", expectedManwon: 25, actualWon: 234740, status: "purchased", purchaseDate: "2026-04-27", paymentRoute: "쿠팡-롯데" },
-      { id: "purchase-aircon", category: "가전", item: "에어컨", memo: "구매 예정", expectedManwon: 185, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-
-      { id: "purchase-built-in-closet", category: "가구", item: "붙박이장", memo: "구매 예정", expectedManwon: 180, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-tv-stand", category: "가구", item: "TV장", memo: "구매 예정", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-queen-bed", category: "가구", item: "퀸침대", memo: "구매 예정", expectedManwon: 120, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-super-single-bed", category: "가구", item: "슈퍼싱글침대", memo: "구매 예정", expectedManwon: 80, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-side-table", category: "가구", item: "협탁 2개", memo: "구매 예정", expectedManwon: 20, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-dresser", category: "가구", item: "화장대", memo: "구매 예정", expectedManwon: 30, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-dining-set", category: "가구", item: "식탁 / 의자 세트", memo: "구매 예정", expectedManwon: 120, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-island-cabinet", category: "가구", item: "아일랜드장", memo: "구매 예정", expectedManwon: 30, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-
-      { id: "purchase-low-storage", category: "수납", item: "낮은 수납장", memo: "옷 보관용", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-balcony-shelf", category: "수납", item: "발코니 수납 선반 3개", memo: "구매 예정", expectedManwon: 20, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-
-      { id: "purchase-housing-cost", category: "생활", item: "한달숙소비 / 복비 등", memo: "입주 전 비용", expectedManwon: 150, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-mattress-cover", category: "생활", item: "매트리스 커버 2개", memo: "예산 조정", expectedManwon: 3, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-home-mats", category: "생활", item: "주방 매트 / 화장실 매트 2개 / 세탁실 매트", memo: "총 4개", expectedManwon: 6, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-home-supplies", category: "생활", item: "생활살림", memo: "주방 / 생활 기본", expectedManwon: 50, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
-
-      { id: "purchase-curtain", category: "생활", item: "커튼 / 블라인드", memo: "거실 + 방", expectedManwon: 50, actualWon: 0, status: "planned" , purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-lighting", category: "생활", item: "조명 (무드등)", memo: "포인트 조명", expectedManwon: 15, actualWon: 0, status: "planned" , purchaseDate: "", paymentRoute: "" },
-
-      { id: "purchase-rug", category: "생활", item: "거실 러그", memo: "인테리어용", expectedManwon: 10, actualWon: 0, status: "planned" , purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-trash-bin", category: "생활", item: "분리수거함", memo: "디자인형 추천", expectedManwon: 10, actualWon: 0, status: "planned" , purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-hanger", category: "생활", item: "옷걸이 세트", memo: "통일 중요", expectedManwon: 5, actualWon: 0, status: "planned" , purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-drying-rack", category: "생활", item: "빨래건조대", memo: "베란다 or 실내", expectedManwon: 7, actualWon: 0, status: "planned" , purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-cleaning-tools", category: "생활", item: "청소도구 (밀대, 쓰레받기 등)", memo: "기본 세트", expectedManwon: 5, actualWon: 0, status: "planned" , purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-bath-supplies", category: "생활", item: "욕실용품 (디스펜서, 휴지걸이 등)", memo: "통일 추천", expectedManwon: 10, actualWon: 0, status: "planned" , purchaseDate: "", paymentRoute: "" },
-      { id: "purchase-kitchen-tools", category: "생활", item: "주방 정리용품 (수저통, 도마 등)", memo: "기본 교체", expectedManwon: 10, actualWon: 0, status: "planned", purchaseDate: "", paymentRoute: "" },
+      { category: "가전", name: "냉장고", expectedWon: 1650000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가전", name: "김치냉장고", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가전", name: "워시타워", expectedWon: 1920000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가전", name: "로봇청소기", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가전", name: "게이트맨 도어락", expectedWon: 250000, status: "purchased", actualWon: 234740, purchaseDate: "2026-04-27", purchaseRoute: "쿠팡 결제", memo: "" },
+      { category: "가전", name: "에어컨", expectedWon: 1850000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "붙박이장", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "TV장", expectedWon: 1000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "퀸침대", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "슈퍼싱글침대", expectedWon: 1500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "협탁 2개", expectedWon: 400000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "화장대", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "식탁 / 의자 세트", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "아일랜드장", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "낮은 수납장", expectedWon: 700000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "수납", name: "발코니 수납 선반 3개", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "생활", name: "한달숙소비 / 복비 등", expectedWon: 1500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "생활", name: "매트리스 커버 2개", expectedWon: 30000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "생활", name: "주방 매트 / 화장실 매트 2개 / 세탁실 매트", expectedWon: 60000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "총 4개" },
+      { category: "생활", name: "생활살림", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" }
     ];
 
-    renderConstructionTable();
-    renderPurchaseTable();
-    updateDateInputs();
-    updateTotals();
+    initializePage();
   </script>
 </body>
 </html>
