@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>황소수학 현재 수준 평가표 1차</title>
+  <style>
+    :root {
+      --ink: #241c14;
+      --muted: #6f624e;
+      --line: #d6c6ae;
+      --soft: #f7f0e4;
+      --panel: #fffdfa;
+      --accent: #8f4b2b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f4efe6;
+      color: var(--ink);
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      line-height: 1.6;
+    }
+
+    main {
+      width: min(980px, calc(100% - 32px));
+      margin: 24px auto 48px;
+    }
+
+    .sheet {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 14px 32px rgba(65, 48, 28, 0.08);
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.88rem;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .hero-note {
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .info-card {
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+    }
+
+    .info-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.92rem;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .input-box {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      min-height: 56px;
+      background: #fff;
+    }
+
+    .section {
+      margin-top: 30px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(214, 198, 174, 0.75);
+    }
+
+    .section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+
+    .guide-list,
+    .self-check {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .problem {
+      margin-top: 22px;
+      padding: 18px 18px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      break-inside: avoid;
+    }
+
+    .problem-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .problem p {
+      margin-bottom: 10px;
+    }
+
+    .answer-box {
+      border: 1px dashed #bca88d;
+      border-radius: 14px;
+      min-height: 96px;
+      padding: 10px 12px;
+      color: #8d7c67;
+      font-size: 0.93rem;
+      background: #fffdfa;
+      white-space: pre-line;
+    }
+
+    .subline {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .footer-box {
+      margin-top: 30px;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+    }
+
+    .footer-box h3 {
+      margin-bottom: 10px;
+      font-size: 1.02rem;
+    }
+
+    @media (max-width: 760px) {
+      .info-grid,
+      .input-row {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        width: min(100% - 20px, 980px);
+      }
+
+      .sheet {
+        padding: 20px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      main {
+        width: 100%;
+        margin: 0;
+      }
+
+      .sheet {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0;
+      }
+
+      .problem,
+      .footer-box,
+      .info-card,
+      .input-box {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <article class="sheet">
+      <p class="eyebrow">황소 진단 시험지</p>
+      <h1>황소수학 현재 수준 평가표 1차</h1>
+      <p class="hero-note">
+        범위는 초등학교 4학년 1학기 수학으로 두되, 문제는 학교 기본형이 아니라 황소 대비용 진단 관점으로 구성했다.
+        점수만 보지 말고 어떤 문제에서 시간이 막히고, 어떤 유형에서 조건 해석이나 표현 전환이 어려운지 같이 확인한다.
+      </p>
+
+      <section class="info-grid">
+        <div class="info-card">
+          <strong>권장 시간</strong>
+          70분
+        </div>
+        <div class="info-card">
+          <strong>문항 수</strong>
+          12문항
+        </div>
+        <div class="info-card">
+          <strong>주요 목표</strong>
+          HBI-3~HBI-4 진단
+        </div>
+        <div class="info-card">
+          <strong>기록 포인트</strong>
+          시간, 실수, 약점 태그
+        </div>
+      </section>
+
+      <section class="input-row">
+        <div class="input-box">이름 :</div>
+        <div class="input-box">응시일 :</div>
+        <div class="input-box">시작 / 종료 시간 :</div>
+      </section>
+
+      <section class="section">
+        <h2>응시 안내</h2>
+        <ol class="guide-list">
+          <li>가능하면 실제 시험처럼 시간을 재고 혼자 푼다.</li>
+          <li>모르는 문제는 오래 붙잡기보다 표시해 두고 뒤로 넘긴다.</li>
+          <li>풀고 난 뒤에는 점수와 함께 어떤 이유로 막혔는지 적는다.</li>
+          <li>오답 원인은 `개념 연결`, `조건 해석`, `표현 전환`, `계산 정확도`, `시간 운영`, `검산 부족` 중에서 표시한다.</li>
+        </ol>
+      </section>
+
+      <section class="section">
+        <h2>문제</h2>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>1번</span>
+            <span class="tag">큰 수 / HBI-2</span>
+          </div>
+          <p>어느 도서관에 월요일에는 38,460권, 화요일에는 39,805권, 수요일에는 41,230권의 책이 있었다. 월요일부터 수요일까지 늘어난 책 수는 모두 몇 권인지 구하시오.</p>
+          <div class="answer-box">풀이와 답을 쓰세요.</div>
+        </div>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>2번</span>
+            <span class="tag">큰 수 / HBI-3</span>
+          </div>
+          <p>어떤 수에서 18,900을 빼야 하는데 잘못하여 18,090을 빼었더니 56,721이 나왔다. 바르게 계산한 값을 구하시오.</p>
+          <div class="answer-box">중간 계산이 보이게 쓰세요.</div>
+        </div>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>3번</span>
+            <span class="tag">곱셈 / HBI-3</span>
+          </div>
+          <p>한 상자에 연필 24자루씩 들어 있다. 이런 상자 18개가 있다. 연필 전체 자루 수를 구하고, 400자루보다 몇 자루 많은지 구하시오.</p>
+          <div class="answer-box">식과 답을 모두 쓰세요.</div>
+        </div>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>4번</span>
+            <span class="tag">나눗셈 / HBI-4</span>
+          </div>
+          <p>사탕 196개를 한 봉지에 8개씩 담고 남은 사탕은 따로 보관하려고 한다. 봉지는 몇 개 필요하고, 남는 사탕은 몇 개인가? 또 봉지 수와 남는 사탕 수의 합은 얼마인가?</p>
+          <div class="answer-box">문제를 세 부분으로 나누어 정리해 보세요.</div>
+        </div>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>5번</span>
+            <span class="tag">곱셈·나눗셈 / HBI-4</span>
+          </div>
+          <p>리본 3묶음의 길이는 모두 216cm이다. 같은 길이의 리본 2개를 이어서 한 줄을 만들었더니 48cm가 되었다. 처음 리본 1개는 몇 cm인지 구하고, 3묶음에 리본이 모두 몇 개인지 구하시오.</p>
+          <div class="answer-box">조건을 먼저 정리한 뒤 풀이하세요.</div>
+        </div>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>6번</span>
+            <span class="tag">각도 / HBI-3</span>
+          </div>
+          <p>어떤 각의 크기가 90°보다 28° 크고, 다른 각의 크기는 첫 번째 각보다 17° 작다. 두 각의 크기의 합을 구하시오.</p>
+          <div class="answer-box">각각의 각을 먼저 구해도 좋습니다.</div>
+        </div>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>7번</span>
+            <span class="tag">각도 / HBI-4</span>
+          </div>
+          <p>직선 위에 있는 세 각의 크기를 차례로 2배, 3배, 4배라고 할 때, 가장 작은 각의 크기를 구하시오.</p>
+          <div class="answer-box">직선 위 각의 성질을 이용하세요.</div>
+        </div>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>8번</span>
+            <span class="tag">평면도형 / HBI-3</span>
+          </div>
+          <p>한 변의 길이가 7cm인 정사각형 2개를 변끼리 붙여서 직사각형을 만들었다. 이 직사각형의 둘레를 구하시오.</p>
+          <div class="answer-box">간단한 그림을 그려도 됩니다.</div>
+        </div>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>9번</span>
+            <span class="tag">평면도형 / HBI-4</span>
+          </div>
+          <p>가로가 18cm, 세로가 12cm인 직사각형 종이에서 가로 6cm, 세로 4cm인 작은 직사각형을 몇 개까지 겹치지 않게 오려 낼 수 있는지 구하시오.</p>
+          <div class="answer-box">배치 방법을 생각하면서 풀이하세요.</div>
+        </div>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>10번</span>
+            <span class="tag">규칙 찾기 / HBI-3</span>
+          </div>
+          <p>4, 7, 10, 13, ... 와 같이 수를 늘어놓았다. 12번째 수를 구하시오.</p>
+          <div class="answer-box">규칙을 글이나 식으로 적어 보세요.</div>
+        </div>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>11번</span>
+            <span class="tag">규칙 찾기 / HBI-4</span>
+          </div>
+          <p>어떤 규칙에 따라 흰 공 3개, 검은 공 1개, 흰 공 3개, 검은 공 1개, ... 순서로 늘어놓았다. 25번째 공은 무슨 색인지 구하시오.</p>
+          <div class="answer-box">묶음 단위로 생각해 보세요.</div>
+        </div>
+
+        <div class="problem">
+          <div class="problem-head">
+            <span>12번</span>
+            <span class="tag">종합 / HBI-4</span>
+          </div>
+          <p>한 반 학생들이 운동장 둘레를 돌고 있다. 한 바퀴는 240m이고, 민수는 3바퀴를 돌았다. 지연이는 민수보다 180m 적게 걸었다. 지연이가 걸은 거리는 몇 m인지 구하시오.</p>
+          <div class="answer-box">문제의 순서를 따라 차근차근 풀어 보세요.</div>
+        </div>
+      </section>
+
+      <section class="footer-box">
+        <h3>시험 후 자기 점검</h3>
+        <ul class="self-check">
+          <li>가장 오래 걸린 문항 번호 :</li>
+          <li>가장 확신 없이 푼 문항 번호 :</li>
+          <li>계산 실수가 있었던 문항 번호 :</li>
+          <li>조건 해석이 어려웠던 문항 번호 :</li>
+          <li>다시 풀면 맞힐 수 있다고 느낀 문항 번호 :</li>
+        </ul>
+        <p class="subline">이 기록은 다음 단계에서 HBI 수준 판정과 약점 유형 정리에 사용한다.</p>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
