@@ -100,10 +100,23 @@
       .score-box { grid-template-columns: 1fr 1fr; }
       table { display: block; overflow-x: auto; }
     }
+    @page {
+      size: A4 portrait;
+      margin: 12mm;
+    }
     @media print {
-      body { background: #fff; }
-      main { width: 100%; margin: 0; }
-      .sheet { border: none; border-radius: 0; box-shadow: none; padding: 0; }
+      html,
+      body {
+        width: auto;
+        height: auto;
+        background: #fff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      main { width: auto; max-width: none; margin: 0; padding: 0; }
+      .sheet { border: none; border-radius: 0; box-shadow: none; padding: 0; width: auto; max-width: none; }
+      .score-box { grid-template-columns: 1fr 1fr; }
+      table { width: 100%; }
     }
   </style>
 </head>

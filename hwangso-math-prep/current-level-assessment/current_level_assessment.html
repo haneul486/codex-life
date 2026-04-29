@@ -193,14 +193,26 @@
       }
     }
 
+    @page {
+      size: A4 portrait;
+      margin: 12mm;
+    }
+
     @media print {
+      html,
       body {
+        width: auto;
+        height: auto;
         background: #fff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
       }
 
       main {
-        width: 100%;
+        width: auto;
+        max-width: none;
         margin: 0;
+        padding: 0;
       }
 
       .sheet {
@@ -208,6 +220,16 @@
         border-radius: 0;
         box-shadow: none;
         padding: 0;
+        width: auto;
+        max-width: none;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .input-row {
+        grid-template-columns: 1fr 1fr 1fr;
       }
 
       .problem,

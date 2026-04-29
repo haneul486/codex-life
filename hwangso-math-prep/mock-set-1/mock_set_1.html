@@ -109,10 +109,24 @@
       .sheet { padding: 20px; }
       .info-grid, .input-row { grid-template-columns: 1fr; }
     }
+    @page {
+      size: A4 portrait;
+      margin: 12mm;
+    }
     @media print {
-      body { background: #fff; }
-      main { width: 100%; margin: 0; }
-      .sheet { border: none; border-radius: 0; box-shadow: none; padding: 0; }
+      html,
+      body {
+        width: auto;
+        height: auto;
+        background: #fff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      main { width: auto; max-width: none; margin: 0; padding: 0; }
+      .sheet { border: none; border-radius: 0; box-shadow: none; padding: 0; width: auto; max-width: none; }
+      .info-grid { grid-template-columns: 1fr 1fr; }
+      .input-row { grid-template-columns: 1fr 1fr 1fr; }
+      .problem, .card, .input-box { break-inside: avoid; }
     }
   </style>
 </head>
