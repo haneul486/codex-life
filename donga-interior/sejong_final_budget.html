@@ -19,9 +19,9 @@
       --success-soft: #eaf8f1;
       --warning: #c18b16;
       --warning-soft: #fff6dc;
-      --timeline-past: #c6cfdb;
+      --timeline-past: #97a4b8;
       --timeline-current: #3b6ff6;
-      --timeline-future: #d9e2ef;
+      --timeline-future: #dfe6f0;
       --shadow: 0 12px 30px rgba(18, 35, 58, 0.07);
       --radius: 20px;
     }
@@ -129,83 +129,203 @@
       font-size: 0.95rem;
     }
 
+    .section-date {
+      color: #888;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
     .milestone-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 0;
       position: relative;
-      align-items: start;
+      min-height: 290px;
+      min-width: 1680px;
+      padding: 54px 110px 18px;
+      overflow: visible;
+    }
+
+    .milestone-scroll {
+      overflow-x: auto;
+      overflow-y: visible;
+      padding-bottom: 6px;
     }
 
     .milestone-grid::before {
       content: "";
       position: absolute;
-      left: 44px;
-      right: 44px;
-      top: 24px;
+      left: 110px;
+      right: 110px;
+      top: 59px;
       height: 2px;
       background: var(--timeline-future);
       z-index: 0;
     }
 
-    .milestone-item {
-      position: relative;
-      padding: 0 10px;
-      min-height: 136px;
-      z-index: 1;
-    }
-
-    .milestone-step {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
+    .timeline-dot {
+      position: absolute;
+      top: 52px;
+      width: 14px;
+      height: 14px;
       border-radius: 999px;
-      border: 5px solid var(--bg);
       background: var(--timeline-future);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 800;
-      box-shadow: 0 4px 12px rgba(18, 35, 58, 0.08);
+      border: 3px solid #fff;
+      transform: translateX(-50%);
+      z-index: 2;
     }
 
-    .milestone-name {
-      margin-top: 14px;
-      font-size: 1rem;
-      font-weight: 800;
-      line-height: 1.35;
+    .timeline-today-line {
+      position: absolute;
+      top: 32px;
+      bottom: 24px;
+      width: 0;
+      border-left: 1.5px dashed rgba(59, 111, 246, 0.42);
+      transform: translateX(-50%);
+      z-index: 1;
+      pointer-events: none;
     }
 
-    .milestone-date {
-      margin-top: 8px;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text);
+    .timeline-event-line {
+      position: absolute;
+      top: 68px;
+      width: 0;
+      border-left: 1px dashed rgba(151, 164, 184, 0.42);
+      transform: translateX(-50%);
+      z-index: 1;
+      pointer-events: none;
     }
 
-    .milestone-range {
-      margin-top: 6px;
-      font-size: 0.92rem;
-      color: var(--muted);
-      line-height: 1.4;
+    .timeline-event-line.lane-0 {
+      height: 34px;
     }
 
-    .milestone-item.is-past .milestone-step {
+    .timeline-event-line.lane-1 {
+      height: 62px;
+    }
+
+    .timeline-event-line.lane-2 {
+      height: 100px;
+    }
+
+    .timeline-event-line.lane-3 {
+      height: 138px;
+    }
+
+    .timeline-dot.is-past {
       background: var(--timeline-past);
     }
 
-    .milestone-item.is-current .milestone-step {
+    .timeline-dot.is-today {
+      background: var(--timeline-current);
+      box-shadow: 0 0 0 4px rgba(59, 111, 246, 0.14);
+      z-index: 3;
+    }
+
+    .timeline-dot.is-event {
+      width: 18px;
+      height: 18px;
+      top: 50px;
+      box-shadow: 0 6px 16px rgba(18, 35, 58, 0.1);
+    }
+
+    .timeline-dot.is-event.is-past {
+      background: #7e8ea5;
+    }
+
+    .timeline-dot.is-event.is-future {
+      background: #cfd9e8;
+    }
+
+    .timeline-dot.is-event.is-today {
       background: var(--timeline-current);
     }
 
-    .milestone-item.is-current .milestone-name {
+    .timeline-today-label {
+      position: absolute;
+      top: 14px;
+      transform: translateX(-50%);
+      font-size: 0.72rem;
+      font-weight: 700;
       color: var(--timeline-current);
+      white-space: nowrap;
+      z-index: 4;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(234, 241, 255, 0.92);
+      box-shadow: 0 4px 10px rgba(59, 111, 246, 0.08);
     }
 
-    .milestone-item.is-future .milestone-step {
-      background: var(--timeline-future);
-      color: #7f8ba0;
+    .timeline-event {
+      position: absolute;
+      top: 108px;
+      width: max-content;
+      min-width: 0;
+      max-width: none;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    .timeline-event.lane-1 {
+      top: 146px;
+    }
+
+    .timeline-event.lane-2 {
+      top: 184px;
+    }
+
+    .timeline-event.lane-3 {
+      top: 222px;
+    }
+
+    .timeline-event.edge-start {
+      transform: none;
+    }
+
+    .timeline-event.edge-end {
+      transform: translateX(-100%);
+    }
+
+    .timeline-event-text {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text);
+      word-break: keep-all;
+      white-space: nowrap;
+    }
+
+    .timeline-event-title {
+      font-weight: 800;
+      color: inherit;
+    }
+
+    .timeline-event-date {
+      margin-left: 6px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: inherit;
+    }
+
+    .timeline-event-note {
+      margin-left: 8px;
+      font-size: 0.88rem;
+      color: inherit;
+    }
+
+    .timeline-event.is-past .timeline-event-text {
+      color: #92a0b3;
+    }
+
+    .timeline-event.is-past + .timeline-event-line,
+    .timeline-event-line.is-past {
+      border-left-color: rgba(146, 160, 179, 0.4);
+    }
+
+    .timeline-event.is-today + .timeline-event-line,
+    .timeline-event-line.is-today {
+      border-left-color: rgba(59, 111, 246, 0.45);
+    }
+
+    .timeline-event.is-today .timeline-event-text {
+      color: var(--timeline-current);
     }
 
     .grid {
@@ -440,18 +560,14 @@
     }
 
     @media (max-width: 980px) {
-      .milestone-grid,
       .grid,
       .summary-list {
         grid-template-columns: 1fr;
       }
 
       .milestone-grid::before {
-        display: none;
-      }
-
-      .milestone-item {
-        padding: 0;
+        left: 20px;
+        right: 20px;
       }
     }
 
@@ -474,6 +590,40 @@
       .helper-row {
         flex-direction: column;
         align-items: flex-start;
+      }
+
+      .milestone-grid {
+        min-height: 360px;
+        min-width: 1680px;
+        padding: 54px 28px 18px;
+      }
+
+      .timeline-event {
+        width: max-content;
+      }
+
+      .timeline-event.lane-1 {
+        top: 154px;
+      }
+
+      .timeline-event.lane-2 {
+        top: 194px;
+      }
+
+      .timeline-event.lane-3 {
+        top: 234px;
+      }
+
+      .timeline-event-line.lane-1 {
+        height: 64px;
+      }
+
+      .timeline-event-line.lane-2 {
+        height: 104px;
+      }
+
+      .timeline-event-line.lane-3 {
+        height: 144px;
       }
 
       th,
@@ -527,9 +677,12 @@
     <section class="milestone-card" aria-label="진행 일정">
       <div class="section-head">
         <h2 class="section-title">진행 일정</h2>
+        <div class="section-date" id="scheduleTodayLabel"></div>
         <div class="section-note">주요 마일스톤을 일정 순서대로 표시합니다.</div>
       </div>
-      <div class="milestone-grid" id="milestoneGrid"></div>
+      <div class="milestone-scroll">
+        <div class="milestone-grid" id="milestoneGrid"></div>
+      </div>
     </section>
 
     <section class="grid" aria-label="상단 요약">
@@ -634,6 +787,10 @@
       }).format(date);
     }
 
+    function formatScheduleTodayLabel(date) {
+      return `오늘: ${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+    }
+
     function formatWon(value) {
       const number = Number(value || 0);
       return `${number.toLocaleString("ko-KR")}원`;
@@ -661,36 +818,93 @@
       return { label: "예정", className: "status-badge status-planned" };
     }
 
-    function getMilestoneState(item) {
-      const today = new Date();
+    function getDateState(date) {
+      const today = new Date("2026-05-12");
       today.setHours(0, 0, 0, 0);
-      const start = new Date(item.startDate);
-      start.setHours(0, 0, 0, 0);
-      const end = new Date(item.endDate || item.startDate);
-      end.setHours(0, 0, 0, 0);
+      const target = new Date(date);
+      target.setHours(0, 0, 0, 0);
 
-      if (today > end) return "past";
-      if (today >= start && today <= end) return "current";
+      if (target.getTime() < today.getTime()) return "past";
+      if (target.getTime() === today.getTime()) return "today";
       return "future";
     }
 
     function renderMilestones() {
       const container = document.getElementById("milestoneGrid");
-      container.innerHTML = scheduleData.map((item, index) => {
-        const state = getMilestoneState(item);
+      const timelineStart = new Date("2026-05-04");
+      const timelineEnd = new Date("2026-06-06");
+      const today = new Date("2026-05-12");
+      timelineStart.setHours(0, 0, 0, 0);
+      timelineEnd.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+
+      const dayMs = 24 * 60 * 60 * 1000;
+      const totalDays = Math.round((timelineEnd.getTime() - timelineStart.getTime()) / dayMs);
+
+      const dots = Array.from({ length: totalDays + 1 }, (_, index) => {
+        const date = new Date(timelineStart.getTime() + (index * dayMs));
+        const iso = date.toISOString().slice(0, 10);
+        const state = getDateState(iso);
+        const left = totalDays > 0 ? (index / totalDays) * 100 : 0;
+        const hasEvent = scheduleData.some((item) => item.startDate === iso);
+
+        return `<div class="timeline-dot ${hasEvent ? "is-event" : ""} is-${state}" style="left:${left}%"></div>`;
+      }).join("");
+
+      const todayOffset = Math.round((today.getTime() - timelineStart.getTime()) / dayMs);
+      const todayLeft = totalDays > 0 ? (todayOffset / totalDays) * 100 : 0;
+      const todayLabel = `<div class="timeline-today-label" style="left:${todayLeft}%">오늘</div>`;
+      const todayLine = `<div class="timeline-today-line" style="left:${todayLeft}%"></div>`;
+
+      let previousStart = null;
+      let previousLane = 0;
+
+      const events = scheduleData.map((item, index) => {
+        const start = new Date(item.startDate);
+        start.setHours(0, 0, 0, 0);
+        const offset = Math.round((start.getTime() - timelineStart.getTime()) / dayMs);
+        const left = totalDays > 0 ? (offset / totalDays) * 100 : 0;
+        const state = getDateState(item.startDate);
         const startLabel = formatDateLabel(item.startDate);
         const endLabel = item.endDate ? formatDateLabel(item.endDate) : "";
         const rangeLabel = endLabel ? `${startLabel} ~ ${endLabel}` : startLabel;
+        let lane = 0;
+
+        // 5월 초순 일정은 날짜 간격보다 문장 길이 때문에 더 쉽게 겹치므로,
+        // 초반 3개 일정은 의도적으로 계단식으로 한 줄씩 아래에 배치한다.
+        if (index === 0) {
+          lane = 0;
+        } else if (index === 1) {
+          lane = 1;
+        } else if (index === 2) {
+          lane = 2;
+        } else if (previousStart) {
+          const diffDays = Math.round((start.getTime() - previousStart.getTime()) / dayMs);
+          if (diffDays <= 1) {
+            lane = Math.min(previousLane + 1, 3);
+          } else if (diffDays <= 3) {
+            lane = Math.min(previousLane + 1, 2);
+          } else if (diffDays <= 5) {
+            lane = previousLane === 0 ? 1 : 0;
+          }
+        }
+        previousStart = start;
+        previousLane = lane;
+        const edgeClass = index === 0 ? "edge-start" : index === scheduleData.length - 1 ? "edge-end" : "";
 
         return `
-          <article class="milestone-item is-${state}">
-            <div class="milestone-step">${index + 1}</div>
-            <div class="milestone-name">${item.name}</div>
-            <div class="milestone-date">${rangeLabel}</div>
-            <div class="milestone-range">${item.note || ""}</div>
+          <div class="timeline-event-line lane-${lane} is-${state}" style="left:${left}%"></div>
+          <article class="timeline-event lane-${lane} ${edgeClass} is-${state}" style="left:${left}%">
+            <div class="timeline-event-text">
+              <span class="timeline-event-title">${item.name}</span>
+              <span class="timeline-event-date">${rangeLabel}</span>
+              ${item.note ? `<span class="timeline-event-note">${item.note}</span>` : ""}
+            </div>
           </article>
         `;
       }).join("");
+
+      container.innerHTML = `${dots}${todayLine}${todayLabel}${events}`;
     }
 
     function renderConstructionTable() {
@@ -873,8 +1087,14 @@
       document.getElementById("todayLabel").textContent = formatTodayLabel(new Date());
     }
 
+    function renderScheduleTodayLabel() {
+      const today = new Date("2026-05-12");
+      document.getElementById("scheduleTodayLabel").textContent = formatScheduleTodayLabel(today);
+    }
+
     function initializePage() {
       renderTodayLabel();
+      renderScheduleTodayLabel();
       renderMilestones();
       renderConstructionTable();
       renderPurchaseTable();
@@ -900,12 +1120,13 @@
     ];
 
     const purchaseData = [
-      { category: "가전", name: "냉장고", expectedWon: 1650000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가전", name: "냉장고", expectedWon: 1850000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "김치냉장고", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가전", name: "워시타워", expectedWon: 1920000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가전", name: "워시타워", expectedWon: 1900000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "로봇청소기", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가전", name: "게이트맨 도어락", expectedWon: 250000, status: "purchased", actualWon: 234740, purchaseDate: "2026-04-27", purchaseRoute: "쿠팡 결제", memo: "" },
       { category: "가전", name: "에어컨", expectedWon: 1850000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가전", name: "게이트맨 도어락", expectedWon: 250000, status: "purchased", actualWon: 234740, purchaseDate: "2026-04-27", purchaseRoute: "쿠팡 결제", memo: "" },
+      { category: "가전", name: "게이트맨 도어락 보강판", expectedWon: 15000, status: "purchased", actualWon: 15000, purchaseDate: "2026-04-29", purchaseRoute: "네이버플러스스토어 결제", memo: "" },
       { category: "가구", name: "붙박이장", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "TV장", expectedWon: 1000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "퀸침대", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
