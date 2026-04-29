@@ -73,6 +73,15 @@
 - 예산표는 `scheduleData`, `constructionData`, `purchaseData`를 기준으로 렌더링한다.
 - 루트 `index.html`은 현재 이 예산표로 자동 이동한다.
 
+### `hwangso-math-prep`
+
+- 황소수학 학원 분석과 황소수학 입학시험 준비를 위한 자료를 담는 폴더다.
+- 현재 주요 기준 파일은 `hwangso-math-prep/hwangso_math_prep.html`이다.
+- 폴더 지침은 `hwangso-math-prep/hwangso_math_prep_guide.md`다.
+- 분석과 준비 내용은 가능하면 `academyProfile`, `examPlan`, `studyChecklist`, `notesData` 같은 구조화된 데이터 객체를 기준으로 렌더링한다.
+- 학원 정보, 시험 일정, 준비 항목은 날짜와 출처를 함께 관리하고, 추측값과 확정값을 구분한다.
+- 루트 `index.html`은 현재 동아 인테리어 예산표를 가리키고 있으므로, 황소수학 작업을 바로 노출할지 여부는 이후 사용 목적에 따라 별도로 판단한다.
+
 ## 새 작업을 만들 때
 
 - 먼저 폴더명을 작업 목적에 맞게 짧고 명확하게 정한다.
