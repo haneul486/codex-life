@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>동아 인테리어 자재 선택 기록</title>
+  <style>
+    :root {
+      --bg: #f7f7f3;
+      --surface: #ffffff;
+      --surface-soft: #f0f5f2;
+      --line: #dfe4dd;
+      --text: #1f2623;
+      --muted: #65706a;
+      --primary: #2f6f5e;
+      --primary-soft: #e4f1ec;
+      --accent: #b45f3a;
+      --warning: #9b741f;
+      --shadow: 0 12px 28px rgba(31, 38, 35, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .pill,
+    button {
+      min-height: 40px;
+      border-radius: 8px;
+      font: inherit;
+      font-weight: 800;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    button {
+      border: 0;
+      padding: 0 14px;
+      color: #fff;
+      background: var(--primary);
+      cursor: pointer;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .summary-card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .summary-label {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .summary-value {
+      margin: 8px 0 0;
+      font-size: 1.7rem;
+      font-weight: 900;
+    }
+
+    .panel {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-soft);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .note {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+      word-break: keep-all;
+    }
+
+    th {
+      color: var(--muted);
+      background: #fbfcfb;
+      font-size: 0.86rem;
+      font-weight: 900;
+    }
+
+    td {
+      font-size: 0.95rem;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .status.pending {
+      background: #f8efd9;
+      color: var(--warning);
+    }
+
+    .status.confirmed {
+      background: #e5f1e8;
+      color: #287044;
+    }
+
+    .status.hold {
+      background: #f2e7e1;
+      color: var(--accent);
+    }
+
+    .json-panel {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .json-panel summary {
+      cursor: pointer;
+      color: var(--primary);
+      font-weight: 900;
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 14px 0 0;
+      padding: 14px;
+      border-radius: 8px;
+      background: #18211e;
+      color: #ecf5f0;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      white-space: pre;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 20px, 1180px);
+        padding-top: 16px;
+      }
+
+      header,
+      .panel-head {
+        display: block;
+      }
+
+      .header-actions {
+        justify-content: flex-start;
+        margin-top: 14px;
+      }
+
+      .summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      header,
+      .summary-card,
+      .panel,
+      .json-panel {
+        box-shadow: none;
+      }
+
+      button,
+      .json-panel {
+        display: none;
+      }
+
+      table {
+        min-width: 0;
+        font-size: 0.82rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div>
+        <h1>동아 인테리어 자재 선택 기록</h1>
+        <p class="subtitle">오늘 고르는 자재를 하나씩 추가하면서 품번, 공간, 메모를 남기는 페이지입니다.</p>
+      </div>
+      <div class="header-actions">
+        <span class="pill" id="updatedAt">기준일</span>
+        <button type="button" onclick="window.print()">인쇄</button>
+      </div>
+    </header>
+
+    <section class="summary" aria-label="자재 선택 요약" id="summary"></section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>자재 기록 표</h2>
+          <p class="note">기준 데이터: materialRecordsJson</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 12%;">위치</th>
+              <th style="width: 14%;">구분</th>
+              <th style="width: 18%;">브랜드/제품명</th>
+              <th style="width: 11%;">색감</th>
+              <th style="width: 11%;">규격/마감</th>
+              <th style="width: 10%;">상태</th>
+              <th style="width: 10%;">예상가</th>
+              <th style="width: 14%;">메모</th>
+            </tr>
+          </thead>
+          <tbody id="materialTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <details class="json-panel">
+      <summary>현재 JSON 데이터 보기</summary>
+      <pre id="jsonPreview"></pre>
+    </details>
+  </main>
+
+  <script type="application/json" id="materialRecordsJson">
+{
+  "meta": {
+    "project": "동아 인테리어 도배지 선택",
+    "updatedDate": "2026-05-02",
+    "amountUnit": "원",
+    "statusValues": ["검토중", "보류", "확정"]
+  },
+  "records": [
+    {
+      "space": "전체",
+      "material": "도배지",
+      "candidate": "개나리 로아스",
+      "colorTone": "천정/벽면 구분",
+      "finish": "천정 87476-1 / 벽면 87476-2",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "천정과 벽면 품번 구분해서 주문 확인"
+    },
+    {
+      "space": "바닥",
+      "material": "바닥장판",
+      "candidate": "KCC MN22-5231 미스티오크",
+      "colorTone": "미스티오크",
+      "finish": "MN22-5231",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "KCC 장판 품번 확인"
+    },
+    {
+      "space": "문",
+      "material": "방문",
+      "candidate": "영림 TA-21",
+      "colorTone": "미정",
+      "finish": "TA-21",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "문 모델 확인"
+    },
+    {
+      "space": "문틀/문",
+      "material": "시트지",
+      "candidate": "영림170 PWT1206-2 전사 루나내추럴",
+      "colorTone": "루나내추럴",
+      "finish": "PWT1206-2 / 전사",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "문틀과 문의 시트지"
+    },
+    {
+      "space": "현관문",
+      "material": "시트지",
+      "candidate": "영림170 PWT1206-2 전사 루나내추럴",
+      "colorTone": "루나내추럴",
+      "finish": "PWT1206-2 / 전사",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "현관문 시트지 / 문틀과 문 시트지와 동일"
+    },
+    {
+      "space": "현관 신발장",
+      "material": "가운데 틀 시트지 및 간접등",
+      "candidate": "영림 199번 시트지",
+      "colorTone": "미정",
+      "finish": "영림 199번",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "신발장 가운데 틀 시트지 / 간접등 적용"
+    },
+    {
+      "space": "문선",
+      "material": "문선",
+      "candidate": "9mm 문선",
+      "colorTone": "미정",
+      "finish": "9mm",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "문선 두께 확인"
+    },
+    {
+      "space": "걸레받이/천정",
+      "material": "걸레받이, 천정 마이너스 몰딩",
+      "candidate": "영림195 회벽백색",
+      "colorTone": "회벽백색",
+      "finish": "영림195",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "걸레받이와 천정 마이너스 몰딩 적용"
+    },
+    {
+      "space": "문",
+      "material": "문손잡이",
+      "candidate": "드림하우징 E-27-4",
+      "colorTone": "미정",
+      "finish": "E-27-4",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "드림하우징 문손잡이"
+    },
+    {
+      "space": "거실화장실",
+      "material": "벽타일",
+      "candidate": "WM CK 36144M",
+      "colorTone": "미정",
+      "finish": "WM CK 36144M",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "거실화장실 벽타일"
+    },
+    {
+      "space": "거실화장실",
+      "material": "바닥타일",
+      "candidate": "FB CK 397",
+      "colorTone": "미정",
+      "finish": "FB CK 397",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "거실화장실 바닥타일"
+    },
+    {
+      "space": "안방화장실",
+      "material": "벽타일",
+      "candidate": "WM37002",
+      "colorTone": "미정",
+      "finish": "WM37002",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "안방화장실 벽타일"
+    },
+    {
+      "space": "안방화장실",
+      "material": "바닥타일",
+      "candidate": "FB CK 393",
+      "colorTone": "미정",
+      "finish": "FB CK 393",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "안방화장실 바닥타일"
+    },
+    {
+      "space": "현관",
+      "material": "현관타일",
+      "candidate": "REP -02",
+      "colorTone": "무늬타일",
+      "finish": "200*200",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "현관 무늬타일"
+    },
+    {
+      "space": "베란다",
+      "material": "베란다 타일",
+      "candidate": "FB386",
+      "colorTone": "미정",
+      "finish": "112*450",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "베란다 타일 규격 112*450"
+    },
+    {
+      "space": "화장실",
+      "material": "양변기",
+      "candidate": "SC-7750-H",
+      "colorTone": "미정",
+      "finish": "SC-7750-H",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "수량 2개"
+    },
+    {
+      "space": "화장실",
+      "material": "세면대",
+      "candidate": "SL-3340",
+      "colorTone": "미정",
+      "finish": "SL-3340",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "수량 2개"
+    },
+    {
+      "space": "화장실",
+      "material": "욕조",
+      "candidate": "미정",
+      "colorTone": "미정",
+      "finish": "치마마감",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "욕조 설치 예정 / 욕조 옆 치마마감"
+    },
+    {
+      "space": "화장실",
+      "material": "슬라이드장",
+      "candidate": "미정",
+      "colorTone": "미정",
+      "finish": "미정",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "슬라이드장 설치 예정"
+    },
+    {
+      "space": "거실화장실/안방화장실",
+      "material": "젠다이",
+      "candidate": "젠다이 시공",
+      "colorTone": "아이보리 펄",
+      "finish": "인조대리석",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "두 화장실 모두 젠다이 적용 / 인조대리석 아이보리 펄"
+    },
+    {
+      "space": "거실화장실",
+      "material": "수전",
+      "candidate": "대림 DL-L7310",
+      "colorTone": "미정",
+      "finish": "DL-L7310",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "거실화장실 대림 수전"
+    },
+    {
+      "space": "거실화장실",
+      "material": "욕조수전",
+      "candidate": "대림 DL-B7313",
+      "colorTone": "미정",
+      "finish": "DL-B7313",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "거실화장실 대림 욕조수전"
+    },
+    {
+      "space": "안방화장실",
+      "material": "수전",
+      "candidate": "대림 DL-B7316",
+      "colorTone": "미정",
+      "finish": "DL-B7316",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "안방화장실 대림 수전"
+    },
+    {
+      "space": "베란다",
+      "material": "탄성코트",
+      "candidate": "월드진주C",
+      "colorTone": "미정",
+      "finish": "미정",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "수량 3개"
+    },
+    {
+      "space": "전체",
+      "material": "스위치",
+      "candidate": "나노 아트 화이트",
+      "colorTone": "화이트",
+      "finish": "나노 아트",
+      "status": "검토중",
+      "expectedWon": 0,
+      "memo": "스위치 제품"
+    }
+  ]
+}
+  </script>
+
+  <script>
+    const statusClassMap = {
+      "검토중": "pending",
+      "보류": "hold",
+      "확정": "confirmed"
+    };
+
+    const formatWon = (value) => {
+      if (!Number(value)) return "-";
+      return `${Number(value).toLocaleString("ko-KR")}원`;
+    };
+
+    const parseMaterialData = () => {
+      const raw = document.getElementById("materialRecordsJson").textContent;
+      return JSON.parse(raw);
+    };
+
+    const renderSummary = (data) => {
+      const records = data.records;
+      const confirmedCount = records.filter((item) => item.status === "확정").length;
+      const pendingCount = records.filter((item) => item.status === "검토중").length;
+      const expectedTotal = records.reduce((sum, item) => sum + Number(item.expectedWon || 0), 0);
+      const summaryItems = [
+        { label: "전체 자재", value: `${records.length}개` },
+        { label: "검토중", value: `${pendingCount}개` },
+        { label: "확정", value: `${confirmedCount}개` },
+        { label: "예상 합계", value: formatWon(expectedTotal) }
+      ];
+
+      document.getElementById("summary").innerHTML = summaryItems.map((item) => `
+        <article class="summary-card">
+          <p class="summary-label">${item.label}</p>
+          <p class="summary-value">${item.value}</p>
+        </article>
+      `).join("");
+    };
+
+    const renderTable = (data) => {
+      document.getElementById("materialTableBody").innerHTML = data.records.map((item) => {
+        const statusClass = statusClassMap[item.status] || "pending";
+        return `
+          <tr>
+            <td>${item.space}</td>
+            <td><strong>${item.material}</strong></td>
+            <td>${item.candidate}</td>
+            <td>${item.colorTone}</td>
+            <td>${item.finish}</td>
+            <td><span class="status ${statusClass}">${item.status}</span></td>
+            <td>${formatWon(item.expectedWon)}</td>
+            <td>${item.memo}</td>
+          </tr>
+        `;
+      }).join("");
+    };
+
+    const renderPage = () => {
+      const data = parseMaterialData();
+      document.getElementById("updatedAt").textContent = `수정일 ${data.meta.updatedDate}`;
+      document.getElementById("jsonPreview").textContent = JSON.stringify(data, null, 2);
+      renderSummary(data);
+      renderTable(data);
+    };
+
+    renderPage();
+  </script>
+</body>
+</html>

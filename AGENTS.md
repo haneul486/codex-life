@@ -71,6 +71,8 @@
 - 현재 주요 기준 파일은 `donga-interior/sejong_final_budget.html`이다.
 - 폴더 지침은 `donga-interior/sejong_final_budget_guide.md`다.
 - 예산표는 `scheduleData`, `constructionData`, `purchaseData`를 기준으로 렌더링한다.
+- 자재 선택 기록 기준 파일은 `donga-interior/material_selection.html`이고, 지침은 `donga-interior/material_selection_guide.md`다.
+- 자재 선택 기록은 HTML 안의 `materialRecordsJson` 순수 JSON을 기준으로 렌더링한다.
 - 루트 `index.html`은 현재 이 예산표로 자동 이동한다.
 
 ### `hwangso-math-prep`
