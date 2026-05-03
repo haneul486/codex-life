@@ -155,7 +155,7 @@
 
     table {
       width: 100%;
-      min-width: 980px;
+      min-width: 1180px;
       border-collapse: collapse;
       table-layout: fixed;
     }
@@ -179,6 +179,36 @@
 
     td {
       font-size: 0.95rem;
+    }
+
+    .material-photo {
+      width: 92px;
+      height: 72px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+    }
+
+    .material-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: var(--image-position, center);
+    }
+
+    .photo-empty {
+      display: grid;
+      place-items: center;
+      width: 92px;
+      height: 72px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      background: #fbfcfb;
+      font-size: 0.8rem;
+      font-weight: 800;
     }
 
     .status {
@@ -311,14 +341,15 @@
         <table>
           <thead>
             <tr>
-              <th style="width: 12%;">위치</th>
-              <th style="width: 14%;">구분</th>
+              <th style="width: 9%;">사진</th>
+              <th style="width: 11%;">위치</th>
+              <th style="width: 13%;">구분</th>
               <th style="width: 18%;">브랜드/제품명</th>
-              <th style="width: 11%;">색감</th>
+              <th style="width: 10%;">색감</th>
               <th style="width: 11%;">규격/마감</th>
-              <th style="width: 10%;">상태</th>
-              <th style="width: 10%;">예상가</th>
-              <th style="width: 14%;">메모</th>
+              <th style="width: 9%;">상태</th>
+              <th style="width: 8%;">예상가</th>
+              <th style="width: 11%;">메모</th>
             </tr>
           </thead>
           <tbody id="materialTableBody"></tbody>
@@ -335,10 +366,14 @@
   <script type="application/json" id="materialRecordsJson">
 {
   "meta": {
-    "project": "동아 인테리어 도배지 선택",
-    "updatedDate": "2026-05-02",
+    "project": "동아 인테리어 자재 선택",
+    "updatedDate": "2026-05-03",
     "amountUnit": "원",
-    "statusValues": ["검토중", "보류", "확정"]
+    "statusValues": [
+      "검토중",
+      "보류",
+      "확정"
+    ]
   },
   "records": [
     {
@@ -349,7 +384,12 @@
       "finish": "천정 87476-1 / 벽면 87476-2",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "천정과 벽면 품번 구분해서 주문 확인"
+      "memo": "천정과 벽면 품번 구분해서 주문 확인",
+      "image": {
+        "src": "img/web/gaenari-87476-2.jpg",
+        "position": "center",
+        "alt": "개나리 로아스 87476-2 벽지"
+      }
     },
     {
       "space": "바닥",
@@ -359,7 +399,12 @@
       "finish": "MN22-5231",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "KCC 장판 품번 확인"
+      "memo": "KCC 장판 품번 확인",
+      "image": {
+        "src": "img/web/mn22-5231.png",
+        "position": "center",
+        "alt": "KCC MN22-5231 미스티오크 장판"
+      }
     },
     {
       "space": "문",
@@ -369,7 +414,12 @@
       "finish": "TA-21",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "문 모델 확인"
+      "memo": "문 모델 확인",
+      "image": {
+        "src": "img/web/younglim-ta-21.jpg",
+        "position": "center",
+        "alt": "영림 TA-21 방문"
+      }
     },
     {
       "space": "문틀/문",
@@ -379,7 +429,12 @@
       "finish": "PWT1206-2 / 전사",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "문틀과 문의 시트지"
+      "memo": "문틀과 문의 시트지",
+      "image": {
+        "src": "img/web/pwt1206-2.jpg",
+        "position": "50% 52%",
+        "alt": "영림170 PWT1206-2 전사 루나내추럴"
+      }
     },
     {
       "space": "현관문",
@@ -389,7 +444,7 @@
       "finish": "PWT1206-2 / 전사",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "현관문 시트지 / 문틀과 문 시트지와 동일"
+      "memo": "현관문 시트지 / 문틀과 문 시트지와 동일 / 사진 색감 재확인 필요"
     },
     {
       "space": "현관 신발장",
@@ -419,7 +474,12 @@
       "finish": "영림195",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "걸레받이와 천정 마이너스 몰딩 적용"
+      "memo": "걸레받이와 천정 마이너스 몰딩 적용",
+      "image": {
+        "src": "img/web/younglim-ps170.jpg",
+        "position": "center",
+        "alt": "영림 화이트 계열 필름 참고 이미지"
+      }
     },
     {
       "space": "문",
@@ -449,7 +509,12 @@
       "finish": "FB CK 397",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "거실화장실 바닥타일"
+      "memo": "거실화장실 바닥타일",
+      "image": {
+        "src": "img/web/fb-ck-397.jpg",
+        "position": "center",
+        "alt": "FB CK 397 바닥타일"
+      }
     },
     {
       "space": "안방화장실",
@@ -459,7 +524,12 @@
       "finish": "WM37002",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "안방화장실 벽타일"
+      "memo": "안방화장실 벽타일",
+      "image": {
+        "src": "img/web/wm37002.jpg",
+        "position": "center",
+        "alt": "WM37002 벽타일"
+      }
     },
     {
       "space": "안방화장실",
@@ -469,7 +539,12 @@
       "finish": "FB CK 393",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "안방화장실 바닥타일"
+      "memo": "안방화장실 바닥타일",
+      "image": {
+        "src": "img/web/fb-ck-393.jpg",
+        "position": "center",
+        "alt": "FB CK 393 바닥타일"
+      }
     },
     {
       "space": "현관",
@@ -479,7 +554,12 @@
       "finish": "200*200",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "현관 무늬타일"
+      "memo": "현관 무늬타일",
+      "image": {
+        "src": "img/web/rep-02.jpg",
+        "position": "center",
+        "alt": "REP-02 현관 무늬타일"
+      }
     },
     {
       "space": "베란다",
@@ -489,7 +569,12 @@
       "finish": "112*450",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "베란다 타일 규격 112*450"
+      "memo": "베란다 타일 규격 112*450",
+      "image": {
+        "src": "img/web/fb386.jpg",
+        "position": "center",
+        "alt": "FB386 베란다 타일"
+      }
     },
     {
       "space": "화장실",
@@ -499,7 +584,12 @@
       "finish": "SC-7750-H",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "수량 2개"
+      "memo": "수량 2개",
+      "image": {
+        "src": "img/web/sc-7750h.jpg",
+        "position": "center",
+        "alt": "SC-7750H 양변기"
+      }
     },
     {
       "space": "화장실",
@@ -549,7 +639,12 @@
       "finish": "DL-L7310",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "거실화장실 대림 수전"
+      "memo": "거실화장실 대림 수전",
+      "image": {
+        "src": "img/web/dl-l7310.jpg",
+        "position": "center",
+        "alt": "대림 DL-L7310 수전"
+      }
     },
     {
       "space": "거실화장실",
@@ -559,7 +654,12 @@
       "finish": "DL-B7313",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "거실화장실 대림 욕조수전"
+      "memo": "거실화장실 대림 욕조수전",
+      "image": {
+        "src": "img/web/dl-b7313.jpg",
+        "position": "center",
+        "alt": "대림 DL-B7313 욕조수전"
+      }
     },
     {
       "space": "안방화장실",
@@ -569,7 +669,12 @@
       "finish": "DL-B7316",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "안방화장실 대림 수전"
+      "memo": "안방화장실 대림 수전",
+      "image": {
+        "src": "img/web/dl-b7316.jpg",
+        "position": "center",
+        "alt": "대림 DL-B7316 수전"
+      }
     },
     {
       "space": "베란다",
@@ -589,7 +694,12 @@
       "finish": "나노 아트",
       "status": "검토중",
       "expectedWon": 0,
-      "memo": "스위치 제품"
+      "memo": "스위치 제품",
+      "image": {
+        "src": "img/web/nano-art-white.jpg",
+        "position": "center",
+        "alt": "나노 아트 화이트 스위치"
+      }
     }
   ]
 }
@@ -610,6 +720,20 @@
     const parseMaterialData = () => {
       const raw = document.getElementById("materialRecordsJson").textContent;
       return JSON.parse(raw);
+    };
+
+    const renderPhoto = (item) => {
+      if (!item.image || !item.image.src) {
+        return `<div class="photo-empty">사진 없음</div>`;
+      }
+
+      const position = item.image.position || "center";
+      const alt = item.image.alt || `${item.material} ${item.candidate}`;
+      return `
+        <div class="material-photo" style="--image-position: ${position};">
+          <img src="${item.image.src}" alt="${alt}" loading="lazy" />
+        </div>
+      `;
     };
 
     const renderSummary = (data) => {
@@ -637,6 +761,7 @@
         const statusClass = statusClassMap[item.status] || "pending";
         return `
           <tr>
+            <td>${renderPhoto(item)}</td>
             <td>${item.space}</td>
             <td><strong>${item.material}</strong></td>
             <td>${item.candidate}</td>

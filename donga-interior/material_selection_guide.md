@@ -10,6 +10,7 @@
 - HTML 기준 파일: `donga-interior/material_selection.html`
 - 이 작업의 데이터 원본은 HTML 안의 `<script type="application/json" id="materialRecordsJson">` 블록이다.
 - 화면 표를 직접 고치지 않고 JSON을 먼저 수정한 뒤 렌더링 결과를 확인한다.
+- 자재 사진은 원본 `donga-interior/img/*.HEIC`를 직접 수정하지 않고, 인터넷에서 확인한 제품 이미지를 `donga-interior/img/web/`에 저장해 HTML에서 참조한다.
 
 ## 데이터 구조
 
@@ -18,7 +19,7 @@
 ```json
 {
   "meta": {
-    "project": "동아 인테리어 도배지 선택",
+    "project": "동아 인테리어 자재 선택",
     "updatedDate": "YYYY-MM-DD",
     "amountUnit": "원",
     "statusValues": ["검토중", "보류", "확정"]
@@ -38,7 +39,12 @@
   "finish": "천정 87476-1 / 벽면 87476-2",
   "status": "검토중",
   "expectedWon": 0,
-  "memo": "천정과 벽면 품번 구분해서 주문 확인"
+  "memo": "천정과 벽면 품번 구분해서 주문 확인",
+  "image": {
+    "src": "img/web/example.jpg",
+    "position": "50% 50%",
+    "alt": "자재 사진 설명"
+  }
 }
 ```
 
@@ -50,12 +56,15 @@
 - 상태값은 `검토중`, `보류`, `확정` 중 하나를 사용한다.
 - 날짜는 `YYYY-MM-DD` 형식으로 기록한다.
 - 제품명이나 브랜드가 확정되면 `candidate`에 정확한 모델명 또는 매장 표기명을 적는다.
+- 사진이 있는 항목은 `image.src`에 HTML 파일 기준 상대경로를 적는다.
+- 표에서 잘라 보이는 위치는 `image.position`에 CSS `object-position` 값처럼 `50% 50%` 형식으로 조정한다.
+- 원본 이미지는 수정하지 않는다.
 
 ## 화면 구조
 
 - 상단: 문서 제목, 수정일, 인쇄 버튼
 - 요약: 전체 자재 수, 검토중 수, 확정 수, 예상 합계
-- 표: 위치, 구분, 브랜드/제품명, 색감, 규격/마감, 상태, 예상가, 메모
+- 표: 사진, 위치, 구분, 브랜드/제품명, 색감, 규격/마감, 상태, 예상가, 메모
 - 하단: 현재 JSON 데이터 확인 영역
 
 ## 인쇄 규칙
