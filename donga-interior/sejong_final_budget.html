@@ -511,6 +511,47 @@
       white-space: nowrap;
     }
 
+    .move-overview {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .move-stat {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface-soft);
+    }
+
+    .move-stat-label {
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    .move-stat-value {
+      margin-top: 8px;
+      font-size: 1.12rem;
+      font-weight: 850;
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+
+    .split-tables {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .subsection-title {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      font-weight: 850;
+    }
+
     .detail-section {
       margin-top: 18px;
     }
@@ -561,7 +602,9 @@
 
     @media (max-width: 980px) {
       .grid,
-      .summary-list {
+      .summary-list,
+      .move-overview,
+      .split-tables {
         grid-template-columns: 1fr;
       }
 
@@ -706,6 +749,45 @@
       </article>
     </section>
 
+    <section class="panel" aria-label="이사 정리">
+      <div class="section-head">
+        <h2 class="section-title">이사 정리</h2>
+        <div class="section-note">이사 일정, 주소, 입출금과 이사집 관련 금액을 따로 모았습니다.</div>
+      </div>
+      <div class="move-overview" id="movingOverview"></div>
+      <div class="split-tables">
+        <div class="table-wrap">
+          <h3 class="subsection-title">이사 일정</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>일정</th>
+                <th>날짜</th>
+                <th>메모</th>
+              </tr>
+            </thead>
+            <tbody id="movingScheduleTableBody"></tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <h3 class="subsection-title">이사 금액</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>구분</th>
+                <th>항목</th>
+                <th>금액</th>
+                <th>상태</th>
+                <th>날짜</th>
+                <th>메모</th>
+              </tr>
+            </thead>
+            <tbody id="movingCostTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <section class="panel" aria-label="공사비 지급 현황">
       <div class="section-head">
         <h2 class="section-title">공사비 지급 현황</h2>
@@ -829,8 +911,29 @@
       return "future";
     }
 
+    function isMovingSchedule(item) {
+      return item.name.includes("이사") || item.name.includes("가스");
+    }
+
+    function isMovingPurchase(item) {
+      return item.category === "이사집" || item.category === "입금";
+    }
+
+    function getMovingAddress() {
+      const addressItem = purchaseData.find((item) => item.category === "이사집" && item.memo);
+      return addressItem ? addressItem.memo : "-";
+    }
+
+    function getDisplayPurchaseAmount(item) {
+      if (item.status === "purchased" && Number(item.actualWon) > 0) {
+        return Number(item.actualWon);
+      }
+      return Number(item.expectedWon || 0);
+    }
+
     function renderMilestones() {
       const container = document.getElementById("milestoneGrid");
+      const timelineItems = scheduleData.filter((item) => !isMovingSchedule(item));
       const timelineStart = new Date("2026-05-04");
       const timelineEnd = new Date("2026-06-06");
       const today = new Date();
@@ -846,7 +949,7 @@
         const iso = date.toISOString().slice(0, 10);
         const state = getDateState(iso);
         const left = totalDays > 0 ? (index / totalDays) * 100 : 0;
-        const hasEvent = scheduleData.some((item) => item.startDate === iso);
+        const hasEvent = timelineItems.some((item) => item.startDate === iso);
 
         return `<div class="timeline-dot ${hasEvent ? "is-event" : ""} is-${state}" style="left:${left}%"></div>`;
       }).join("");
@@ -859,7 +962,7 @@
       let previousStart = null;
       let previousLane = 0;
 
-      const events = scheduleData.map((item, index) => {
+      const events = timelineItems.map((item, index) => {
         const start = new Date(item.startDate);
         start.setHours(0, 0, 0, 0);
         const offset = Math.round((start.getTime() - timelineStart.getTime()) / dayMs);
@@ -890,7 +993,7 @@
         }
         previousStart = start;
         previousLane = lane;
-        const edgeClass = index === 0 ? "edge-start" : index === scheduleData.length - 1 ? "edge-end" : "";
+        const edgeClass = index === 0 ? "edge-start" : index === timelineItems.length - 1 ? "edge-end" : "";
 
         return `
           <div class="timeline-event-line lane-${lane} is-${state}" style="left:${left}%"></div>
@@ -905,6 +1008,67 @@
       }).join("");
 
       container.innerHTML = `${dots}${todayLine}${todayLabel}${events}`;
+    }
+
+    function renderMovingSection() {
+      const movingSchedules = scheduleData.filter(isMovingSchedule);
+      const movingPurchases = purchaseData.filter(isMovingPurchase);
+      const incomeTotal = movingPurchases
+        .filter((item) => Number(item.expectedWon) < 0 || Number(item.actualWon) < 0)
+        .reduce((sum, item) => sum + Math.abs(Number(item.actualWon || item.expectedWon || 0)), 0);
+      const paidTotal = movingPurchases
+        .filter((item) => item.category !== "입금" && item.status === "purchased")
+        .reduce((sum, item) => sum + getDisplayPurchaseAmount(item), 0);
+      const plannedTotal = movingPurchases
+        .filter((item) => item.category !== "입금" && item.status !== "purchased")
+        .reduce((sum, item) => sum + Number(item.expectedWon || 0), 0);
+      const netTotal = paidTotal + plannedTotal - incomeTotal;
+
+      document.getElementById("movingOverview").innerHTML = `
+        <article class="move-stat">
+          <div class="move-stat-label">이사집 주소</div>
+          <div class="move-stat-value">${getMovingAddress()}</div>
+        </article>
+        <article class="move-stat">
+          <div class="move-stat-label">입금</div>
+          <div class="move-stat-value">${formatWon(incomeTotal)}</div>
+        </article>
+        <article class="move-stat">
+          <div class="move-stat-label">지불완료</div>
+          <div class="move-stat-value">${formatWon(paidTotal)}</div>
+        </article>
+        <article class="move-stat">
+          <div class="move-stat-label">예정 / 차감 후</div>
+          <div class="move-stat-value">${formatWon(plannedTotal)} / ${formatWon(netTotal)}</div>
+        </article>
+      `;
+
+      document.getElementById("movingScheduleTableBody").innerHTML = movingSchedules.map((item) => {
+        const startLabel = formatDateLabel(item.startDate);
+        const endLabel = item.endDate ? formatDateLabel(item.endDate) : "";
+        return `
+          <tr>
+            <td>${item.name}</td>
+            <td>${endLabel ? `${startLabel} ~ ${endLabel}` : startLabel}</td>
+            <td>${item.note || "-"}</td>
+          </tr>
+        `;
+      }).join("");
+
+      document.getElementById("movingCostTableBody").innerHTML = movingPurchases.map((item) => {
+        const statusMeta = getStatusMeta(item.status);
+        const amount = Math.abs(getDisplayPurchaseAmount(item));
+        return `
+          <tr>
+            <td>${item.category}</td>
+            <td>${item.name}</td>
+            <td class="amount-cell">${formatWon(amount)}</td>
+            <td><span class="${statusMeta.className}">${statusMeta.label}</span></td>
+            <td>${item.purchaseDate ? formatDateLabel(item.purchaseDate) : "-"}</td>
+            <td>${item.purchaseRoute || item.memo || "-"}</td>
+          </tr>
+        `;
+      }).join("");
     }
 
     function renderConstructionTable() {
@@ -926,7 +1090,9 @@
 
     function renderPurchaseTable() {
       const tbody = document.getElementById("purchaseTableBody");
-      tbody.innerHTML = purchaseData.map((item, index) => `
+      tbody.innerHTML = purchaseData.map((item, index) => ({ item, index }))
+        .filter(({ item }) => !isMovingPurchase(item))
+        .map(({ item, index }) => `
         <tr data-purchase-index="${index}">
           <td>${item.category}</td>
           <td>${item.name}</td>
@@ -947,7 +1113,7 @@
 
     function renderPurchaseSummary() {
       const container = document.getElementById("pricedItemsSummary");
-      const visibleItems = purchaseData.filter((item) => Number(item.expectedWon) > 0);
+      const visibleItems = purchaseData.filter((item) => Number(item.expectedWon) > 0 && !isMovingPurchase(item));
 
       container.innerHTML = visibleItems.map((item) => {
         const statusMeta = getStatusMeta(item.status);
@@ -1096,6 +1262,7 @@
       renderTodayLabel();
       renderScheduleTodayLabel();
       renderMilestones();
+      renderMovingSection();
       renderConstructionTable();
       renderPurchaseTable();
       renderPurchaseSummary();
