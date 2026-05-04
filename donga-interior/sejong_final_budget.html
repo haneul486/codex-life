@@ -1105,6 +1105,9 @@
     }
 
     const scheduleData = [
+      { name: "이사집 계약", startDate: "2026-05-04", endDate: "", note: "인천광역시 부평구 부평동 341-114, 302호 계약" },
+      { name: "이사집 가스 개설", startDate: "2026-05-06", endDate: "", note: "16:00~18:00" },
+      { name: "부평집 가스 중지", startDate: "2026-05-09", endDate: "", note: "09:00~11:00" },
       { name: "이사 짐싸기", startDate: "2026-05-04", endDate: "2026-05-09", note: "포장과 분류를 진행하는 기간" },
       { name: "임시집으로 이사", startDate: "2026-05-10", endDate: "", note: "임시 거주지로 이동" },
       { name: "공사 시작", startDate: "2026-05-11", endDate: "", note: "세종인테리어 공사 시작일" },
@@ -1138,7 +1141,11 @@
       { category: "가구", name: "아일랜드장", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "낮은 수납장", expectedWon: 700000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "수납", name: "발코니 수납 선반 3개", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "생활", name: "한달숙소비 / 복비 등", expectedWon: 1500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "입금", name: "김의수 -> 김하늘", expectedWon: -2000000, status: "purchased", actualWon: -2000000, purchaseDate: "2026-05-04", purchaseRoute: "입금", memo: "입출금 내역" },
+      { category: "이사집", name: "이사집 월세", expectedWon: 770000, status: "purchased", actualWon: 770000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
+      { category: "이사집", name: "이사집 보증금", expectedWon: 500000, status: "purchased", actualWon: 500000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
+      { category: "이사집", name: "이사집 수도세", expectedWon: 40000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "인천광역시 부평구 부평동 341-114, 302호" },
+      { category: "이사집", name: "이사집 부동산 중개수수료", expectedWon: 100000, status: "purchased", actualWon: 100000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
       { category: "생활", name: "매트리스 커버 2개", expectedWon: 30000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "생활", name: "주방 매트 / 화장실 매트 2개 / 세탁실 매트", expectedWon: 60000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "총 4개" },
       { category: "생활", name: "생활살림", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" }
