@@ -963,7 +963,7 @@
 
     function renderMilestones() {
       const container = document.getElementById("milestoneGrid");
-      const timelineItems = scheduleData.filter((item) => !isMovingSchedule(item));
+      const timelineItems = scheduleData;
       const timelineStart = new Date("2026-05-04");
       const timelineEnd = new Date("2026-06-06");
       const today = new Date();
