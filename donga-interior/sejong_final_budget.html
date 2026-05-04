@@ -552,6 +552,13 @@
       font-weight: 850;
     }
 
+    .transfer-overview {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
     .detail-section {
       margin-top: 18px;
     }
@@ -604,6 +611,7 @@
       .grid,
       .summary-list,
       .move-overview,
+      .transfer-overview,
       .split-tables {
         grid-template-columns: 1fr;
       }
@@ -752,7 +760,7 @@
     <section class="panel" aria-label="이사 정리">
       <div class="section-head">
         <h2 class="section-title">이사 정리</h2>
-        <div class="section-note">이사 일정, 주소, 입출금과 이사집 관련 금액을 따로 모았습니다.</div>
+        <div class="section-note">이사 일정, 주소, 이사집 관련 지출 금액을 따로 모았습니다.</div>
       </div>
       <div class="move-overview" id="movingOverview"></div>
       <div class="split-tables">
@@ -785,6 +793,28 @@
             <tbody id="movingCostTableBody"></tbody>
           </table>
         </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="돈 입출금 내역">
+      <div class="section-head">
+        <h2 class="section-title">돈 입출금 내역</h2>
+        <div class="section-note">가족 간 돈을 주고받은 기록입니다. 지출 금액 계산에는 포함하지 않습니다.</div>
+      </div>
+      <div class="transfer-overview" id="transferOverview"></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>날짜</th>
+              <th>보낸 사람</th>
+              <th>받은 사람</th>
+              <th>금액</th>
+              <th>메모</th>
+            </tr>
+          </thead>
+          <tbody id="transferTableBody"></tbody>
+        </table>
       </div>
     </section>
 
@@ -916,7 +946,7 @@
     }
 
     function isMovingPurchase(item) {
-      return item.category === "이사집" || item.category === "입금";
+      return item.category === "이사집";
     }
 
     function getMovingAddress() {
@@ -1013,16 +1043,13 @@
     function renderMovingSection() {
       const movingSchedules = scheduleData.filter(isMovingSchedule);
       const movingPurchases = purchaseData.filter(isMovingPurchase);
-      const incomeTotal = movingPurchases
-        .filter((item) => Number(item.expectedWon) < 0 || Number(item.actualWon) < 0)
-        .reduce((sum, item) => sum + Math.abs(Number(item.actualWon || item.expectedWon || 0)), 0);
       const paidTotal = movingPurchases
-        .filter((item) => item.category !== "입금" && item.status === "purchased")
+        .filter((item) => item.status === "purchased")
         .reduce((sum, item) => sum + getDisplayPurchaseAmount(item), 0);
       const plannedTotal = movingPurchases
-        .filter((item) => item.category !== "입금" && item.status !== "purchased")
+        .filter((item) => item.status !== "purchased")
         .reduce((sum, item) => sum + Number(item.expectedWon || 0), 0);
-      const netTotal = paidTotal + plannedTotal - incomeTotal;
+      const movingTotal = paidTotal + plannedTotal;
 
       document.getElementById("movingOverview").innerHTML = `
         <article class="move-stat">
@@ -1030,16 +1057,16 @@
           <div class="move-stat-value">${getMovingAddress()}</div>
         </article>
         <article class="move-stat">
-          <div class="move-stat-label">입금</div>
-          <div class="move-stat-value">${formatWon(incomeTotal)}</div>
-        </article>
-        <article class="move-stat">
           <div class="move-stat-label">지불완료</div>
           <div class="move-stat-value">${formatWon(paidTotal)}</div>
         </article>
         <article class="move-stat">
-          <div class="move-stat-label">예정 / 차감 후</div>
-          <div class="move-stat-value">${formatWon(plannedTotal)} / ${formatWon(netTotal)}</div>
+          <div class="move-stat-label">예정</div>
+          <div class="move-stat-value">${formatWon(plannedTotal)}</div>
+        </article>
+        <article class="move-stat">
+          <div class="move-stat-label">이사 지출 합계</div>
+          <div class="move-stat-value">${formatWon(movingTotal)}</div>
         </article>
       `;
 
@@ -1069,6 +1096,41 @@
           </tr>
         `;
       }).join("");
+    }
+
+    function renderTransferSection() {
+      const incomingTotal = transferData
+        .filter((item) => item.receiver === "김하늘")
+        .reduce((sum, item) => sum + Number(item.amountWon || 0), 0);
+      const outgoingTotal = transferData
+        .filter((item) => item.sender === "김하늘")
+        .reduce((sum, item) => sum + Number(item.amountWon || 0), 0);
+      const netTotal = incomingTotal - outgoingTotal;
+
+      document.getElementById("transferOverview").innerHTML = `
+        <article class="move-stat">
+          <div class="move-stat-label">받은 돈</div>
+          <div class="move-stat-value">${formatWon(incomingTotal)}</div>
+        </article>
+        <article class="move-stat">
+          <div class="move-stat-label">보낸 돈</div>
+          <div class="move-stat-value">${formatWon(outgoingTotal)}</div>
+        </article>
+        <article class="move-stat">
+          <div class="move-stat-label">입출금 차액</div>
+          <div class="move-stat-value">${formatWon(netTotal)}</div>
+        </article>
+      `;
+
+      document.getElementById("transferTableBody").innerHTML = transferData.map((item) => `
+        <tr>
+          <td>${item.date ? formatDateLabel(item.date) : "-"}</td>
+          <td>${item.sender}</td>
+          <td>${item.receiver}</td>
+          <td class="amount-cell">${formatWon(item.amountWon)}</td>
+          <td>${item.memo || "-"}</td>
+        </tr>
+      `).join("");
     }
 
     function renderConstructionTable() {
@@ -1263,6 +1325,7 @@
       renderScheduleTodayLabel();
       renderMilestones();
       renderMovingSection();
+      renderTransferSection();
       renderConstructionTable();
       renderPurchaseTable();
       renderPurchaseSummary();
@@ -1290,6 +1353,10 @@
       { stage: "잔금", amountWon: 9445200, status: "planned", date: "", route: "", memo: "총 공사비의 20%" }
     ];
 
+    const transferData = [
+      { date: "2026-05-04", sender: "김의수", receiver: "김하늘", amountWon: 2000000, memo: "아버지와 하늘 간 돈 입출금 내역" }
+    ];
+
     const purchaseData = [
       { category: "가전", name: "냉장고", expectedWon: 1850000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "김치냉장고", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
@@ -1308,7 +1375,6 @@
       { category: "가구", name: "아일랜드장", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "낮은 수납장", expectedWon: 700000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "수납", name: "발코니 수납 선반 3개", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "입금", name: "김의수 -> 김하늘", expectedWon: -2000000, status: "purchased", actualWon: -2000000, purchaseDate: "2026-05-04", purchaseRoute: "입금", memo: "입출금 내역" },
       { category: "이사집", name: "이사집 월세", expectedWon: 770000, status: "purchased", actualWon: 770000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
       { category: "이사집", name: "이사집 보증금", expectedWon: 500000, status: "purchased", actualWon: 500000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
       { category: "이사집", name: "이사집 수도세", expectedWon: 40000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "인천광역시 부평구 부평동 341-114, 302호" },
