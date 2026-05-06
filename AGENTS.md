@@ -71,9 +71,13 @@
 - 현재 주요 기준 파일은 `donga-interior/sejong_final_budget.html`이다.
 - 폴더 지침은 `donga-interior/sejong_final_budget_guide.md`다.
 - 예산표는 `scheduleData`, `constructionData`, `purchaseData`를 기준으로 렌더링한다.
+<<<<<<< Updated upstream
 - 자재 선택 기록 기준 파일은 `donga-interior/material_selection.html`이고, 지침은 `donga-interior/material_selection_guide.md`다.
 - 자재 선택 기록은 HTML 안의 `materialRecordsJson` 순수 JSON을 기준으로 렌더링한다.
 - 루트 `index.html`은 현재 이 예산표로 자동 이동한다.
+=======
+- 루트 `index.html`의 작업 인덱스에서 대표 화면으로 연결된다.
+>>>>>>> Stashed changes
 
 ### `hwangso-math-prep`
 
@@ -82,7 +86,7 @@
 - 폴더 지침은 `hwangso-math-prep/hwangso_math_prep_guide.md`다.
 - 분석과 준비 내용은 가능하면 `academyProfile`, `examPlan`, `studyChecklist`, `notesData` 같은 구조화된 데이터 객체를 기준으로 렌더링한다.
 - 학원 정보, 시험 일정, 준비 항목은 날짜와 출처를 함께 관리하고, 추측값과 확정값을 구분한다.
-- 루트 `index.html`은 현재 동아 인테리어 예산표를 가리키고 있으므로, 황소수학 작업을 바로 노출할지 여부는 이후 사용 목적에 따라 별도로 판단한다.
+- 루트 `index.html`은 현재 작업 인덱스 형태로 `donga-interior`와 `hwangso-math-prep` 대표 화면을 함께 연결한다.
 
 ## 새 작업을 만들 때
 

@@ -118,6 +118,18 @@
       margin-bottom: 14px;
     }
 
+    .section-copy {
+      display: grid;
+      gap: 4px;
+    }
+
+    .section-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
     .section-title {
       margin: 0;
       font-size: 1.25rem;
@@ -136,219 +148,271 @@
       white-space: nowrap;
     }
 
-    .milestone-grid {
-      position: relative;
-      min-height: 590px;
-      min-width: 1900px;
-      padding: 58px 130px 28px;
-      overflow: visible;
-    }
-
-    .milestone-scroll {
-      overflow-x: auto;
-      overflow-y: visible;
-      padding-bottom: 6px;
-    }
-
-    .milestone-grid::before {
-      content: "";
-      position: absolute;
-      left: 130px;
-      right: 130px;
-      top: 63px;
-      height: 3px;
-      background: #cfd9e8;
-      z-index: 0;
-    }
-
-    .timeline-dot {
-      position: absolute;
-      top: 55px;
-      width: 15px;
-      height: 15px;
-      border-radius: 999px;
-      background: var(--timeline-future);
-      border: 3px solid #fff;
-      transform: translateX(-50%);
-      z-index: 2;
-    }
-
-    .timeline-today-line {
-      position: absolute;
-      top: 32px;
-      bottom: 28px;
-      width: 0;
-      border-left: 1.5px dashed rgba(59, 111, 246, 0.42);
-      transform: translateX(-50%);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .timeline-event-line {
-      position: absolute;
-      top: 76px;
-      width: 0;
-      border-left: 1.5px dashed rgba(151, 164, 184, 0.56);
-      transform: translateX(-50%);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .timeline-event-line.lane-0 {
-      height: 34px;
-    }
-
-    .timeline-event-line.lane-1 {
-      height: 124px;
-    }
-
-    .timeline-event-line.lane-2 {
-      height: 214px;
-    }
-
-    .timeline-event-line.lane-3 {
-      height: 304px;
-    }
-
-    .timeline-event-line.lane-4 {
-      height: 394px;
-    }
-
-    .timeline-dot.is-past {
-      background: var(--timeline-past);
-    }
-
-    .timeline-dot.is-today {
-      background: var(--timeline-current);
-      box-shadow: 0 0 0 4px rgba(59, 111, 246, 0.14);
-      z-index: 3;
-    }
-
-    .timeline-dot.is-event {
-      width: 18px;
-      height: 18px;
-      top: 53px;
-      box-shadow: 0 6px 16px rgba(18, 35, 58, 0.1);
-    }
-
-    .timeline-dot.is-event.is-past {
-      background: #7e8ea5;
-    }
-
-    .timeline-dot.is-event.is-future {
-      background: #cfd9e8;
-    }
-
-    .timeline-dot.is-event.is-today {
-      background: var(--timeline-current);
-    }
-
-    .timeline-today-label {
-      position: absolute;
-      top: 14px;
-      transform: translateX(-50%);
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--timeline-current);
-      white-space: nowrap;
-      z-index: 4;
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: rgba(234, 241, 255, 0.92);
-      box-shadow: 0 4px 10px rgba(59, 111, 246, 0.08);
-    }
-
-    .timeline-event {
-      position: absolute;
-      top: 110px;
-      width: 218px;
-      min-width: 218px;
-      max-width: 218px;
-      transform: translateX(-50%);
-      z-index: 2;
-    }
-
-    .timeline-event.lane-1 {
-      top: 200px;
-    }
-
-    .timeline-event.lane-2 {
-      top: 290px;
-    }
-
-    .timeline-event.lane-3 {
-      top: 380px;
-    }
-
-    .timeline-event.lane-4 {
-      top: 470px;
-    }
-
-    .timeline-event.edge-start {
-      transform: none;
-    }
-
-    .timeline-event.edge-end {
-      transform: translateX(-100%);
-    }
-
-    .timeline-event-text {
-      min-height: 52px;
-      padding: 10px 12px;
-      border: 1px solid #d7dfeb;
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 8px 18px rgba(18, 35, 58, 0.08);
-      font-size: 0.88rem;
-      line-height: 1.35;
-      color: var(--text);
-      word-break: keep-all;
-      white-space: normal;
-    }
-
-    .timeline-event-title {
-      display: block;
-      font-weight: 800;
-      color: inherit;
-    }
-
-    .timeline-event-date {
-      display: inline-flex;
-      margin: 0 0 6px;
-      padding: 3px 8px;
+    .json-toggle {
+      appearance: none;
+      border: 1px solid #c8d7f3;
       border-radius: 999px;
       background: var(--primary-soft);
-      font-size: 0.78rem;
-      font-weight: 700;
       color: var(--primary);
+      padding: 8px 12px;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 850;
+      cursor: pointer;
+      white-space: nowrap;
     }
 
-    .timeline-event-note {
-      display: block;
-      margin-top: 4px;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    .timeline-event.is-past .timeline-event-text {
-      color: #4c5b6f;
-      background: #f8fafc;
-    }
-
-    .timeline-event.is-past + .timeline-event-line,
-    .timeline-event-line.is-past {
-      border-left-color: rgba(146, 160, 179, 0.4);
-    }
-
-    .timeline-event.is-today + .timeline-event-line,
-    .timeline-event-line.is-today {
-      border-left-color: rgba(59, 111, 246, 0.45);
-    }
-
-    .timeline-event.is-today .timeline-event-text {
-      color: var(--timeline-current);
+    .json-toggle:hover {
       border-color: rgba(59, 111, 246, 0.42);
-      box-shadow: 0 10px 22px rgba(59, 111, 246, 0.14);
+      background: #f3f7ff;
+    }
+
+    .json-panel {
+      display: none;
+      margin: 0 0 16px;
+      padding: 14px 16px;
+      max-height: 340px;
+      overflow: auto;
+      border: 1px solid #d7dfeb;
+      border-radius: 14px;
+      background: #111827;
+      color: #e6edf7;
+      font-family: "Consolas", "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      white-space: pre;
+    }
+
+    .json-panel.is-open {
+      display: block;
+    }
+
+    .schedule-scroll {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .schedule-board {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(150px, 1fr));
+      grid-template-rows: 34px;
+      grid-auto-rows: 132px;
+      min-width: 1050px;
+      background: #fff;
+    }
+
+    .schedule-week-header {
+      padding: 9px 12px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: #f8fbff;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .schedule-week-header.is-sunday {
+      color: #d84f4f;
+    }
+
+    .schedule-week-header.is-saturday {
+      color: #286fe8;
+    }
+
+    .schedule-day {
+      min-height: 132px;
+      padding: 12px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .schedule-day.is-outside-month {
+      background: #fafbfc;
+      color: #a2adbd;
+    }
+
+    .schedule-day.is-today {
+      background: #f6f9ff;
+    }
+
+    .schedule-day.is-sunday .schedule-date {
+      color: #d84f4f;
+    }
+
+    .schedule-day.is-saturday .schedule-date {
+      color: #286fe8;
+    }
+
+    .schedule-date {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      color: #1f2b3d;
+      font-weight: 500;
+    }
+
+    .schedule-day.is-outside-month .schedule-date {
+      color: #9aa7b8;
+    }
+
+    .schedule-date strong {
+      font-size: 1.06rem;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .schedule-date span {
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-weight: 500;
+    }
+
+    .schedule-item {
+      appearance: none;
+      border: 0;
+      align-self: start;
+      margin: calc(32px + (var(--lane) * 27px)) 6px 0;
+      padding: 4px 9px;
+      min-height: 23px;
+      border-radius: 6px;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(59, 111, 246, 0.12);
+      overflow: hidden;
+      z-index: 2;
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+    }
+
+    .schedule-item:hover {
+      filter: brightness(0.97);
+    }
+
+    .schedule-item.is-past {
+      background: #7e8ea5;
+      box-shadow: none;
+    }
+
+    .schedule-item.is-today {
+      background: var(--primary);
+      outline: 2px solid rgba(59, 111, 246, 0.18);
+    }
+
+    .schedule-item.is-future {
+      background: #628ff5;
+    }
+
+    .schedule-item.color-0 {
+      background: #71c9b4;
+    }
+
+    .schedule-item.color-1 {
+      background: #8a70db;
+    }
+
+    .schedule-item.color-2 {
+      background: #f0829f;
+    }
+
+    .schedule-item.color-3 {
+      background: #f6b526;
+    }
+
+    .schedule-item.color-4 {
+      background: #5f99ef;
+    }
+
+    .schedule-item-title {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 900;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .schedule-item-note {
+      display: none;
+    }
+
+    .schedule-popover {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.18);
+      padding: 24px;
+    }
+
+    .schedule-popover.is-open {
+      display: grid;
+      place-items: center;
+    }
+
+    .schedule-popover-card {
+      width: min(440px, 100%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.2);
+      overflow: hidden;
+    }
+
+    .schedule-popover-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .schedule-popover-title {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 850;
+      line-height: 1.35;
+    }
+
+    .schedule-popover-close {
+      appearance: none;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--muted);
+      cursor: pointer;
+      font: inherit;
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    .schedule-popover-body {
+      display: grid;
+      gap: 12px;
+      padding: 16px 18px 18px;
+    }
+
+    .schedule-popover-row {
+      display: grid;
+      gap: 4px;
+    }
+
+    .schedule-popover-label {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .schedule-popover-value {
+      color: var(--text);
+      font-size: 0.96rem;
+      line-height: 1.5;
     }
 
     .grid {
@@ -488,13 +552,14 @@
 
     .summary-list {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
     }
 
     .summary-item {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
       gap: 12px;
       padding: 14px 16px;
       border: 1px solid var(--line);
@@ -524,6 +589,14 @@
       margin-top: 6px;
       color: var(--muted);
       font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .summary-item-note {
+      margin-top: 5px;
+      color: #526174;
+      font-size: 0.82rem;
+      line-height: 1.45;
     }
 
     .summary-item-amount {
@@ -532,6 +605,10 @@
       font-weight: 750;
       font-size: 1.05rem;
       white-space: nowrap;
+    }
+
+    .summary-item-amount.is-negative {
+      color: #b24635;
     }
 
     .move-overview {
@@ -580,10 +657,6 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
       margin-bottom: 18px;
-    }
-
-    .detail-section {
-      margin-top: 18px;
     }
 
     input,
@@ -639,10 +712,6 @@
         grid-template-columns: 1fr;
       }
 
-      .milestone-grid::before {
-        left: 20px;
-        right: 20px;
-      }
     }
 
     @media (max-width: 720px) {
@@ -666,48 +735,20 @@
         align-items: flex-start;
       }
 
-      .milestone-grid {
-        min-height: 620px;
-        min-width: 1900px;
-        padding: 58px 40px 28px;
+      .schedule-board {
+        grid-template-columns: repeat(7, minmax(104px, 1fr));
+        grid-template-rows: 32px;
+        grid-auto-rows: 116px;
+        min-width: 728px;
       }
 
-      .timeline-event {
-        width: 210px;
-        min-width: 210px;
-        max-width: 210px;
+      .schedule-day {
+        min-height: 116px;
+        padding: 9px;
       }
 
-      .timeline-event.lane-1 {
-        top: 204px;
-      }
-
-      .timeline-event.lane-2 {
-        top: 298px;
-      }
-
-      .timeline-event.lane-3 {
-        top: 392px;
-      }
-
-      .timeline-event.lane-4 {
-        top: 486px;
-      }
-
-      .timeline-event-line.lane-1 {
-        height: 128px;
-      }
-
-      .timeline-event-line.lane-2 {
-        height: 222px;
-      }
-
-      .timeline-event-line.lane-3 {
-        height: 316px;
-      }
-
-      .timeline-event-line.lane-4 {
-        height: 410px;
+      .schedule-item {
+        margin-top: calc(30px + (var(--lane) * 24px));
       }
 
       th,
@@ -739,7 +780,6 @@
         border: 1px solid #d7dfeb;
       }
 
-      .detail-section,
       .toolbar-button {
         display: none !important;
       }
@@ -760,24 +800,40 @@
 
     <section class="milestone-card" aria-label="진행 일정">
       <div class="section-head">
-        <h2 class="section-title">진행 일정</h2>
-        <div class="section-date" id="scheduleTodayLabel"></div>
-        <div class="section-note">주요 마일스톤을 일정 순서대로 표시합니다.</div>
+        <div class="section-copy">
+          <h2 class="section-title">진행 일정</h2>
+          <div class="section-note">전체 날짜를 이어서 표시하고, 일정이 있는 날짜와 기간만 막대로 표시합니다.</div>
+        </div>
+        <div class="section-actions">
+          <div class="section-date" id="scheduleTodayLabel"></div>
+          <button class="json-toggle" type="button" data-json-target="scheduleJson">JSON 보기</button>
+        </div>
       </div>
-      <div class="milestone-scroll">
-        <div class="milestone-grid" id="milestoneGrid"></div>
+      <pre class="json-panel" id="scheduleJson"></pre>
+      <div class="schedule-scroll">
+        <div class="schedule-board" id="scheduleBoard"></div>
       </div>
     </section>
 
+    <div class="schedule-popover" id="schedulePopover" role="dialog" aria-modal="true" aria-labelledby="schedulePopoverTitle">
+      <article class="schedule-popover-card">
+        <div class="schedule-popover-head">
+          <h3 class="schedule-popover-title" id="schedulePopoverTitle"></h3>
+          <button class="schedule-popover-close" id="schedulePopoverClose" type="button" aria-label="일정 상세 닫기">×</button>
+        </div>
+        <div class="schedule-popover-body" id="schedulePopoverBody"></div>
+      </article>
+    </div>
+
     <section class="grid" aria-label="상단 요약">
       <article class="card">
-        <div class="metric-label">공사비</div>
+        <div class="metric-label">인테리어 비용</div>
         <div class="metric" id="constructionMetric"></div>
         <div class="metric-sub" id="constructionSub"></div>
         <div class="progress" aria-hidden="true"><div class="progress-bar" id="constructionProgress"></div></div>
       </article>
       <article class="card accent-living">
-        <div class="metric-label">생활 준비 비용</div>
+        <div class="metric-label">이사·가전가구 비용</div>
         <div class="metric" id="livingMetric"></div>
         <div class="metric-sub" id="livingSub"></div>
         <div class="progress" aria-hidden="true"><div class="progress-bar" id="livingProgress"></div></div>
@@ -792,9 +848,15 @@
 
     <section class="panel" aria-label="이사 정리">
       <div class="section-head">
-        <h2 class="section-title">이사 정리</h2>
-        <div class="section-note">이사 일정, 주소, 이사집 관련 지출 금액을 따로 모았습니다.</div>
+        <div class="section-copy">
+          <h2 class="section-title">이사 정리</h2>
+          <div class="section-note">이사 일정, 주소, 이사집 관련 지출 금액을 따로 모았습니다.</div>
+        </div>
+        <div class="section-actions">
+          <button class="json-toggle" type="button" data-json-target="movingJson">JSON 보기</button>
+        </div>
       </div>
+      <pre class="json-panel" id="movingJson"></pre>
       <div class="move-overview" id="movingOverview"></div>
       <div class="split-tables">
         <div class="table-wrap">
@@ -831,9 +893,15 @@
 
     <section class="panel" aria-label="돈 입출금 내역">
       <div class="section-head">
-        <h2 class="section-title">돈 입출금 내역</h2>
-        <div class="section-note">가족 간 돈을 주고받은 기록입니다. 지출 금액 계산에는 포함하지 않습니다.</div>
+        <div class="section-copy">
+          <h2 class="section-title">돈 입출금 내역</h2>
+          <div class="section-note">가족 간 돈을 주고받은 기록입니다. 지출 금액 계산에는 포함하지 않습니다.</div>
+        </div>
+        <div class="section-actions">
+          <button class="json-toggle" type="button" data-json-target="transferJson">JSON 보기</button>
+        </div>
       </div>
+      <pre class="json-panel" id="transferJson"></pre>
       <div class="transfer-overview" id="transferOverview"></div>
       <div class="table-wrap">
         <table>
@@ -851,11 +919,17 @@
       </div>
     </section>
 
-    <section class="panel" aria-label="공사비 지급 현황">
+    <section class="panel" aria-label="인테리어 비용 지급 현황">
       <div class="section-head">
-        <h2 class="section-title">공사비 지급 현황</h2>
-        <div class="section-note">공사비는 단계별 일정과 지급 여부를 기록합니다.</div>
+        <div class="section-copy">
+          <h2 class="section-title">인테리어 비용</h2>
+          <div class="section-note">인테리어 비용은 단계별 일정과 지급 여부를 기록합니다.</div>
+        </div>
+        <div class="section-actions">
+          <button class="json-toggle" type="button" data-json-target="constructionJson">JSON 보기</button>
+        </div>
       </div>
+      <pre class="json-panel" id="constructionJson"></pre>
       <div class="table-wrap">
         <table>
           <thead>
@@ -873,40 +947,18 @@
       </div>
     </section>
 
-    <section class="panel" aria-label="구매 상태 요약">
+    <section class="panel" aria-label="가전가구 구매 항목">
       <div class="section-head">
-        <h2 class="section-title">구매 상태 요약</h2>
-        <div class="section-note">예상 금액이 있는 항목만 표시하고 구매완료 여부를 함께 보여줍니다.</div>
+        <div class="section-copy">
+          <h2 class="section-title">가전·가구</h2>
+          <div class="section-note">예상 금액, 상태, 구매일, 구매 경로, 메모를 한 화면에서 확인합니다.</div>
+        </div>
+        <div class="section-actions">
+          <button class="json-toggle" type="button" data-json-target="purchaseJson">JSON 보기</button>
+        </div>
       </div>
+      <pre class="json-panel" id="purchaseJson"></pre>
       <div class="summary-list" id="pricedItemsSummary"></div>
-    </section>
-
-    <div class="helper-row">
-      <div class="muted">인쇄 시에는 아래 구매 필요항목 상세표가 자동으로 숨겨집니다.</div>
-    </div>
-
-    <section class="panel detail-section" aria-label="구매 필요항목">
-      <div class="section-head">
-        <h2 class="section-title">구매 필요항목</h2>
-        <div class="section-note">HTML 화면의 실제 항목과 값이 현재 작업 기준입니다.</div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>카테고리</th>
-              <th>항목</th>
-              <th>예상 금액(원)</th>
-              <th>상태</th>
-              <th>실결제 금액(원)</th>
-              <th>구매일</th>
-              <th>결제 경로</th>
-              <th>메모</th>
-            </tr>
-          </thead>
-          <tbody id="purchaseTableBody"></tbody>
-        </table>
-      </div>
     </section>
   </main>
 
@@ -982,94 +1034,141 @@
       return item.category === "이사집";
     }
 
+    function isCompletedExpense(item) {
+      return item.status === "purchased" || item.status === "paid";
+    }
+
     function getMovingAddress() {
       const addressItem = purchaseData.find((item) => item.category === "이사집" && item.memo);
       return addressItem ? addressItem.memo : "-";
     }
 
     function getDisplayPurchaseAmount(item) {
-      if (item.status === "purchased" && Number(item.actualWon) > 0) {
+      if (isCompletedExpense(item) && Number(item.actualWon) !== 0) {
         return Number(item.actualWon);
       }
       return Number(item.expectedWon || 0);
     }
 
-    function renderMilestones() {
-      const container = document.getElementById("milestoneGrid");
-      const timelineItems = [...scheduleData].sort((a, b) => {
-        const dateDiff = new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    function addDays(date, days) {
+      const next = new Date(date);
+      next.setDate(next.getDate() + days);
+      return next;
+    }
+
+    function parseDateOnly(value) {
+      const [year, month, day] = value.split("-").map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function toIsoDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function getDateRange(startDate, endDate) {
+      const start = parseDateOnly(startDate);
+      const end = endDate ? parseDateOnly(endDate) : parseDateOnly(startDate);
+      start.setHours(0, 0, 0, 0);
+      end.setHours(0, 0, 0, 0);
+
+      const dates = [];
+      for (let cursor = new Date(start); cursor.getTime() <= end.getTime(); cursor = addDays(cursor, 1)) {
+        dates.push(toIsoDate(cursor));
+      }
+      return dates;
+    }
+
+    function renderScheduleBoard() {
+      const container = document.getElementById("scheduleBoard");
+      const scheduleItems = scheduleData.map((item, originalIndex) => ({ ...item, originalIndex })).sort((a, b) => {
+        const dateDiff = parseDateOnly(a.startDate).getTime() - parseDateOnly(b.startDate).getTime();
         if (dateDiff !== 0) return dateDiff;
-        return scheduleData.indexOf(a) - scheduleData.indexOf(b);
+        return a.originalIndex - b.originalIndex;
       });
-      const timelineStart = new Date("2026-05-04");
-      const timelineEnd = new Date("2026-06-06");
-      const today = new Date();
-      timelineStart.setHours(0, 0, 0, 0);
-      timelineEnd.setHours(0, 0, 0, 0);
-      today.setHours(0, 0, 0, 0);
 
-      const dayMs = 24 * 60 * 60 * 1000;
-      const totalDays = Math.round((timelineEnd.getTime() - timelineStart.getTime()) / dayMs);
+      const firstScheduleDate = parseDateOnly(scheduleItems[0].startDate);
+      const firstMonthDate = new Date(firstScheduleDate.getFullYear(), firstScheduleDate.getMonth(), 1);
+      const lastScheduleDate = scheduleItems.reduce((latest, item) => {
+        const itemEnd = parseDateOnly(item.endDate || item.startDate);
+        return itemEnd.getTime() > latest.getTime() ? itemEnd : latest;
+      }, parseDateOnly(scheduleItems[0].endDate || scheduleItems[0].startDate));
+      const calendarStart = addDays(firstMonthDate, -firstMonthDate.getDay());
+      const calendarEnd = addDays(lastScheduleDate, 6 - lastScheduleDate.getDay());
+      const visibleDates = getDateRange(toIsoDate(calendarStart), toIsoDate(calendarEnd));
+      const dateIndex = new Map(visibleDates.map((date, index) => [date, index]));
+      const weekCount = Math.ceil(visibleDates.length / 7);
+      const todayIso = toIsoDate(new Date());
+      const monthLabel = `${firstMonthDate.getFullYear()}년 ${firstMonthDate.getMonth() + 1}월`;
+      const laneEndsByWeek = Array.from({ length: weekCount }, () => []);
+      const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
 
-      const dots = Array.from({ length: totalDays + 1 }, (_, index) => {
-        const date = new Date(timelineStart.getTime() + (index * dayMs));
-        const iso = date.toISOString().slice(0, 10);
-        const state = getDateState(iso);
-        const left = totalDays > 0 ? (index / totalDays) * 100 : 0;
-        const hasEvent = timelineItems.some((item) => item.startDate === iso);
-
-        return `<div class="timeline-dot ${hasEvent ? "is-event" : ""} is-${state}" style="left:${left}%"></div>`;
+      const weekHeaders = weekdays.map((weekday, index) => {
+        const sundayClass = index === 0 ? " is-sunday" : "";
+        const saturdayClass = index === 6 ? " is-saturday" : "";
+        return `<div class="schedule-week-header${sundayClass}${saturdayClass}" style="grid-column:${index + 1};grid-row:1">${weekday}</div>`;
       }).join("");
 
-      const todayOffset = Math.round((today.getTime() - timelineStart.getTime()) / dayMs);
-      const todayLeft = totalDays > 0 ? (todayOffset / totalDays) * 100 : 0;
-      const todayLabel = `<div class="timeline-today-label" style="left:${todayLeft}%">오늘</div>`;
-      const todayLine = `<div class="timeline-today-line" style="left:${todayLeft}%"></div>`;
-
-      const laneLastStarts = [];
-
-      const events = timelineItems.map((item, index) => {
-        const start = new Date(item.startDate);
-        start.setHours(0, 0, 0, 0);
-        const offset = Math.round((start.getTime() - timelineStart.getTime()) / dayMs);
-        const left = totalDays > 0 ? (offset / totalDays) * 100 : 0;
-        const state = getDateState(item.startDate);
-        const startLabel = formatDateLabel(item.startDate);
-        const endLabel = item.endDate ? formatDateLabel(item.endDate) : "";
-        const rangeLabel = endLabel ? `${startLabel} ~ ${endLabel}` : startLabel;
-        let lane = laneLastStarts.findIndex((lastStart) => {
-          const diffDays = Math.round((start.getTime() - lastStart.getTime()) / dayMs);
-          return diffDays > 4;
-        });
-        if (lane === -1) {
-          lane = Math.min(laneLastStarts.length, 4);
-        }
-        laneLastStarts[lane] = start;
-        const edgeClass = index === 0 ? "edge-start" : index === timelineItems.length - 1 ? "edge-end" : "";
-
+      const headers = visibleDates.map((iso, index) => {
+        const date = parseDateOnly(iso);
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const week = Math.floor(index / 7);
+        const column = (index % 7) + 1;
+        const outsideClass = date.getMonth() !== firstMonthDate.getMonth() ? " is-outside-month" : "";
+        const todayClass = iso === todayIso ? " is-today" : "";
+        const sundayClass = date.getDay() === 0 ? " is-sunday" : "";
+        const saturdayClass = date.getDay() === 6 ? " is-saturday" : "";
         return `
-          <div class="timeline-event-line lane-${lane} is-${state}" style="left:${left}%"></div>
-          <article class="timeline-event lane-${lane} ${edgeClass} is-${state}" style="left:${left}%">
-            <div class="timeline-event-text">
-              <span class="timeline-event-date">${rangeLabel}</span>
-              <span class="timeline-event-title">${item.name}</span>
-              ${item.note ? `<span class="timeline-event-note">${item.note}</span>` : ""}
-            </div>
-          </article>
+          <div class="schedule-day${outsideClass}${todayClass}${sundayClass}${saturdayClass}" style="grid-column:${column};grid-row:${week + 2}">
+            <div class="schedule-date"><strong>${day}</strong><span>${month}월</span></div>
+          </div>
         `;
       }).join("");
 
-      container.innerHTML = `${dots}${todayLine}${todayLabel}${events}`;
+      const bars = scheduleItems.flatMap((item, index) => {
+        const itemDates = getDateRange(item.startDate, item.endDate);
+        const startIndex = dateIndex.get(itemDates[0]);
+        const endIndex = dateIndex.get(itemDates[itemDates.length - 1]);
+        const segments = [];
+
+        for (let cursor = startIndex; cursor <= endIndex;) {
+          const week = Math.floor(cursor / 7);
+          const weekEnd = Math.min((week + 1) * 7 - 1, endIndex);
+          const laneEnds = laneEndsByWeek[week];
+          let lane = laneEnds.findIndex((lastEnd) => cursor > lastEnd);
+          if (lane === -1) {
+            lane = laneEnds.length;
+          }
+          laneEnds[lane] = weekEnd;
+          segments.push({ item, index, week, lane, startColumn: (cursor % 7) + 1, endColumn: (weekEnd % 7) + 2 });
+          cursor = weekEnd + 1;
+        }
+
+        return segments;
+      }).map(({ item, index, week, lane, startColumn, endColumn }) => {
+        const state = getDateState(item.startDate);
+        return `
+          <button class="schedule-item is-${state} color-${index % 5}" type="button" data-schedule-index="${item.originalIndex}" style="grid-column:${startColumn} / ${endColumn};grid-row:${week + 2};--lane:${lane}">
+            <span class="schedule-item-title">${item.name}</span>
+          </button>
+        `;
+      }).join("");
+
+      container.setAttribute("aria-label", `${monthLabel} 월간 일정`);
+      container.innerHTML = `${weekHeaders}${headers}${bars}`;
     }
 
     function renderMovingSection() {
       const movingSchedules = scheduleData.filter(isMovingSchedule);
       const movingPurchases = purchaseData.filter(isMovingPurchase);
       const paidTotal = movingPurchases
-        .filter((item) => item.status === "purchased")
+        .filter(isCompletedExpense)
         .reduce((sum, item) => sum + getDisplayPurchaseAmount(item), 0);
       const plannedTotal = movingPurchases
-        .filter((item) => item.status !== "purchased")
+        .filter((item) => !isCompletedExpense(item))
         .reduce((sum, item) => sum + Number(item.expectedWon || 0), 0);
       const movingTotal = paidTotal + plannedTotal;
 
@@ -1106,7 +1205,7 @@
 
       document.getElementById("movingCostTableBody").innerHTML = movingPurchases.map((item) => {
         const statusMeta = getStatusMeta(item.status);
-        const amount = Math.abs(getDisplayPurchaseAmount(item));
+        const amount = getDisplayPurchaseAmount(item);
         return `
           <tr>
             <td>${item.category}</td>
@@ -1172,38 +1271,16 @@
       }).join("");
     }
 
-    function renderPurchaseTable() {
-      const tbody = document.getElementById("purchaseTableBody");
-      tbody.innerHTML = purchaseData.map((item, index) => ({ item, index }))
-        .filter(({ item }) => !isMovingPurchase(item))
-        .map(({ item, index }) => `
-        <tr data-purchase-index="${index}">
-          <td>${item.category}</td>
-          <td>${item.name}</td>
-          <td><input type="text" inputmode="numeric" value="${formatInputNumber(item.expectedWon)}" data-field="expectedWon" /></td>
-          <td>
-            <select data-field="status">
-              <option value="planned" ${item.status === "planned" ? "selected" : ""}>예정</option>
-              <option value="purchased" ${item.status === "purchased" ? "selected" : ""}>구매완료</option>
-            </select>
-          </td>
-          <td><input type="text" inputmode="numeric" value="${formatInputNumber(item.actualWon)}" data-field="actualWon" /></td>
-          <td><input type="date" value="${item.purchaseDate || ""}" data-field="purchaseDate" /></td>
-          <td><input type="text" value="${item.purchaseRoute || ""}" data-field="purchaseRoute" /></td>
-          <td><input type="text" value="${item.memo || ""}" data-field="memo" /></td>
-        </tr>
-      `).join("");
-    }
-
     function renderPurchaseSummary() {
       const container = document.getElementById("pricedItemsSummary");
       const visibleItems = purchaseData.filter((item) => Number(item.expectedWon) > 0 && !isMovingPurchase(item));
 
       container.innerHTML = visibleItems.map((item) => {
         const statusMeta = getStatusMeta(item.status);
-        const amount = item.status === "purchased" && Number(item.actualWon) > 0
-          ? Number(item.actualWon)
-          : Number(item.expectedWon || 0);
+        const amount = getDisplayPurchaseAmount(item);
+        const dateLabel = item.purchaseDate ? formatDateLabel(item.purchaseDate) : "일정 미정";
+        const routeLabel = item.purchaseRoute || "경로 미정";
+        const amountClass = amount < 0 ? " is-negative" : "";
 
         return `
           <article class="summary-item">
@@ -1212,9 +1289,10 @@
                 <span>${item.name}</span>
                 <span class="${statusMeta.className}">${statusMeta.label}</span>
               </div>
-              <div class="summary-item-meta">${item.category}${item.purchaseRoute ? ` · ${item.purchaseRoute}` : ""}</div>
+              <div class="summary-item-meta">${item.category} · ${dateLabel} · ${routeLabel}</div>
+              ${item.memo ? `<div class="summary-item-note">${item.memo}</div>` : ""}
             </div>
-            <div class="summary-item-amount">${formatWon(amount)}</div>
+            <div class="summary-item-amount${amountClass}">${formatWon(amount)}</div>
           </article>
         `;
       }).join("");
@@ -1228,14 +1306,14 @@
       const constructionRemaining = constructionTotal - constructionSpent;
 
       const purchasedTotal = purchaseData
-        .filter((item) => item.status === "purchased")
+        .filter(isCompletedExpense)
         .reduce((sum, item) => {
           const actual = Number(item.actualWon || 0);
-          return sum + (actual > 0 ? actual : Number(item.expectedWon || 0));
+          return sum + (actual !== 0 ? actual : Number(item.expectedWon || 0));
         }, 0);
 
       const plannedTotal = purchaseData
-        .filter((item) => item.status !== "purchased")
+        .filter((item) => !isCompletedExpense(item))
         .reduce((sum, item) => sum + Number(item.expectedWon || 0), 0);
 
       const livingTotal = purchasedTotal + plannedTotal;
@@ -1277,54 +1355,8 @@
 
       document.getElementById("grandMetric").textContent = formatWon(totals.grandTotal);
       document.getElementById("grandSub").textContent =
-        `공사비 ${formatWon(totals.constructionTotal)} / 생활 준비 비용 ${formatWon(totals.livingTotal)}`;
+        `인테리어 비용 ${formatWon(totals.constructionTotal)} / 이사·가전가구 비용 ${formatWon(totals.livingTotal)}`;
       document.getElementById("grandProgress").style.width = `${Math.min(grandRatio, 100)}%`;
-    }
-
-    function bindPurchaseTableEvents() {
-      const tbody = document.getElementById("purchaseTableBody");
-
-      tbody.addEventListener("input", (event) => {
-        const target = event.target;
-        const row = target.closest("tr");
-        if (!row) return;
-
-        const index = Number(row.dataset.purchaseIndex);
-        const field = target.dataset.field;
-        if (Number.isNaN(index) || !field) return;
-
-        if (field === "expectedWon" || field === "actualWon") {
-          purchaseData[index][field] = parseWonInput(target.value);
-        } else {
-          purchaseData[index][field] = target.value;
-        }
-
-        renderPurchaseSummary();
-        renderDashboard();
-      });
-
-      tbody.addEventListener("change", (event) => {
-        const target = event.target;
-        const row = target.closest("tr");
-        if (!row) return;
-
-        const index = Number(row.dataset.purchaseIndex);
-        const field = target.dataset.field;
-        if (Number.isNaN(index) || !field) return;
-
-        purchaseData[index][field] = target.value;
-        renderPurchaseSummary();
-        renderDashboard();
-        renderPurchaseTable();
-      });
-
-      tbody.addEventListener("blur", (event) => {
-        const target = event.target;
-        if (!(target instanceof HTMLInputElement)) return;
-        const field = target.dataset.field;
-        if (field !== "expectedWon" && field !== "actualWon") return;
-        target.value = formatInputNumber(parseWonInput(target.value));
-      }, true);
     }
 
     function bindPrintButton() {
@@ -1342,17 +1374,101 @@
       document.getElementById("scheduleTodayLabel").textContent = formatScheduleTodayLabel(today);
     }
 
+    function renderJsonPanels() {
+      const movingJson = {
+        scheduleData: scheduleData.filter(isMovingSchedule),
+        purchaseData: purchaseData.filter(isMovingPurchase)
+      };
+      const purchaseJson = purchaseData.filter((item) => !isMovingPurchase(item));
+      const jsonMap = {
+        scheduleJson: scheduleData,
+        movingJson,
+        transferJson: transferData,
+        constructionJson: constructionData,
+        purchaseJson
+      };
+
+      Object.entries(jsonMap).forEach(([id, data]) => {
+        const panel = document.getElementById(id);
+        if (panel) {
+          panel.textContent = JSON.stringify(data, null, 2);
+        }
+      });
+    }
+
+    function bindJsonToggles() {
+      document.querySelectorAll(".json-toggle").forEach((button) => {
+        button.addEventListener("click", () => {
+          const targetId = button.dataset.jsonTarget;
+          const panel = document.getElementById(targetId);
+          if (!panel) return;
+          const isOpen = panel.classList.toggle("is-open");
+          button.textContent = isOpen ? "JSON 닫기" : "JSON 보기";
+        });
+      });
+    }
+
+    function openSchedulePopover(item) {
+      const popover = document.getElementById("schedulePopover");
+      const title = document.getElementById("schedulePopoverTitle");
+      const body = document.getElementById("schedulePopoverBody");
+      const startLabel = formatDateLabel(item.startDate);
+      const endLabel = item.endDate ? formatDateLabel(item.endDate) : "";
+      const dateLabel = endLabel ? `${startLabel} ~ ${endLabel}` : startLabel;
+
+      title.textContent = item.name;
+      body.innerHTML = `
+        <div class="schedule-popover-row">
+          <div class="schedule-popover-label">일정</div>
+          <div class="schedule-popover-value">${dateLabel}</div>
+        </div>
+        <div class="schedule-popover-row">
+          <div class="schedule-popover-label">메모</div>
+          <div class="schedule-popover-value">${item.note || "-"}</div>
+        </div>
+      `;
+      popover.classList.add("is-open");
+    }
+
+    function closeSchedulePopover() {
+      document.getElementById("schedulePopover").classList.remove("is-open");
+    }
+
+    function bindSchedulePopover() {
+      document.getElementById("scheduleBoard").addEventListener("click", (event) => {
+        const button = event.target.closest(".schedule-item");
+        if (!button) return;
+        const index = Number(button.dataset.scheduleIndex);
+        if (Number.isNaN(index) || !scheduleData[index]) return;
+        openSchedulePopover(scheduleData[index]);
+      });
+
+      document.getElementById("schedulePopoverClose").addEventListener("click", closeSchedulePopover);
+      document.getElementById("schedulePopover").addEventListener("click", (event) => {
+        if (event.target.id === "schedulePopover") {
+          closeSchedulePopover();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeSchedulePopover();
+        }
+      });
+    }
+
     function initializePage() {
       renderTodayLabel();
       renderScheduleTodayLabel();
-      renderMilestones();
+      renderJsonPanels();
+      renderScheduleBoard();
       renderMovingSection();
       renderTransferSection();
       renderConstructionTable();
-      renderPurchaseTable();
       renderPurchaseSummary();
       renderDashboard();
-      bindPurchaseTableEvents();
+      bindJsonToggles();
+      bindSchedulePopover();
       bindPrintButton();
     }
 
@@ -1371,8 +1487,8 @@
       { stage: "계약금", amountWon: 3000000, status: "paid", date: "2026-04-25", route: "국민 632902-01-074940 이하종", memo: "입금 완료" },
       { stage: "중도금 1 - 하늘농협", amountWon: 8000000, status: "paid", date: "2026-05-02", route: "하늘농협", memo: "24개월 할부" },
       { stage: "중도금 1 - 연미삼성", amountWon: 2000000, status: "paid", date: "2026-05-02", route: "연미삼성", memo: "23개월 할부" },
-      { stage: "중도금 2", amountWon: 24780800, status: "planned", date: "", route: "", memo: "총 공사비 47,226,000원에서 잔금 20%를 남긴 나머지 금액" },
-      { stage: "잔금", amountWon: 9445200, status: "planned", date: "", route: "", memo: "총 공사비의 20%" }
+      { stage: "중도금 2", amountWon: 24226000, status: "planned", date: "", route: "", memo: "총 인테리어 비용 47,226,000원에서 잔금 10,000,000원을 남긴 나머지 금액" },
+      { stage: "잔금", amountWon: 10000000, status: "planned", date: "", route: "", memo: "남겨둘 잔금" }
     ];
 
     const transferData = [
@@ -1397,10 +1513,11 @@
       { category: "가구", name: "아일랜드장", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "낮은 수납장", expectedWon: 700000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "수납", name: "발코니 수납 선반 3개", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "이사집", name: "이사집 월세", expectedWon: 770000, status: "purchased", actualWon: 770000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
-      { category: "이사집", name: "이사집 보증금", expectedWon: 500000, status: "purchased", actualWon: 500000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
+      { category: "이사집", name: "이사집 월세", expectedWon: 770000, status: "paid", actualWon: 770000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
+      { category: "이사집", name: "이사집 보증금", expectedWon: 500000, status: "paid", actualWon: 500000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
+      { category: "이사집", name: "이사집 보증금 환급", expectedWon: -500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "환급 예정", memo: "보증금 반환 예정 금액. 이사 예산에서 차감" },
       { category: "이사집", name: "이사집 수도세", expectedWon: 40000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "인천광역시 부평구 부평동 341-114, 302호" },
-      { category: "이사집", name: "이사집 부동산 중개수수료", expectedWon: 100000, status: "purchased", actualWon: 100000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
+      { category: "이사집", name: "이사집 부동산 중개수수료", expectedWon: 100000, status: "paid", actualWon: 100000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
       { category: "생활", name: "매트리스 커버 2개", expectedWon: 30000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "생활", name: "주방 매트 / 화장실 매트 2개 / 세탁실 매트", expectedWon: 60000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "총 4개" },
       { category: "생활", name: "생활살림", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" }
