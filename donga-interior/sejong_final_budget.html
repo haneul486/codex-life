@@ -238,6 +238,10 @@
       background: #f6f9ff;
     }
 
+    .schedule-day.is-today .schedule-date {
+      align-items: center;
+    }
+
     .schedule-day.is-sunday .schedule-date {
       color: #d84f4f;
     }
@@ -268,6 +272,17 @@
       color: var(--muted);
       font-size: 0.74rem;
       font-weight: 500;
+    }
+
+    .schedule-today-badge {
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #1f6feb;
+      color: #fff;
+      font-size: 0.62rem;
+      font-weight: 700;
+      line-height: 1.2;
+      text-transform: uppercase;
     }
 
     .schedule-item {
@@ -963,6 +978,10 @@
   </main>
 
   <script>
+    function getToday() {
+      return new Date();
+    }
+
     function formatTodayLabel(date) {
       const formatter = new Intl.DateTimeFormat("ko-KR", {
         year: "numeric",
@@ -1016,7 +1035,7 @@
     }
 
     function getDateState(date) {
-      const today = new Date();
+      const today = getToday();
       today.setHours(0, 0, 0, 0);
       const target = new Date(date);
       target.setHours(0, 0, 0, 0);
@@ -1100,7 +1119,7 @@
       const visibleDates = getDateRange(toIsoDate(calendarStart), toIsoDate(calendarEnd));
       const dateIndex = new Map(visibleDates.map((date, index) => [date, index]));
       const weekCount = Math.ceil(visibleDates.length / 7);
-      const todayIso = toIsoDate(new Date());
+      const todayIso = toIsoDate(getToday());
       const monthLabel = `${firstMonthDate.getFullYear()}년 ${firstMonthDate.getMonth() + 1}월`;
       const laneEndsByWeek = Array.from({ length: weekCount }, () => []);
       const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
@@ -1119,11 +1138,12 @@
         const column = (index % 7) + 1;
         const outsideClass = date.getMonth() !== firstMonthDate.getMonth() ? " is-outside-month" : "";
         const todayClass = iso === todayIso ? " is-today" : "";
+        const todayBadge = iso === todayIso ? `<span class="schedule-today-badge">today</span>` : "";
         const sundayClass = date.getDay() === 0 ? " is-sunday" : "";
         const saturdayClass = date.getDay() === 6 ? " is-saturday" : "";
         return `
           <div class="schedule-day${outsideClass}${todayClass}${sundayClass}${saturdayClass}" style="grid-column:${column};grid-row:${week + 2}">
-            <div class="schedule-date"><strong>${day}</strong><span>${month}월</span></div>
+            <div class="schedule-date"><strong>${day}</strong><span>${month}월</span>${todayBadge}</div>
           </div>
         `;
       }).join("");
@@ -1366,11 +1386,11 @@
     }
 
     function renderTodayLabel() {
-      document.getElementById("todayLabel").textContent = formatTodayLabel(new Date());
+      document.getElementById("todayLabel").textContent = formatTodayLabel(getToday());
     }
 
     function renderScheduleTodayLabel() {
-      const today = new Date("2026-05-12");
+      const today = getToday();
       document.getElementById("scheduleTodayLabel").textContent = formatScheduleTodayLabel(today);
     }
 
