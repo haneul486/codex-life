@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>현관·중문 시공 요청서</title>
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --surface: #ffffff;
+      --surface-soft: #f2efe8;
+      --line: #ded8cd;
+      --text: #24211d;
+      --muted: #6f685f;
+      --wood: #b4865c;
+      --wood-dark: #7d5c3e;
+      --accent: #5f6f68;
+      --shadow: 0 14px 34px rgba(48, 42, 34, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #fbfaf7 0, var(--bg) 100%);
+    }
+
+    .page {
+      width: min(1040px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 58px;
+    }
+
+    header,
+    .panel,
+    .photo-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    header {
+      padding: 22px 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--wood-dark);
+      font-size: 0.86rem;
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 12px 0 0;
+      max-width: 860px;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.75;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--accent);
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .button.secondary {
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: #fff;
+    }
+
+    .panel {
+      margin-top: 18px;
+      padding: 20px;
+    }
+
+    .section-head {
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      line-height: 1.35;
+    }
+
+    .note {
+      margin: 5px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .photo-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .photo-card {
+      overflow: hidden;
+      box-shadow: none;
+    }
+
+    .photo-card img {
+      display: block;
+      width: 100%;
+      max-height: 980px;
+      object-fit: contain;
+      background: #efeae1;
+    }
+
+    .photo-caption {
+      padding: 13px 15px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      font-weight: 800;
+      line-height: 1.55;
+    }
+
+    .missing {
+      display: grid;
+      place-items: center;
+      min-height: 220px;
+      padding: 18px;
+      background:
+        linear-gradient(135deg, rgba(180, 134, 92, 0.12), transparent 42%),
+        var(--surface-soft);
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.65;
+      font-weight: 800;
+    }
+
+    .priority {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .request-box {
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+    }
+
+    .request-label {
+      margin: 0 0 6px;
+      color: var(--wood-dark);
+      font-size: 0.84rem;
+      font-weight: 900;
+    }
+
+    .request-title {
+      margin: 0;
+      font-size: 1.04rem;
+      font-weight: 900;
+      line-height: 1.45;
+    }
+
+    .request-body {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .checklist li {
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+      line-height: 1.55;
+    }
+
+    .copy-box {
+      margin: 0;
+      padding: 16px;
+      overflow: auto;
+      border: 1px solid #d8d0c3;
+      border-radius: 8px;
+      background: #fbfaf7;
+      font-family: "Consolas", "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 820px) {
+      .priority {
+        grid-template-columns: 1fr;
+      }
+
+      .page {
+        width: min(100% - 18px, 1040px);
+      }
+
+      header,
+      .panel {
+        padding: 16px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 10mm;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .page {
+        width: auto;
+        padding: 0;
+      }
+
+      .nav,
+      .missing {
+        display: none;
+      }
+
+      header,
+      .panel,
+      .photo-card {
+        box-shadow: none;
+      }
+
+      .photo-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <p class="eyebrow">동아 인테리어 요청서</p>
+      <h1>현관·중문 시공 요청</h1>    
+      <div class="nav">
+        <a class="button" href="sejong_final_budget.html">예산표로 돌아가기</a>
+        <a class="button secondary" href="material_selection.html">자재 선택 보기</a>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>참고 이미지</h2>
+        <p class="note">요청 기준 이미지를 순서대로 나열했습니다.</p>
+      </div>
+      <div class="photo-list">
+        <article class="photo-card">
+          <img src="img/web/entrance-request-01.png" alt="현관 중문과 벽면 매립 수납장 전체 참고 이미지" onerror="this.replaceWith(createMissingImage('entrance-request-01.png'))" />
+          <div class="photo-caption">01 전체 구성</div>
+        </article>
+        <article class="photo-card">
+          <img src="img/web/entrance-request-02.png" alt="신발장 가운데 오픈 수납과 중문 측면 참고 이미지" onerror="this.replaceWith(createMissingImage('entrance-request-02.png'))" />
+          <div class="photo-caption">02 신발장 오픈장: 간접등, 무손잡이 문짝, 오픈 수납이 문짝 안쪽으로 들어간 형태</div>
+        </article>
+        <article class="photo-card">
+          <img src="img/web/entrance-request-03.png" alt="중문 세로 유리와 우드 프레임 상세 참고 이미지" onerror="this.replaceWith(createMissingImage('entrance-request-03.png'))" />
+          <div class="photo-caption">03 중문 디테일: 세로 줄무늬 유리, 우드 프레임, 하부 우드 판넬</div>
+        </article>
+        <article class="photo-card">
+          <img src="img/web/entrance-request-04.png" alt="중문 하부와 벽면 매립 수납 하부 참고 이미지" onerror="this.replaceWith(createMissingImage('entrance-request-04.png'))" />
+          <div class="photo-caption">04 하부 마감</div>
+        </article>
+        <article class="photo-card">
+          <img src="img/web/entrance-request-05.png" alt="현관 코너와 수납장 하부 상세 참고 이미지" onerror="this.replaceWith(createMissingImage('entrance-request-05.png'))" />
+          <div class="photo-caption">05 현관 코너: 턱, 바닥, 수납장 하부와 중문 하부 간섭 확인</div>
+        </article>
+        <article class="photo-card">
+          <img src="img/web/entrance-request-06.png" alt="중문 우드 하부와 거울 하부 상세 참고 이미지" onerror="this.replaceWith(createMissingImage('entrance-request-06.png'))" />
+          <div class="photo-caption">06 중문 하부 디테일</div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

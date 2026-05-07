@@ -5,6 +5,7 @@
 - HTML 기준 파일: `C:\sky\project\codex-life\donga-interior\sejong_final_budget.html`
 - 이 문서는 항상 **사용자가 마지막으로 직접 수정해둔 현재 HTML 파일 상태**를 기준으로 다시 작업한다.
 - 예전 대화 내용보다 **실제 파일 안에 들어있는 내용**을 우선한다.
+- 현관·중문 시공 요청서는 `C:\sky\project\codex-life\donga-interior\entrance_middle_door_request.html`에서 관리한다.
 
 ## 문자 인코딩
 
@@ -121,6 +122,7 @@
 ## 화면 구조
 
 - 상단 헤더: 문서 제목, 브라우저 현재 날짜 기준일, 인쇄 버튼
+- 상단 헤더 링크: 현관·중문 시공 요청서
 - 진행 일정: 마일스톤 카드
 - 인테리어 사장님 추가 요청 사항
 - 상단 요약 카드 3개
