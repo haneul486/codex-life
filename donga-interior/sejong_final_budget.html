@@ -278,7 +278,7 @@
       padding: 2px 6px;
       border-radius: 999px;
       background: #1f6feb;
-      color: #fff;
+      color: #fff !important;
       font-size: 0.62rem;
       font-weight: 700;
       line-height: 1.2;
@@ -344,7 +344,7 @@
     .schedule-item-title {
       display: block;
       font-size: 0.78rem;
-      font-weight: 900;
+      font-weight: 400;
       line-height: 1.25;
       white-space: nowrap;
       overflow: hidden;
@@ -626,6 +626,41 @@
       color: #b24635;
     }
 
+    .request-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .request-item {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .request-index {
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .request-title {
+      margin-top: 8px;
+      color: #1f2b3d;
+      font-size: 1rem;
+      font-weight: 650;
+      line-height: 1.4;
+      word-break: keep-all;
+    }
+
+    .request-note {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
     .move-overview {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -659,6 +694,30 @@
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
       gap: 18px;
       align-items: start;
+    }
+
+    .disposal-wrap {
+      margin-top: 18px;
+    }
+
+    .disposal-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .disposal-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 4px 9px;
+      border: 1px solid #d8e1ef;
+      border-radius: 999px;
+      background: #f8fbff;
+      color: #1f2b3d;
+      font-size: 0.82rem;
+      line-height: 1.2;
+      white-space: nowrap;
     }
 
     .subsection-title {
@@ -720,6 +779,7 @@
 
     @media (max-width: 980px) {
       .grid,
+      .request-list,
       .summary-list,
       .move-overview,
       .transfer-overview,
@@ -840,6 +900,20 @@
       </article>
     </div>
 
+    <section class="panel" aria-label="인테리어 추가 요청 사항">
+      <div class="section-head">
+        <div class="section-copy">
+          <h2 class="section-title">인테리어 사장님 추가 요청 사항</h2>
+          <div class="section-note">현장에서 추가로 확인하거나 확정해야 할 내용을 모았습니다.</div>
+        </div>
+        <div class="section-actions">
+          <button class="json-toggle" type="button" data-json-target="interiorRequestJson">JSON 보기</button>
+        </div>
+      </div>
+      <pre class="json-panel" id="interiorRequestJson"></pre>
+      <div class="request-list" id="interiorRequestList"></div>
+    </section>
+
     <section class="grid" aria-label="상단 요약">
       <article class="card">
         <div class="metric-label">인테리어 비용</div>
@@ -865,7 +939,7 @@
       <div class="section-head">
         <div class="section-copy">
           <h2 class="section-title">이사 정리</h2>
-          <div class="section-note">이사 일정, 주소, 이사집 관련 지출 금액을 따로 모았습니다.</div>
+          <div class="section-note">이사 일정, 주소, 이사집 관련 지출 금액과 폐기 목록을 따로 모았습니다.</div>
         </div>
         <div class="section-actions">
           <button class="json-toggle" type="button" data-json-target="movingJson">JSON 보기</button>
@@ -903,6 +977,18 @@
             <tbody id="movingCostTableBody"></tbody>
           </table>
         </div>
+      </div>
+      <div class="table-wrap disposal-wrap">
+        <h3 class="subsection-title">가전가구 폐기 목록</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>공간</th>
+              <th>폐기 품목</th>
+            </tr>
+          </thead>
+          <tbody id="disposalTableBody"></tbody>
+        </table>
       </div>
     </section>
 
@@ -1181,6 +1267,16 @@
       container.innerHTML = `${weekHeaders}${headers}${bars}`;
     }
 
+    function renderInteriorRequests() {
+      document.getElementById("interiorRequestList").innerHTML = interiorRequestData.map((item, index) => `
+        <article class="request-item">
+          <div class="request-index">${String(index + 1).padStart(2, "0")}</div>
+          <div class="request-title">${item.title}</div>
+          ${item.note ? `<div class="request-note">${item.note}</div>` : ""}
+        </article>
+      `).join("");
+    }
+
     function renderMovingSection() {
       const movingSchedules = scheduleData.filter(isMovingSchedule);
       const movingPurchases = purchaseData.filter(isMovingPurchase);
@@ -1237,6 +1333,17 @@
           </tr>
         `;
       }).join("");
+
+      document.getElementById("disposalTableBody").innerHTML = disposalData.map((group) => `
+        <tr>
+          <td>${group.room}</td>
+          <td>
+            <div class="disposal-items">
+              ${group.items.map((item) => `<span class="disposal-chip">${item}</span>`).join("")}
+            </div>
+          </td>
+        </tr>
+      `).join("");
     }
 
     function renderTransferSection() {
@@ -1375,7 +1482,7 @@
 
       document.getElementById("grandMetric").textContent = formatWon(totals.grandTotal);
       document.getElementById("grandSub").textContent =
-        `인테리어 비용 ${formatWon(totals.constructionTotal)} / 이사·가전가구 비용 ${formatWon(totals.livingTotal)}`;
+        `총지출 ${formatWon(grandSpent)} / 남은 비용 ${formatWon(totals.grandTotal - grandSpent)}`;
       document.getElementById("grandProgress").style.width = `${Math.min(grandRatio, 100)}%`;
     }
 
@@ -1397,11 +1504,13 @@
     function renderJsonPanels() {
       const movingJson = {
         scheduleData: scheduleData.filter(isMovingSchedule),
-        purchaseData: purchaseData.filter(isMovingPurchase)
+        purchaseData: purchaseData.filter(isMovingPurchase),
+        disposalData
       };
       const purchaseJson = purchaseData.filter((item) => !isMovingPurchase(item));
       const jsonMap = {
         scheduleJson: scheduleData,
+        interiorRequestJson: interiorRequestData,
         movingJson,
         transferJson: transferData,
         constructionJson: constructionData,
@@ -1482,6 +1591,7 @@
       renderScheduleTodayLabel();
       renderJsonPanels();
       renderScheduleBoard();
+      renderInteriorRequests();
       renderMovingSection();
       renderTransferSection();
       renderConstructionTable();
@@ -1491,6 +1601,12 @@
       bindSchedulePopover();
       bindPrintButton();
     }
+
+    const interiorRequestData = [
+      { title: "싱크대 길이 확정", note: "시공 전 최종 길이 확인" },
+      { title: "싱크대 색상 확정", note: "상판, 하부장, 상부장 색상 확인" },
+      { title: "현관문 시트지, 신발장 가운데 수납공간 시트지 색상 변경", note: "변경할 색상을 사장님에게 전달" }
+    ];
 
     const scheduleData = [
       { name: "이사집 계약", startDate: "2026-05-04", endDate: "", note: "인천광역시 부평구 부평동 341-114, 302호 계약" },
@@ -1517,6 +1633,15 @@
 
     const transferData = [
       { date: "2026-05-04", sender: "김의수", receiver: "김하늘", amountWon: 2000000, memo: "아버지와 하늘 간 돈 입출금 내역" }
+    ];
+
+    const disposalData = [
+      { room: "안방", items: ["장롱", "침대", "서랍장", "안마의자", "에어컨", "실외기"] },
+      { room: "입구방", items: ["침대", "책상", "옷장", "의자", "책꽂이 2개", "프린터"] },
+      { room: "주방방", items: ["책상", "의자", "옷장", "침대"] },
+      { room: "세탁실", items: ["쌀독", "세탁기"] },
+      { room: "주방", items: ["냉장고", "김치냉장고 2개", "전자피아노"] },
+      { room: "거실", items: ["쇼파", "에어컨", "실외기", "티비장 2개", "작은책상"] }
     ];
 
     const purchaseData = [
