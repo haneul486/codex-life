@@ -637,10 +637,24 @@
     }
 
     .request-item {
+      display: grid;
+      gap: 8px;
       padding: 14px 16px;
       border: 1px solid var(--line);
       border-radius: 14px;
       background: #fff;
+    }
+
+    .request-item.is-completed {
+      border-color: #b9e5cd;
+      background: var(--success-soft);
+    }
+
+    .request-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
     }
 
     .request-index {
@@ -650,7 +664,6 @@
     }
 
     .request-title {
-      margin-top: 8px;
       color: #1f2b3d;
       font-size: 1rem;
       font-weight: 650;
@@ -658,11 +671,46 @@
       word-break: keep-all;
     }
 
+    .request-status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--warning-soft);
+      color: var(--warning);
+      font-size: 0.76rem;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .request-status.is-completed {
+      background: #dff5ea;
+      color: var(--success);
+    }
+
     .request-note {
-      margin-top: 6px;
       color: var(--muted);
       font-size: 0.86rem;
       line-height: 1.45;
+    }
+
+    .request-answer {
+      padding: 10px 12px;
+      border: 1px solid #cfe9db;
+      border-radius: 12px;
+      background: #fff;
+      color: #244131;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .request-answer-label {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--success);
+      font-size: 0.76rem;
+      font-weight: 850;
     }
 
     .move-overview {
@@ -1274,10 +1322,14 @@
 
     function renderInteriorRequests() {
       document.getElementById("interiorRequestList").innerHTML = interiorRequestData.map((item, index) => `
-        <article class="request-item">
-          <div class="request-index">${String(index + 1).padStart(2, "0")}</div>
+        <article class="request-item${item.status === "completed" ? " is-completed" : ""}">
+          <div class="request-head">
+            <div class="request-index">${String(index + 1).padStart(2, "0")}</div>
+            <div class="request-status${item.status === "completed" ? " is-completed" : ""}">${item.status === "completed" ? "완료" : "확인 필요"}</div>
+          </div>
           <div class="request-title">${item.title}</div>
           ${item.note ? `<div class="request-note">${item.note}</div>` : ""}
+          ${item.answer ? `<div class="request-answer"><span class="request-answer-label">답변${item.completedDate ? ` · ${item.completedDate}` : ""}</span>${item.answer}</div>` : ""}
         </article>
       `).join("");
     }
@@ -1610,8 +1662,20 @@
     const interiorRequestData = [
       { title: "싱크대 길이 확정", note: "시공 전 최종 길이 확인" },
       { title: "싱크대 색상 확정", note: "상판, 하부장, 상부장 색상 확인" },
-      { title: "현관문, 중문 우드부분, 신발장 오픈장을 영림170으로 통일 요청", note: "현관타일 REP-02 체리블라썸 네이비는 그대로 유지하고 현관문 시트지, 중문 프레임/하부 우드부분, 신발장 가운데 오픈장 모두 영림170 PWT1206-2 전사 루나내추럴로 통일" },
-      { title: "인테리어 신발장에 턱이 올라오는지 질문", note: "신발장 하부 또는 가운데 수납공간 쪽에 턱이 올라오는 구조인지 사전 확인" },
+      { 
+        title: "현관문, 중문 우드부분, 신발장 오픈장을 영림170으로 통일 요청", 
+        note: "현관타일 REP-02 체리블라썸 네이비는 그대로 유지하고 현관문 시트지, 중문 프레임/하부 우드부분, 신발장 가운데 오픈장 모두 영림170 PWT1206-2 전사 루나내추럴로 통일",
+        status: "completed",
+        answer: "적용요청완료",
+        completedDate: "2026-05-08"
+      },
+      {
+        title: "인테리어 신발장에 턱이 올라오는지 질문",
+        note: "신발장 하부 또는 가운데 수납공간 쪽에 턱이 올라오는 구조인지 사전 확인",
+        status: "completed",
+        answer: "신발장 턱은 올라오지 않음. 턱을 올리려면 신발장이 거실 안쪽으로 더 들어와야 해서 하지 않기로 함.",
+        completedDate: "2026-05-08"
+      },
       { title: "세탁실 턱 배관 체크", note: "세탁실 턱 시공 시 배관 간섭과 배수 위치 확인 / 참고: https://blog.naver.com/sjinterior2399/222338294113?trackingCode=blog_bloghome_searchlist" }
     ];
 
@@ -1641,7 +1705,8 @@
 
     const transferData = [
       { date: "2026-05-04", sender: "김의수", receiver: "김하늘", amountWon: 2000000, memo: "국민-285102" },
-      { date: "2026-05-08", sender: "김의수", receiver: "김하늘", amountWon: 9000000, memo: "국민-285102" }
+      { date: "2026-05-08", sender: "김의수", receiver: "김하늘", amountWon: 9000000, memo: "국민-285102" },
+      { date: "2026-05-08", sender: "김하늘", receiver: "김의수", amountWon: 110000, memo: "엘리베이터 사용료 송금 필요" }
     ];
 
     const disposalData = [
@@ -1659,8 +1724,8 @@
       { category: "가전", name: "워시타워", expectedWon: 1900000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "로봇청소기", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "에어컨", expectedWon: 1850000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가전", name: "게이트맨 도어락", expectedWon: 250000, status: "purchased", actualWon: 234740, purchaseDate: "2026-04-27", purchaseRoute: "쿠팡 결제", memo: "" },
-      { category: "가전", name: "게이트맨 도어락 보강판", expectedWon: 15000, status: "purchased", actualWon: 15000, purchaseDate: "2026-04-29", purchaseRoute: "네이버플러스스토어 결제", memo: "" },
+      { category: "가전", name: "게이트맨 도어락", expectedWon: 250000, status: "purchased", actualWon: 234740, purchaseDate: "2026-04-27", purchaseRoute: "쿠팡", memo: "" },
+      { category: "가전", name: "게이트맨 도어락 보강판", expectedWon: 15000, status: "purchased", actualWon: 15000, purchaseDate: "2026-04-29", purchaseRoute: "네이버플러스스토어", memo: "" },
       { category: "가구", name: "붙박이장", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "TV장", expectedWon: 1000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "퀸침대", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
@@ -1676,8 +1741,9 @@
       { category: "이사집", name: "이사집 보증금 환급", expectedWon: -500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "환급 예정", memo: "보증금 반환 예정 금액. 이사 예산에서 차감" },
       { category: "이사집", name: "이사집 수도세", expectedWon: 40000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "인천광역시 부평구 부평동 341-114, 302호" },
       { category: "이사집", name: "이사집 부동산 중개수수료", expectedWon: 100000, status: "paid", actualWon: 100000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
-      { category: "생활", name: "iptime wifi 공유기", expectedWon: 34600, status: "purchased", actualWon: 34600, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "구비항목" },
-      { category: "생활", name: "엘리베이터 사용료", expectedWon: 110000, status: "purchased", actualWon: 110000, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "구비항목" },
+      { category: "이사집", name: "가전가구폐기물", expectedWon: 500000, status: "paid", actualWon: 500000, purchaseDate: "2026-05-08", purchaseRoute: "예정", memo: "" },
+      { category: "생활", name: "iptime wifi 공유기", expectedWon: 34600, status: "purchased", actualWon: 34600, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "쿠팡" },
+      { category: "생활", name: "엘리베이터 사용료", expectedWon: 110000, status: "purchased", actualWon: 110000, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "경비실제출" },
       { category: "생활", name: "매트리스 커버 2개", expectedWon: 30000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "생활", name: "주방 매트 / 화장실 매트 2개 / 세탁실 매트", expectedWon: 60000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "총 4개" },
       { category: "생활", name: "생활살림", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" }

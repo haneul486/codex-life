@@ -6,6 +6,7 @@
 - 이 문서는 항상 **사용자가 마지막으로 직접 수정해둔 현재 HTML 파일 상태**를 기준으로 다시 작업한다.
 - 예전 대화 내용보다 **실제 파일 안에 들어있는 내용**을 우선한다.
 - 현관·중문 시공 요청서는 `C:\sky\project\codex-life\donga-interior\entrance_middle_door_request.html`에서 관리한다.
+- 현관·중문 시공 요청서의 참고 이미지는 `donga-interior/img/web/entrance-request-01.png`부터 순번 파일로 관리한다.
 
 ## 문자 인코딩
 
@@ -50,11 +51,16 @@
 ```js
 {
   title: "요청 또는 확인할 내용",
-  note: "보조 설명"
+  note: "보조 설명",
+  status: "pending 또는 completed",
+  answer: "답변 또는 결정 내용",
+  completedDate: "YYYY-MM-DD 또는 빈 문자열"
 }
 ```
 
 - `인테리어 사장님 추가 요청 사항` 섹션은 이 데이터만 읽어서 렌더링한다.
+- 답변을 받은 항목은 `status: "completed"`로 표시하고, `answer`에 결정 내용을 적는다.
+- 아직 확인할 항목은 `status`를 생략하거나 `"pending"`으로 둔다.
 
 ## 이사 폐기 목록 규칙
 
@@ -116,8 +122,18 @@
 - `status`가 `purchased`이면 구매완료로 표시된다.
 - `구매 상태 요약`은 예상 금액이 0보다 큰 항목만 표시한다.
 - 이사집 비용은 같은 `purchaseData`에 기록하되, 화면에서는 `이사 정리` 섹션으로 따로 분리해서 표시한다.
+- 엘리베이터 사용료, 공유기처럼 입주 준비를 위해 실제 지출한 일회성 구비 비용은 `생활` 카테고리의 `purchaseData`에 기록한다.
+- 이미 지불한 구비 비용은 `status: "purchased"`, `actualWon`에 실제 금액, `purchaseDate`에 결제일, `purchaseRoute`에 `"지불완료"`처럼 기록한다.
 - 가족 간 돈 입출금은 지출이 아니므로 `purchaseData`가 아니라 `transferData`에 기록한다.
+- 같은 사건에 실제 지출과 가족 간 정산/송금이 함께 있으면, 실제 지출은 `purchaseData`에 넣고 정산 흐름은 `transferData`에 따로 남긴다.
 - `transferData` 항목은 생활 준비 비용, 구매 상태 요약, 이사 지출 합계에 포함하지 않는다.
+
+## 현관·중문 요청서 규칙
+
+- 현관·중문 시공 요청서는 사장님에게 보여줄 참고 이미지가 먼저 보이도록 구성한다.
+- 참고 이미지는 `donga-interior/img/web/entrance-request-01.png`, `entrance-request-02.png`처럼 순번 파일로 저장하고, HTML에서도 같은 순서로 노출한다.
+- 현관문 시트지, 중문 우드부분, 신발장 가운데 오픈장은 현재 `영림170 PWT1206-2 전사 루나내추럴`로 통일하는 기준이다.
+- 이 기준이 바뀌면 예산표의 `interiorRequestData`, 자재 선택표의 해당 기록, 현관·중문 요청서 문구를 함께 확인한다.
 
 ## 화면 구조
 
