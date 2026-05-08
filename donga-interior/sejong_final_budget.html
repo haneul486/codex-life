@@ -58,7 +58,7 @@
 
     h1 {
       margin: 0;
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
       line-height: 1.08;
       letter-spacing: 0;
     }
@@ -1618,6 +1618,7 @@
     const scheduleData = [
       { name: "이사집 계약", startDate: "2026-05-04", endDate: "", note: "인천광역시 부평구 부평동 341-114, 302호 계약" },
       { name: "이사집 가스 개설", startDate: "2026-05-06", endDate: "", note: "16:00~18:00" },
+      { name: "부평집 폐기물 수거", startDate: "2026-05-08", endDate: "", note: "14:00~16:00, 냉장고, 가구 등" },
       { name: "부평집 가스 중지", startDate: "2026-05-09", endDate: "", note: "09:00~11:00" },
       { name: "이사 짐싸기", startDate: "2026-05-04", endDate: "2026-05-09", note: "포장과 분류를 진행하는 기간" },
       { name: "임시집으로 이사", startDate: "2026-05-10", endDate: "", note: "임시 거주지로 이동" },
@@ -1639,7 +1640,8 @@
     ];
 
     const transferData = [
-      { date: "2026-05-04", sender: "김의수", receiver: "김하늘", amountWon: 2000000, memo: "아버지와 하늘 간 돈 입출금 내역" }
+      { date: "2026-05-04", sender: "김의수", receiver: "김하늘", amountWon: 2000000, memo: "국민-285102" },
+      { date: "2026-05-08", sender: "김의수", receiver: "김하늘", amountWon: 9000000, memo: "국민-285102" }
     ];
 
     const disposalData = [
@@ -1674,6 +1676,8 @@
       { category: "이사집", name: "이사집 보증금 환급", expectedWon: -500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "환급 예정", memo: "보증금 반환 예정 금액. 이사 예산에서 차감" },
       { category: "이사집", name: "이사집 수도세", expectedWon: 40000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "인천광역시 부평구 부평동 341-114, 302호" },
       { category: "이사집", name: "이사집 부동산 중개수수료", expectedWon: 100000, status: "paid", actualWon: 100000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
+      { category: "생활", name: "iptime wifi 공유기", expectedWon: 34600, status: "purchased", actualWon: 34600, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "구비항목" },
+      { category: "생활", name: "엘리베이터 사용료", expectedWon: 110000, status: "purchased", actualWon: 110000, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "구비항목" },
       { category: "생활", name: "매트리스 커버 2개", expectedWon: 30000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "생활", name: "주방 매트 / 화장실 매트 2개 / 세탁실 매트", expectedWon: 60000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "총 4개" },
       { category: "생활", name: "생활살림", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" }
