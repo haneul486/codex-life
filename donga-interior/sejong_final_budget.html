@@ -1709,7 +1709,6 @@
       { name: "입주청소", startDate: "2026-06-03", endDate: "2026-06-03", note: "청소" },
       { name: "공사 종료", startDate: "2026-06-04", endDate: "", note: "현장 마감 및 점검" },
       { name: "입주 티비 인터넷 설치", startDate: "2026-06-05", endDate: "", note: "" },
-      { name: "입주 가스 설치", startDate: "2026-06-05", endDate: "", note: "" },
       { name: "이사집 가스 중지", startDate: "2026-06-05", endDate: "", note: "" },
       { name: "입주", startDate: "2026-06-06", endDate: "", note: "최종 입주 예정일" }
     ];
@@ -1741,13 +1740,14 @@
     ];
 
     const purchaseData = [
-      { category: "가전", name: "냉장고", expectedWon: 2200000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가전", name: "김치냉장고", expectedWon: 1170000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가전", name: "냉장고", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가전", name: "김치냉장고", expectedWon: 2000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "워시타워", expectedWon: 1830000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "에어컨", expectedWon: 1600000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "게이트맨 도어락", expectedWon: 250000, status: "purchased", actualWon: 234740, purchaseDate: "2026-04-27", purchaseRoute: "쿠팡", memo: "" },
       { category: "가전", name: "게이트맨 도어락 보강판", expectedWon: 15000, status: "purchased", actualWon: 15000, purchaseDate: "2026-04-29", purchaseRoute: "네이버플러스스토어", memo: "" },
-      { category: "가전", name: "인덕션", expectedWon: 650000, status: "purchased", actualWon: 0, purchaseDate: "2026-04-29", purchaseRoute: "네이버플러스스토어", memo: "" },
+      { category: "가전", name: "인덕션", expectedWon: 650000, status: "purchased", actualWon: 613800, purchaseDate: "2026-05-18", purchaseRoute: "쿠팡", memo: "롯데카드 5할" },
+      { category: "가전", name: "iptime wifi 공유기", expectedWon: 34600, status: "purchased", actualWon: 34600, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "쿠팡" },
       { category: "가구", name: "붙박이장", expectedWon: 2500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "TV장", expectedWon: 1000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "쇼파", expectedWon: 1600000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
@@ -1772,10 +1772,18 @@
       { category: "이사집", name: "이사집 부동산 중개수수료", expectedWon: 100000, status: "paid", actualWon: 100000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
       { category: "이사집", name: "가전가구폐기물", expectedWon: 500000, status: "paid", actualWon: 500000, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "" },
       { category: "이사집", name: "도시가스-가스비", expectedWon: 16920, status: "paid", actualWon: 16920, purchaseDate: "2026-05-09", purchaseRoute: "지불완료", memo: "" },
-      { category: "생활", name: "iptime wifi 공유기", expectedWon: 34600, status: "purchased", actualWon: 34600, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "쿠팡" },
-      { category: "생활", name: "매트리스 커버 2개", expectedWon: 30000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "생활", name: "주방 매트 / 화장실 매트 2개 / 세탁실 매트", expectedWon: 60000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "총 4개" },
-      { category: "생활", name: "생활살림-매트리스 커버, 이불 퀸 x1, 슈퍼싱글 x1, 퀸 매트 x1, 슈펑싱글 매트 x1, 베게x4, 베게커버x4", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" }
+      { category: "생활살림", name: "화장실 매트 2개 / 세탁실 매트 / 주방 매트", expectedWon: 60000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "주방 매트는 주방살림으로 분리" },
+      { category: "생활살림", name: "매트리스 커버 퀸, 슈퍼싱글", expectedWon: 60000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "소프트워싱 누빔 매트리스커버 SS 기준" },
+      { category: "생활살림", name: "이불 퀸, 슈퍼싱글", expectedWon: 150000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 3도씨 쿨나잇 냉감 얇은 솜이불 S 기준" },
+      { category: "생활살림", name: "퀸, 슈퍼싱글 매트", expectedWon: 100000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "3도씨 슈퍼익스트림쿨 PCM 냉감 패드 SS 기준" },
+      { category: "생활살림", name: "베개 4개, 베개커버 4개", expectedWon: 160000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "모달 100% 베개커버 50x70 4개 기준" },
+      { category: "생활살림", name: "거실 커튼", expectedWon: 128000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 높이조절 셀프맞춤 100% 빛차단 암막커튼 140x240 4장 기준" },
+      { category: "생활살림", name: "안방 커튼", expectedWon: 128000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 높이조절 셀프맞춤 100% 빛차단 암막커튼 140x240 2장 기준" },
+      { category: "생활살림", name: "작은방 커튼 3개 방", expectedWon: 100000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "작은방 3곳, 방마다 140x240 2장씩 총 6장 기준" },
+      { category: "생활살림", name: "커튼봉 5개", expectedWon: 10000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 25mm 커튼봉 5개 기준" },
+      { category: "주방살림", name: "냄비세트", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "주방살림", name: "칼가위세트", expectedWon: 250000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "주방살림", name: "믹싱볼", expectedWon: 250000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" }
     ];
 
     initializePage();
