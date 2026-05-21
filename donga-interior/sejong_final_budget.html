@@ -1660,12 +1660,17 @@
     }
 
     const interiorRequestData = [
-      { title: "싱크대 길이 확정", note: "시공 전 최종 길이 확인" },
+      { 
+        title: "싱크대 길이 확정", 
+        note: "시공 전 최종 길이 확인", 
+        status: "completed", 
+        answer: "냉장고턱까지 확정", 
+        completedDate: "2026-05-11" },
       {
         title: "싱크대 색상 확정",
         note: "상판, 하부장, 상부장 색상 확인",
         status: "completed",
-        answer: "상하부장은 매트 매그놀리아로 통일, 상판은 무드베이지플러스, 키친판넬은 엠보로프트로 확정.",
+        answer: "상:웜코튼, 하부장:네추럴오크, 상판은 무드베이지플러스, 키친판넬은 엠보로프트로 확정.",
         completedDate: "2026-05-11"
       },
       { 
@@ -1682,7 +1687,12 @@
         answer: "신발장 턱은 올라오지 않음. 턱을 올리려면 신발장이 거실 안쪽으로 더 들어와야 해서 하지 않기로 함.",
         completedDate: "2026-05-08"
       },
-      { title: "세탁실 턱 배관 체크", note: "세탁실 턱 시공 시 배관 간섭과 배수 위치 확인 / 참고: https://blog.naver.com/sjinterior2399/222338294113?trackingCode=blog_bloghome_searchlist" }
+      { 
+        title: "세탁실 턱 배관 체크", 
+        note: "세탁실 턱 시공 시 배관 간섭과 배수 위치 확인", 
+        status: "completed",
+        completedDate: "2026-05-11"
+      }
     ];
 
     const scheduleData = [
@@ -1752,10 +1762,10 @@
       { category: "가전", name: "iptime wifi 공유기", expectedWon: 34600, status: "purchased", actualWon: 34600, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "쿠팡" },
       { category: "가구", name: "붙박이장", expectedWon: 2500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "거실TV장", expectedWon: 1000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "안방TV장", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "안방TV장", expectedWon: 220000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "쇼파", expectedWon: 1600000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "퀸침대", expectedWon: 1000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "안방협탁", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "퀸침대", expectedWon: 1000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "삼익가구 하바나 침대 Q" },
+      { category: "가구", name: "안방협탁", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "삼익가구 하바나 침대 협탁" },
       { category: "가구", name: "퀸침대 매트리스", expectedWon: 450000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "입구방협탁", expectedWon: 100000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "슈퍼싱글침대", expectedWon: 220000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
