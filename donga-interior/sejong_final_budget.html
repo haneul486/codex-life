@@ -345,6 +345,11 @@
       background: #5f99ef;
     }
 
+    .schedule-item.is-delivery {
+      background: #e57b45;
+      box-shadow: 0 6px 14px rgba(229, 123, 69, 0.18);
+    }
+
     .schedule-item-title {
       display: block;
       font-size: 0.78rem;
@@ -353,6 +358,19 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .schedule-source {
+      display: inline-flex;
+      width: fit-content;
+      margin-top: 2px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.22);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.62rem;
+      font-weight: 800;
+      line-height: 1.15;
     }
 
     .schedule-item-note {
@@ -499,6 +517,239 @@
 
     .card.accent-total .progress-bar {
       background: linear-gradient(90deg, var(--accent) 0%, #ef9568 100%);
+    }
+
+    .visual-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.3fr) minmax(260px, 0.9fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .visual-card {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .visual-card-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .visual-card-note {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .donut-wrap {
+      display: grid;
+      grid-template-columns: 160px minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .donut-chart {
+      display: grid;
+      place-items: center;
+      width: 160px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--donut-gradient, #dfe6f0);
+      box-shadow: inset 0 0 0 1px rgba(18, 35, 58, 0.08);
+    }
+
+    .donut-core {
+      display: grid;
+      place-items: center;
+      width: 88px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #fff;
+      text-align: center;
+      box-shadow: 0 0 0 1px rgba(18, 35, 58, 0.08);
+    }
+
+    .donut-core strong {
+      display: block;
+      font-size: 0.98rem;
+      line-height: 1.2;
+    }
+
+    .donut-core span {
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .chart-legend {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .legend-item {
+      display: grid;
+      grid-template-columns: 10px minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      color: #344156;
+      font-size: 0.84rem;
+      line-height: 1.3;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--legend-color);
+    }
+
+    .legend-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 800;
+    }
+
+    .legend-value {
+      color: var(--muted);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .top-spend-list,
+    .upcoming-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .top-spend-item {
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .top-rank {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      color: #fff;
+      background: #26364c;
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
+    .top-spend-main {
+      min-width: 0;
+    }
+
+    .top-spend-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: #243145;
+      font-size: 0.9rem;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .top-spend-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .top-spend-amount {
+      white-space: nowrap;
+    }
+
+    .top-spend-bar {
+      height: 8px;
+      margin-top: 7px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #eef2f7;
+    }
+
+    .top-spend-fill {
+      width: var(--bar-width);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #3b6ff6, #7c5fb2);
+    }
+
+    .top-spend-category {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .upcoming-item {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface-soft);
+    }
+
+    .upcoming-date {
+      display: grid;
+      place-items: center;
+      min-height: 54px;
+      border-radius: 12px;
+      color: #fff;
+      background: var(--accent);
+      text-align: center;
+      font-weight: 900;
+      line-height: 1.15;
+    }
+
+    .upcoming-date span {
+      display: block;
+      font-size: 0.74rem;
+      opacity: 0.9;
+    }
+
+    .upcoming-name {
+      color: #243145;
+      font-size: 0.93rem;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .upcoming-meta {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 750;
+      line-height: 1.4;
+    }
+
+    .empty-state {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px dashed #cfd8e6;
+      border-radius: 14px;
+      color: var(--muted);
+      background: #fbfcfe;
+      text-align: center;
+      font-weight: 800;
     }
 
     .panel {
@@ -832,11 +1083,17 @@
     @media (max-width: 980px) {
       .grid,
       .request-list,
+      .visual-grid,
       .summary-list,
       .move-overview,
       .transfer-overview,
       .split-tables {
         grid-template-columns: 1fr;
+      }
+
+      .donut-wrap {
+        grid-template-columns: 1fr;
+        justify-items: center;
       }
 
     }
@@ -986,6 +1243,40 @@
         <div class="metric-sub" id="grandSub"></div>
         <div class="progress" aria-hidden="true"><div class="progress-bar" id="grandProgress"></div></div>
       </article>
+    </section>
+
+    <section class="panel" aria-label="비용 시각화">
+      <div class="section-head">
+        <div class="section-copy">
+          <h2 class="section-title">비용 한눈에 보기</h2>
+          <div class="section-note">구매 금액 비율, 큰 지출 항목, 다가오는 설치 일정을 같이 봅니다.</div>
+        </div>
+      </div>
+      <div class="visual-grid">
+        <article class="visual-card">
+          <h3 class="visual-card-title">카테고리별 비율</h3>
+          <p class="visual-card-note">이사집 비용을 제외한 구매 항목 기준입니다.</p>
+          <div class="donut-wrap">
+            <div class="donut-chart" id="categoryDonut" aria-label="카테고리별 구매 비율">
+              <div class="donut-core">
+                <strong id="donutTotal"></strong>
+                <span>구매예산</span>
+              </div>
+            </div>
+            <div class="chart-legend" id="categoryLegend"></div>
+          </div>
+        </article>
+        <article class="visual-card">
+          <h3 class="visual-card-title">상위 지출 TOP 8</h3>
+          <p class="visual-card-note">예상 금액과 실제 결제 금액 중 표시 금액 기준입니다.</p>
+          <div class="top-spend-list" id="topSpendList"></div>
+        </article>
+        <article class="visual-card">
+          <h3 class="visual-card-title">다가오는 설치</h3>
+          <p class="visual-card-note">구매 항목의 설치 속성에서 자동으로 가져옵니다.</p>
+          <div class="upcoming-list" id="upcomingDeliveryList"></div>
+        </article>
+      </div>
     </section>
 
     <section class="panel" aria-label="이사 정리">
@@ -1239,13 +1530,45 @@
       return dates;
     }
 
-    function renderScheduleBoard() {
-      const container = document.getElementById("scheduleBoard");
-      const scheduleItems = scheduleData.map((item, originalIndex) => ({ ...item, originalIndex })).sort((a, b) => {
+    function getPurchaseDeliveryCalendarItems() {
+      return purchaseData.flatMap((item, purchaseIndex) => {
+        if (!item.deliveryDate) return [];
+
+        const deliveryType = item.deliveryType || "배송";
+        const timeLabel = item.deliveryTime ? `시간 ${item.deliveryTime}` : "";
+        const noteParts = [timeLabel, item.deliveryNote].filter(Boolean);
+        return [{
+          name: `${item.name} ${deliveryType}`,
+          startDate: item.deliveryDate,
+          endDate: item.deliveryEndDate || "",
+          note: noteParts.join(" · "),
+          sourceType: "delivery",
+          purchaseIndex
+        }];
+      });
+    }
+
+    function getCalendarItems() {
+      const manualItems = scheduleData.map((item, originalIndex) => ({
+        ...item,
+        sourceType: "schedule",
+        originalIndex
+      }));
+      const deliveryItems = getPurchaseDeliveryCalendarItems().map((item, deliveryIndex) => ({
+        ...item,
+        originalIndex: scheduleData.length + deliveryIndex
+      }));
+
+      return [...manualItems, ...deliveryItems].sort((a, b) => {
         const dateDiff = parseDateOnly(a.startDate).getTime() - parseDateOnly(b.startDate).getTime();
         if (dateDiff !== 0) return dateDiff;
         return a.originalIndex - b.originalIndex;
       });
+    }
+
+    function renderScheduleBoard() {
+      const container = document.getElementById("scheduleBoard");
+      const scheduleItems = getCalendarItems();
 
       const firstScheduleDate = parseDateOnly(scheduleItems[0].startDate);
       const firstMonthDate = new Date(firstScheduleDate.getFullYear(), firstScheduleDate.getMonth(), 1);
@@ -1309,9 +1632,12 @@
         return segments;
       }).map(({ item, index, week, lane, startColumn, endColumn }) => {
         const state = getDateState(item.startDate);
+        const deliveryClass = item.sourceType === "delivery" ? " is-delivery" : "";
+        const sourceLabel = item.sourceType === "delivery" ? `<span class="schedule-source">${item.deliveryType || "배송"}</span>` : "";
         return `
-          <button class="schedule-item is-${state} color-${index % 5}" type="button" data-schedule-index="${item.originalIndex}" style="grid-column:${startColumn} / ${endColumn};grid-row:${week + 2};--lane:${lane}">
+          <button class="schedule-item is-${state}${deliveryClass} color-${index % 5}" type="button" data-calendar-index="${index}" style="grid-column:${startColumn} / ${endColumn};grid-row:${week + 2};--lane:${lane}">
             <span class="schedule-item-title">${item.name}</span>
+            ${sourceLabel}
           </button>
         `;
       }).join("");
@@ -1463,6 +1789,7 @@
         const statusMeta = getStatusMeta(item.status);
         const amount = getDisplayPurchaseAmount(item);
         const dateLabel = item.purchaseDate ? formatDateLabel(item.purchaseDate) : "일정 미정";
+        const deliveryLabel = item.deliveryDate ? `${item.deliveryType || "배송"} ${formatDateLabel(item.deliveryDate)}${item.deliveryTime ? ` ${item.deliveryTime}` : ""}` : "";
         const routeLabel = item.purchaseRoute || "경로 미정";
         const amountClass = amount < 0 ? " is-negative" : "";
 
@@ -1474,12 +1801,137 @@
                 <span class="${statusMeta.className}">${statusMeta.label}</span>
               </div>
               <div class="summary-item-meta">${item.category} · ${dateLabel} · ${routeLabel}</div>
+              ${deliveryLabel ? `<div class="summary-item-note">${deliveryLabel}</div>` : ""}
               ${item.memo ? `<div class="summary-item-note">${item.memo}</div>` : ""}
             </div>
             <div class="summary-item-amount${amountClass}">${formatWon(amount)}</div>
           </article>
         `;
       }).join("");
+    }
+
+    function getVisiblePurchaseItems() {
+      return purchaseData
+        .filter((item) => Number(item.expectedWon) > 0 && !isMovingPurchase(item))
+        .map((item) => ({ ...item, displayAmount: getDisplayPurchaseAmount(item) }))
+        .filter((item) => item.displayAmount > 0);
+    }
+
+    function getCategorySpendData() {
+      const categoryMap = new Map();
+      getVisiblePurchaseItems().forEach((item) => {
+        categoryMap.set(item.category, (categoryMap.get(item.category) || 0) + item.displayAmount);
+      });
+
+      return Array.from(categoryMap, ([category, amount]) => ({ category, amount }))
+        .sort((a, b) => b.amount - a.amount);
+    }
+
+    function renderCategoryDonut() {
+      const colors = ["#3b6ff6", "#7c5fb2", "#e57b45", "#1f8a5b", "#f6b526", "#f0829f", "#5f99ef", "#71c9b4"];
+      const categoryData = getCategorySpendData();
+      const total = categoryData.reduce((sum, item) => sum + item.amount, 0);
+      const donut = document.getElementById("categoryDonut");
+      const legend = document.getElementById("categoryLegend");
+
+      document.getElementById("donutTotal").textContent = formatWon(total);
+
+      if (!total) {
+        donut.style.setProperty("--donut-gradient", "#dfe6f0");
+        legend.innerHTML = `<div class="empty-state">표시할 구매 금액이 없습니다.</div>`;
+        return;
+      }
+
+      let cursor = 0;
+      const gradientStops = categoryData.map((item, index) => {
+        const start = cursor;
+        const end = cursor + (item.amount / total) * 100;
+        cursor = end;
+        const color = colors[index % colors.length];
+        return `${color} ${start.toFixed(2)}% ${end.toFixed(2)}%`;
+      });
+
+      donut.style.setProperty("--donut-gradient", `conic-gradient(${gradientStops.join(", ")})`);
+      legend.innerHTML = categoryData.map((item, index) => {
+        const percent = total > 0 ? (item.amount / total) * 100 : 0;
+        return `
+          <div class="legend-item">
+            <span class="legend-dot" style="--legend-color:${colors[index % colors.length]}"></span>
+            <span class="legend-name">${item.category}</span>
+            <span class="legend-value">${percent.toFixed(1)}% · ${formatWon(item.amount)}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderTopSpendList() {
+      const container = document.getElementById("topSpendList");
+      const items = getVisiblePurchaseItems()
+        .sort((a, b) => b.displayAmount - a.displayAmount)
+        .slice(0, 8);
+      const maxAmount = items[0] ? items[0].displayAmount : 0;
+
+      if (!items.length) {
+        container.innerHTML = `<div class="empty-state">표시할 지출 항목이 없습니다.</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map((item, index) => {
+        const width = maxAmount > 0 ? (item.displayAmount / maxAmount) * 100 : 0;
+        return `
+          <article class="top-spend-item">
+            <div class="top-rank">${index + 1}</div>
+            <div class="top-spend-main">
+              <div class="top-spend-head">
+                <span class="top-spend-name">${item.name}</span>
+                <span class="top-spend-amount">${formatWon(item.displayAmount)}</span>
+              </div>
+              <div class="top-spend-bar" aria-hidden="true"><div class="top-spend-fill" style="--bar-width:${width.toFixed(1)}%"></div></div>
+            </div>
+            <div class="top-spend-category">${item.category}</div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderUpcomingDeliveryList() {
+      const container = document.getElementById("upcomingDeliveryList");
+      const today = getToday();
+      today.setHours(0, 0, 0, 0);
+
+      const items = purchaseData
+        .filter((item) => item.deliveryDate && parseDateOnly(item.deliveryDate).getTime() >= today.getTime())
+        .sort((a, b) => parseDateOnly(a.deliveryDate).getTime() - parseDateOnly(b.deliveryDate).getTime())
+        .slice(0, 5);
+
+      if (!items.length) {
+        container.innerHTML = `<div class="empty-state">예정된 설치 일정이 없습니다.</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map((item) => {
+        const date = parseDateOnly(item.deliveryDate);
+        const dateLabel = `${date.getMonth() + 1}/${date.getDate()}`;
+        const weekday = new Intl.DateTimeFormat("ko-KR", { weekday: "short" }).format(date);
+        const type = item.deliveryType || "배송";
+        const time = item.deliveryTime ? ` · ${item.deliveryTime}` : "";
+        const note = item.deliveryNote ? ` · ${item.deliveryNote}` : "";
+        return `
+          <article class="upcoming-item">
+            <div class="upcoming-date">${dateLabel}<span>${weekday}</span></div>
+            <div>
+              <div class="upcoming-name">${item.name}</div>
+              <div class="upcoming-meta">${type}${time}${note}</div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderVisualAnalytics() {
+      renderCategoryDonut();
+      renderTopSpendList();
+      renderUpcomingDeliveryList();
     }
 
     function calculateTotals() {
@@ -1601,9 +2053,14 @@
       const startLabel = formatDateLabel(item.startDate);
       const endLabel = item.endDate ? formatDateLabel(item.endDate) : "";
       const dateLabel = endLabel ? `${startLabel} ~ ${endLabel}` : startLabel;
+      const sourceLabel = item.sourceType === "delivery" ? "배송/설치" : "일정";
 
       title.textContent = item.name;
       body.innerHTML = `
+        <div class="schedule-popover-row">
+          <div class="schedule-popover-label">구분</div>
+          <div class="schedule-popover-value">${sourceLabel}</div>
+        </div>
         <div class="schedule-popover-row">
           <div class="schedule-popover-label">일정</div>
           <div class="schedule-popover-value">${dateLabel}</div>
@@ -1624,9 +2081,10 @@
       document.getElementById("scheduleBoard").addEventListener("click", (event) => {
         const button = event.target.closest(".schedule-item");
         if (!button) return;
-        const index = Number(button.dataset.scheduleIndex);
-        if (Number.isNaN(index) || !scheduleData[index]) return;
-        openSchedulePopover(scheduleData[index]);
+        const index = Number(button.dataset.calendarIndex);
+        const calendarItems = getCalendarItems();
+        if (Number.isNaN(index) || !calendarItems[index]) return;
+        openSchedulePopover(calendarItems[index]);
       });
 
       document.getElementById("schedulePopoverClose").addEventListener("click", closeSchedulePopover);
@@ -1654,6 +2112,7 @@
       renderConstructionTable();
       renderPurchaseSummary();
       renderDashboard();
+      renderVisualAnalytics();
       bindJsonToggles();
       bindSchedulePopover();
       bindPrintButton();
@@ -1716,12 +2175,9 @@
       { name: "장판", startDate: "2026-06-01", endDate: "2026-06-01", note: "장판" },
       { name: "조명", startDate: "2026-06-01", endDate: "2026-06-01", note: "조명" },
       { name: "싱크대", startDate: "2026-06-02", endDate: "2026-06-02", note: "싱크대" },
-      { name: "인덕션 배송 설치", startDate: "2026-06-02", endDate: "2026-06-02", note: "인덕션 배송 설치" },
       { name: "입주청소", startDate: "2026-06-03", endDate: "2026-06-03", note: "청소" },
       { name: "공사 종료", startDate: "2026-06-04", endDate: "", note: "현장 마감 및 점검" },
-      { name: "냉장고 설치", startDate: "2026-06-04", endDate: "", note: "6월 4일로 요청/일정미정" },
       { name: "입주 티비 인터넷 설치", startDate: "2026-06-05", endDate: "", note: "요청예정" },
-      { name: "아일랜드 설치", startDate: "2026-06-05", endDate: "", note: "도착예정" },
       { name: "이사집 가스 중지", startDate: "2026-06-05", endDate: "", note: "" },
       { name: "입주", startDate: "2026-06-06", endDate: "", note: "최종 입주 예정일" }
     ];
@@ -1753,12 +2209,12 @@
     ];
 
     const purchaseData = [
-      { category: "가전", name: "냉장고+김치냉장고", expectedWon: 4000000, status: "purchased", actualWon: 3747000, purchaseDate: "2026-05-20", purchaseRoute: "네이버플러스스토어", memo: "연미롯카 일시불 / 6월 4일 배송요청" },
+      { category: "가전", name: "냉장고+김치냉장고", expectedWon: 4000000, status: "purchased", actualWon: 3747000, purchaseDate: "2026-05-20", purchaseRoute: "네이버플러스스토어", memo: "연미롯카 일시불", deliveryDate: "2026-06-04", deliveryType: "설치", deliveryNote: "설치 요청" },
       { category: "가전", name: "워시타워", expectedWon: 1830000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "에어컨", expectedWon: 1600000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "게이트맨 도어락", expectedWon: 250000, status: "purchased", actualWon: 234740, purchaseDate: "2026-04-27", purchaseRoute: "쿠팡", memo: "세종인테리어전달완료" },
       { category: "가전", name: "게이트맨 도어락 보강판", expectedWon: 15000, status: "purchased", actualWon: 15000, purchaseDate: "2026-04-29", purchaseRoute: "네이버플러스스토어", memo: "세종인테리어전달완료" },
-      { category: "가전", name: "인덕션", expectedWon: 650000, status: "purchased", actualWon: 613800, purchaseDate: "2026-05-18", purchaseRoute: "쿠팡", memo: "롯데카드 5할 / 6월 2일 배송" },
+      { category: "가전", name: "인덕션", expectedWon: 650000, status: "purchased", actualWon: 613800, purchaseDate: "2026-05-18", purchaseRoute: "쿠팡", memo: "롯데카드 5할", deliveryDate: "2026-06-02", deliveryType: "설치" },
       { category: "가전", name: "iptime wifi 공유기", expectedWon: 34600, status: "purchased", actualWon: 34600, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "쿠팡" },
       { category: "가구", name: "붙박이장", expectedWon: 2500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "거실TV장", expectedWon: 1000000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
@@ -1775,7 +2231,7 @@
       { category: "가구", name: "식탁-이케아 스테판x4", expectedWon: 199600, status: "planned", actualWon: 199600, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "식탁-이케아 의자패드, 유스티나", expectedWon: 23600, status: "planned", actualWon: 23600, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "식탁등-뉘모네, 천장등후크, 전구", expectedWon: 90700, status: "purchased", actualWon: 90700, purchaseDate: "2026-05-18", purchaseRoute: "이케아", memo: "롯카" },
-      { category: "가구", name: "한샘머그아일랜드-100x45", expectedWon: 229000, status: "purchased", actualWon: 229000, purchaseDate: "2026-05-21", purchaseRoute: "한샘몰", memo: "롯카 / 배송 예정일 6월5일(금) 1타임(09:00~14:00)" },
+      { category: "가구", name: "한샘머그아일랜드-100x45", expectedWon: 229000, status: "purchased", actualWon: 229000, purchaseDate: "2026-05-21", purchaseRoute: "한샘몰", memo: "롯카", deliveryDate: "2026-06-05", deliveryType: "설치", deliveryTime: "1타임(09:00~14:00)" },
       { category: "수납", name: "발코니 수납 선반 3개", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "이사집", name: "이사집 월세", expectedWon: 770000, status: "paid", actualWon: 770000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
       { category: "이사집", name: "이사집 보증금", expectedWon: 500000, status: "paid", actualWon: 500000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
@@ -1793,9 +2249,9 @@
       { category: "생활살림", name: "안방 커튼", expectedWon: 128000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 높이조절 셀프맞춤 100% 빛차단 암막커튼 140x240 2장 기준" },
       { category: "생활살림", name: "작은방 커튼 3개 방", expectedWon: 100000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "작은방 3곳, 방마다 140x240 2장씩 총 6장 기준" },
       { category: "생활살림", name: "커튼봉 5개", expectedWon: 10000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 25mm 커튼봉 5개 기준" },
+      { category: "생활살림", name: "기타생활용품", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "생활용품 예비비" },
       { category: "주방살림", name: "냄비세트", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "주방살림", name: "칼가위세트", expectedWon: 250000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "주방살림", name: "믹싱볼", expectedWon: 250000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" }
+      { category: "주방살림", name: "칼가위세트", expectedWon: 250000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" }
     ];
 
     initializePage();

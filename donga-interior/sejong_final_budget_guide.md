@@ -111,12 +111,18 @@
   actualWon: 0,
   purchaseDate: "",
   purchaseRoute: "",
+  deliveryDate: "YYYY-MM-DD 또는 빈 문자열",
+  deliveryType: "배송 또는 설치 또는 배송/설치",
+  deliveryTime: "시간대 또는 빈 문자열",
+  deliveryNote: "배송/설치 보조 메모",
   memo: ""
 }
 ```
 
 - `expectedWon`은 예상 금액이다.
 - `actualWon`은 실제 결제 금액이다.
+- 배송 또는 설치 일정이 있으면 `memo`에 섞어 쓰지 않고 `deliveryDate`, `deliveryType`, `deliveryTime`, `deliveryNote`에 나누어 기록한다.
+- `deliveryDate`가 있는 구매 항목은 상단 `진행 일정` 캘린더에 자동으로 표시된다.
 - 예상 금액과 실결제 금액은 모두 `원` 단위로 통일한다.
 - 숫자 입력칸은 `1,650,000`처럼 3자리마다 쉼표가 보이도록 유지한다.
 - `status`가 `purchased`이면 구매완료로 표시된다.
@@ -145,6 +151,10 @@
   - 공사비
   - 생활 준비 비용
   - 전체 비용: 총액, 총지출, 남은 비용을 함께 표시
+- 비용 한눈에 보기
+  - 카테고리별 비율 도넛 차트
+  - 상위 지출 TOP 8
+  - 구매 항목의 `deliveryDate` 기준 다가오는 설치 일정
 - 이사 정리
   - 이사집 주소
   - 이사 일정
