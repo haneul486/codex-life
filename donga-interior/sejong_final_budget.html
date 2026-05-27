@@ -202,7 +202,7 @@
       display: grid;
       grid-template-columns: repeat(7, minmax(150px, 1fr));
       grid-template-rows: 34px;
-      grid-auto-rows: 132px;
+      grid-auto-rows: var(--calendar-row-height, 132px);
       min-width: 1050px;
       background: #fff;
     }
@@ -293,7 +293,10 @@
       appearance: none;
       border: 0;
       align-self: start;
-      margin: calc(32px + (var(--lane) * 27px)) 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: calc(32px + (var(--lane) * var(--calendar-lane-step, 34px))) 6px 0;
       padding: 4px 9px;
       min-height: 23px;
       border-radius: 6px;
@@ -352,6 +355,8 @@
 
     .schedule-item-title {
       display: block;
+      min-width: 0;
+      flex: 1 1 auto;
       font-size: 0.78rem;
       font-weight: 400;
       line-height: 1.25;
@@ -362,8 +367,8 @@
 
     .schedule-source {
       display: inline-flex;
+      flex: 0 0 auto;
       width: fit-content;
-      margin-top: 2px;
       padding: 2px 6px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.22);
@@ -1122,7 +1127,7 @@
       .schedule-board {
         grid-template-columns: repeat(7, minmax(104px, 1fr));
         grid-template-rows: 32px;
-        grid-auto-rows: 116px;
+        grid-auto-rows: var(--calendar-row-height-mobile, 116px);
         min-width: 728px;
       }
 
@@ -1132,7 +1137,7 @@
       }
 
       .schedule-item {
-        margin-top: calc(30px + (var(--lane) * 24px));
+        margin-top: calc(30px + (var(--lane) * var(--calendar-lane-step-mobile, 32px)));
       }
 
       th,
@@ -1584,6 +1589,7 @@
       const todayIso = toIsoDate(getToday());
       const monthLabel = `${firstMonthDate.getFullYear()}년 ${firstMonthDate.getMonth() + 1}월`;
       const laneEndsByWeek = Array.from({ length: weekCount }, () => []);
+      const weekLaneCounts = Array.from({ length: weekCount }, () => 0);
       const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
 
       const weekHeaders = weekdays.map((weekday, index) => {
@@ -1625,6 +1631,7 @@
             lane = laneEnds.length;
           }
           laneEnds[lane] = weekEnd;
+          weekLaneCounts[week] = Math.max(weekLaneCounts[week], lane + 1);
           segments.push({ item, index, week, lane, startColumn: (cursor % 7) + 1, endColumn: (weekEnd % 7) + 2 });
           cursor = weekEnd + 1;
         }
@@ -1643,6 +1650,10 @@
       }).join("");
 
       container.setAttribute("aria-label", `${monthLabel} 월간 일정`);
+      container.style.gridTemplateRows = [
+        "34px",
+        ...weekLaneCounts.map((laneCount) => `${Math.max(132, 56 + Math.max(laneCount, 1) * 34)}px`)
+      ].join(" ");
       container.innerHTML = `${weekHeaders}${headers}${bars}`;
     }
 
@@ -2210,7 +2221,7 @@
 
     const purchaseData = [
       { category: "가전", name: "냉장고+김치냉장고", expectedWon: 3747000, status: "purchased", actualWon: 3747000, purchaseDate: "2026-05-20", purchaseRoute: "네이버플러스스토어", memo: "연미롯카 일시불", deliveryDate: "2026-06-04", deliveryType: "설치", deliveryNote: "설치 요청" },
-      { category: "가전", name: "워시타워", expectedWon: 1830000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가전", name: "워시타워", expectedWon: 2300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "에어컨", expectedWon: 2500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가전", name: "게이트맨 도어락", expectedWon: 250000, status: "purchased", actualWon: 234740, purchaseDate: "2026-04-27", purchaseRoute: "쿠팡", memo: "세종인테리어전달완료" },
       { category: "가전", name: "게이트맨 도어락 보강판", expectedWon: 15000, status: "purchased", actualWon: 15000, purchaseDate: "2026-04-29", purchaseRoute: "네이버플러스스토어", memo: "세종인테리어전달완료" },
@@ -2219,10 +2230,9 @@
       { category: "가구", name: "안방TV장", expectedWon: 220000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "쇼파", expectedWon: 1700000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "퀸침대", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "안방협탁", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "안방협탁", expectedWon: 200000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "퀸침대 매트리스", expectedWon: 450000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "입구방협탁", expectedWon: 100000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "슈퍼싱글침대", expectedWon: 220000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
+      { category: "가구", name: "슈퍼싱글침대", expectedWon: 450000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "슈퍼싱글침대 매트리스", expectedWon: 380000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "입구방-이케아:화장대, 거울, 서랍장, 옷장, 의자, 스탠, 협탁", expectedWon: 800000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
       { category: "가구", name: "까사미아-식탁, 의자x4, 거실장, 붙박이장", expectedWon: 5212680, status: "purchased", actualWon: 5212680, purchaseDate: "2026-05-26", purchaseRoute: "까사미아", memo: "롯카, 포멜로 식탁/의자(네추럴색, 가죽의자), 바젤거실장, 라펠 붙박이장", deliveryDate: "2026-06-04", deliveryType: "설치" },
