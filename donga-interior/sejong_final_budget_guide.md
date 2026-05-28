@@ -115,12 +115,17 @@
   deliveryType: "배송 또는 설치 또는 배송/설치",
   deliveryTime: "시간대 또는 빈 문자열",
   deliveryNote: "배송/설치 보조 메모",
-  memo: ""
+  memo: "",
+  subItems: [
+    { name: "하위 항목명", expectedWon: 0, actualWon: 0 }
+  ]
 }
 ```
 
 - `expectedWon`은 예상 금액이다.
 - `actualWon`은 실제 결제 금액이다.
+- 여러 품목이 한 번에 결제된 묶음 구매는 부모 항목에 총액을 기록하고, 구성품별 금액은 선택 필드인 `subItems`에 나누어 기록한다.
+- `subItems` 금액은 화면 표시용이며, 전체 합계 계산은 부모 항목의 `expectedWon`, `actualWon`을 기준으로 한다.
 - 배송 또는 설치 일정이 있으면 `memo`에 섞어 쓰지 않고 `deliveryDate`, `deliveryType`, `deliveryTime`, `deliveryNote`에 나누어 기록한다.
 - `deliveryDate`가 있는 구매 항목은 상단 `진행 일정` 캘린더에 자동으로 표시된다.
 - 예상 금액과 실결제 금액은 모두 `원` 단위로 통일한다.
