@@ -1,1717 +1,1878 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>동아 인테리어 예산표</title>
-  <style>
-    :root {
-      --bg: #f8f9fa;
-      --surface: #ffffff;
-      --surface-soft: #f6f8fb;
-      --line: #e6ebf2;
-      --text: #1b2430;
-      --muted: #677489;
-      --primary: #3b6ff6;
-      --primary-soft: #eaf1ff;
-      --accent: #e57b45;
-      --success: #1f8a5b;
-      --success-soft: #eaf8f1;
-      --warning: #c18b16;
-      --warning-soft: #fff6dc;
-      --timeline-past: #97a4b8;
-      --timeline-current: #3b6ff6;
-      --timeline-future: #dfe6f0;
-      --shadow: 0 12px 30px rgba(18, 35, 58, 0.07);
-      --radius: 20px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    .page {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 24px 20px 64px;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
-      padding: 22px 26px;
-      border-radius: 22px;
-      color: var(--text);
-      background: var(--surface);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(1.5rem, 3vw, 2.2rem);
-      line-height: 1.08;
-      letter-spacing: 0;
-    }
-
-    .meta {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      min-height: 42px;
-      padding: 0 16px;
-      border-radius: 999px;
-      background: var(--surface-soft);
-      border: 1px solid var(--line);
-      color: var(--muted);
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .toolbar-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      appearance: none;
-      border: 0;
-      border-radius: 12px;
-      background: var(--primary);
-      color: #fff;
-      padding: 12px 16px;
-      font: inherit;
-      font-weight: 800;
-      text-decoration: none;
-      cursor: pointer;
-      box-shadow: 0 8px 18px rgba(59, 111, 246, 0.24);
-    }
-
-    .milestone-card,
-    .panel,
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-    }
-
-    .milestone-card {
-      margin-top: 18px;
-      padding: 20px 22px;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 16px;
-      margin-bottom: 14px;
-    }
-
-    .section-copy {
-      display: grid;
-      gap: 4px;
-    }
-
-    .section-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-
-    .section-title {
-      margin: 0;
-      font-size: 1.25rem;
-      font-weight: 800;
-    }
-
-    .section-note {
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .section-date {
-      color: #888;
-      font-size: 0.8rem;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .json-toggle {
-      appearance: none;
-      border: 1px solid #c8d7f3;
-      border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      padding: 8px 12px;
-      font: inherit;
-      font-size: 0.82rem;
-      font-weight: 850;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .json-toggle:hover {
-      border-color: rgba(59, 111, 246, 0.42);
-      background: #f3f7ff;
-    }
-
-    .json-panel {
-      display: none;
-      margin: 0 0 16px;
-      padding: 14px 16px;
-      max-height: 340px;
-      overflow: auto;
-      border: 1px solid #d7dfeb;
-      border-radius: 14px;
-      background: #111827;
-      color: #e6edf7;
-      font-family: "Consolas", "SFMono-Regular", "Menlo", monospace;
-      font-size: 0.78rem;
-      line-height: 1.55;
-      white-space: pre;
-    }
-
-    .json-panel.is-open {
-      display: block;
-    }
-
-    .schedule-scroll {
-      overflow-x: auto;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: #fff;
-    }
-
-    .schedule-board {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(150px, 1fr));
-      grid-template-rows: 34px;
-      grid-auto-rows: var(--calendar-row-height, 132px);
-      min-width: 1050px;
-      background: #fff;
-    }
-
-    .schedule-week-header {
-      padding: 9px 12px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      background: #f8fbff;
-      color: var(--muted);
-      font-size: 0.82rem;
-      font-weight: 800;
-    }
-
-    .schedule-week-header.is-sunday {
-      color: #d84f4f;
-    }
-
-    .schedule-week-header.is-saturday {
-      color: #286fe8;
-    }
-
-    .schedule-day {
-      min-height: 132px;
-      padding: 12px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      background: #fff;
-    }
-
-    .schedule-day.is-outside-month {
-      background: #fafbfc;
-      color: #a2adbd;
-    }
-
-    .schedule-day.is-today {
-      background: #f6f9ff;
-    }
-
-    .schedule-day.is-today .schedule-date {
-      align-items: center;
-    }
-
-    .schedule-day.is-sunday .schedule-date {
-      color: #d84f4f;
-    }
-
-    .schedule-day.is-saturday .schedule-date {
-      color: #286fe8;
-    }
-
-    .schedule-date {
-      display: flex;
-      align-items: baseline;
-      gap: 5px;
-      color: #1f2b3d;
-      font-weight: 500;
-    }
-
-    .schedule-day.is-outside-month .schedule-date {
-      color: #9aa7b8;
-    }
-
-    .schedule-date strong {
-      font-size: 1.06rem;
-      font-weight: 500;
-      line-height: 1;
-    }
-
-    .schedule-date span {
-      color: var(--muted);
-      font-size: 0.74rem;
-      font-weight: 500;
-    }
-
-    .schedule-today-badge {
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: #1f6feb;
-      color: #fff !important;
-      font-size: 0.62rem;
-      font-weight: 700;
-      line-height: 1.2;
-      text-transform: uppercase;
-    }
-
-    .schedule-item {
-      appearance: none;
-      border: 0;
-      align-self: start;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin: calc(32px + (var(--lane) * var(--calendar-lane-step, 34px))) 6px 0;
-      padding: 4px 9px;
-      min-height: 23px;
-      border-radius: 6px;
-      color: #fff;
-      background: var(--primary);
-      box-shadow: 0 6px 14px rgba(59, 111, 246, 0.12);
-      overflow: hidden;
-      z-index: 2;
-      cursor: pointer;
-      text-align: left;
-      font: inherit;
-    }
-
-    .schedule-item:hover {
-      filter: brightness(0.97);
-    }
-
-    .schedule-item.is-past {
-      background: #7e8ea5;
-      box-shadow: none;
-    }
-
-    .schedule-item.is-today {
-      background: var(--primary);
-      outline: 2px solid rgba(59, 111, 246, 0.18);
-    }
-
-    .schedule-item.is-future {
-      background: #628ff5;
-    }
-
-    .schedule-item.color-0 {
-      background: #71c9b4;
-    }
-
-    .schedule-item.color-1 {
-      background: #8a70db;
-    }
-
-    .schedule-item.color-2 {
-      background: #f0829f;
-    }
-
-    .schedule-item.color-3 {
-      background: #f6b526;
-    }
-
-    .schedule-item.color-4 {
-      background: #5f99ef;
-    }
-
-    .schedule-item.is-delivery {
-      background: #e57b45;
-      box-shadow: 0 6px 14px rgba(229, 123, 69, 0.18);
-    }
-
-    .schedule-item-title {
-      display: block;
-      min-width: 0;
-      flex: 1 1 auto;
-      font-size: 0.78rem;
-      font-weight: 400;
-      line-height: 1.25;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .schedule-source {
-      display: inline-flex;
-      flex: 0 0 auto;
-      width: fit-content;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.22);
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 0.62rem;
-      font-weight: 800;
-      line-height: 1.15;
-    }
-
-    .schedule-item-note {
-      display: none;
-    }
-
-    .schedule-popover {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      background: rgba(15, 23, 42, 0.18);
-      padding: 24px;
-    }
-
-    .schedule-popover.is-open {
-      display: grid;
-      place-items: center;
-    }
-
-    .schedule-popover-card {
-      width: min(440px, 100%);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: #fff;
-      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.2);
-      overflow: hidden;
-    }
-
-    .schedule-popover-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 18px 18px 12px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .schedule-popover-title {
-      margin: 0;
-      font-size: 1.1rem;
-      font-weight: 850;
-      line-height: 1.35;
-    }
-
-    .schedule-popover-close {
-      appearance: none;
-      width: 34px;
-      height: 34px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--surface-soft);
-      color: var(--muted);
-      cursor: pointer;
-      font: inherit;
-      font-size: 1.2rem;
-      line-height: 1;
-    }
-
-    .schedule-popover-body {
-      display: grid;
-      gap: 12px;
-      padding: 16px 18px 18px;
-    }
-
-    .schedule-popover-row {
-      display: grid;
-      gap: 4px;
-    }
-
-    .schedule-popover-label {
-      color: var(--muted);
-      font-size: 0.78rem;
-      font-weight: 800;
-    }
-
-    .schedule-popover-value {
-      color: var(--text);
-      font-size: 0.96rem;
-      line-height: 1.5;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .card {
-      padding: 20px 22px;
-      border-top: 4px solid #2f5d8a;
-    }
-
-    .card.accent-living {
-      border-top-color: #7c5fb2;
-    }
-
-    .card.accent-total {
-      border-top-color: var(--accent);
-    }
-
-    .metric-label {
-      color: var(--muted);
-      font-size: 1rem;
-      font-weight: 700;
-    }
-
-    .metric {
-      margin-top: 12px;
-      font-size: clamp(1.85rem, 3vw, 2.6rem);
-      font-weight: 800;
-      line-height: 1.12;
-      letter-spacing: 0;
-      color: #1f2b3d;
-    }
-
-    .metric-sub {
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 0.98rem;
-      line-height: 1.5;
-      font-weight: 650;
-    }
-
-    .progress {
-      margin-top: 14px;
-      width: 100%;
-      height: 10px;
-      border-radius: 999px;
-      background: #edf1f6;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--primary) 0%, #5a88ff 100%);
-      transition: width 0.2s ease;
-    }
-
-    .card.accent-living .progress-bar {
-      background: linear-gradient(90deg, #7c5fb2 0%, #9a7be0 100%);
-    }
-
-    .card.accent-total .progress-bar {
-      background: linear-gradient(90deg, var(--accent) 0%, #ef9568 100%);
-    }
-
-    .visual-grid {
-      display: grid;
-      grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.3fr) minmax(260px, 0.9fr);
-      gap: 14px;
-      align-items: stretch;
-    }
-
-    .visual-card {
-      min-width: 0;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: #fff;
-    }
-
-    .visual-card-title {
-      margin: 0;
-      font-size: 1rem;
-      font-weight: 900;
-      line-height: 1.35;
-    }
-
-    .visual-card-note {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 0.84rem;
-      line-height: 1.45;
-    }
-
-    .donut-wrap {
-      display: grid;
-      grid-template-columns: 160px minmax(0, 1fr);
-      gap: 16px;
-      align-items: center;
-      margin-top: 16px;
-    }
-
-    .donut-chart {
-      display: grid;
-      place-items: center;
-      width: 160px;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: var(--donut-gradient, #dfe6f0);
-      box-shadow: inset 0 0 0 1px rgba(18, 35, 58, 0.08);
-    }
-
-    .donut-core {
-      display: grid;
-      place-items: center;
-      width: 88px;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: #fff;
-      text-align: center;
-      box-shadow: 0 0 0 1px rgba(18, 35, 58, 0.08);
-    }
-
-    .donut-core strong {
-      display: block;
-      font-size: 0.98rem;
-      line-height: 1.2;
-    }
-
-    .donut-core span {
-      color: var(--muted);
-      font-size: 0.72rem;
-      font-weight: 800;
-    }
-
-    .chart-legend {
-      display: grid;
-      gap: 8px;
-      min-width: 0;
-    }
-
-    .legend-item {
-      display: grid;
-      grid-template-columns: 10px minmax(0, 1fr) auto;
-      gap: 8px;
-      align-items: center;
-      color: #344156;
-      font-size: 0.84rem;
-      line-height: 1.3;
-    }
-
-    .legend-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--legend-color);
-    }
-
-    .legend-name {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-weight: 800;
-    }
-
-    .legend-value {
-      color: var(--muted);
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .top-spend-list,
-    .upcoming-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .top-spend-item {
-      display: grid;
-      grid-template-columns: 30px minmax(0, 1fr) auto;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .top-rank {
-      display: grid;
-      place-items: center;
-      width: 30px;
-      height: 30px;
-      border-radius: 10px;
-      color: #fff;
-      background: #26364c;
-      font-size: 0.8rem;
-      font-weight: 900;
-    }
-
-    .top-spend-main {
-      min-width: 0;
-    }
-
-    .top-spend-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      color: #243145;
-      font-size: 0.9rem;
-      font-weight: 900;
-      line-height: 1.35;
-    }
-
-    .top-spend-name {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .top-spend-amount {
-      white-space: nowrap;
-    }
-
-    .top-spend-bar {
-      height: 8px;
-      margin-top: 7px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: #eef2f7;
-    }
-
-    .top-spend-fill {
-      width: var(--bar-width);
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, #3b6ff6, #7c5fb2);
-    }
-
-    .top-spend-category {
-      color: var(--muted);
-      font-size: 0.78rem;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .upcoming-item {
-      display: grid;
-      grid-template-columns: 58px minmax(0, 1fr);
-      gap: 10px;
-      align-items: center;
-      padding: 10px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--surface-soft);
-    }
-
-    .upcoming-date {
-      display: grid;
-      place-items: center;
-      min-height: 54px;
-      border-radius: 12px;
-      color: #fff;
-      background: var(--accent);
-      text-align: center;
-      font-weight: 900;
-      line-height: 1.15;
-    }
-
-    .upcoming-date span {
-      display: block;
-      font-size: 0.74rem;
-      opacity: 0.9;
-    }
-
-    .upcoming-name {
-      color: #243145;
-      font-size: 0.93rem;
-      font-weight: 900;
-      line-height: 1.35;
-    }
-
-    .upcoming-meta {
-      margin-top: 3px;
-      color: var(--muted);
-      font-size: 0.8rem;
-      font-weight: 750;
-      line-height: 1.4;
-    }
-
-    .empty-state {
-      margin-top: 16px;
-      padding: 18px;
-      border: 1px dashed #cfd8e6;
-      border-radius: 14px;
-      color: var(--muted);
-      background: #fbfcfe;
-      text-align: center;
-      font-weight: 800;
-    }
-
-    .panel {
-      margin-top: 18px;
-      padding: 20px 22px;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th,
-    td {
-      padding: 14px 12px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      vertical-align: middle;
-    }
-
-    th {
-      color: var(--muted);
-      font-size: 0.94rem;
-      font-weight: 800;
-      background: var(--surface-soft);
-    }
-
-    tbody tr:last-child td {
-      border-bottom: 0;
-    }
-
-    tbody tr {
-      transition: background-color 0.16s ease;
-    }
-
-    tbody tr:hover {
-      background: #f8fbff;
-    }
-
-    .amount-cell {
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: 0.86rem;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .status-planned {
-      color: #7d5a19;
-      background: #fff3dc;
-    }
-
-    .status-purchased,
-    .status-paid {
-      color: var(--success);
-      background: var(--success-soft);
-    }
-
-    .summary-list {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px 16px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: #fff;
-      transition: transform 0.16s ease, box-shadow 0.16s ease;
-    }
-
-    .summary-item:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 18px rgba(18, 35, 58, 0.06);
-    }
-
-    .summary-item-main {
-      min-width: 0;
-    }
-
-    .summary-item-name {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .summary-item-meta {
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.45;
-    }
-
-    .summary-item-note {
-      margin-top: 5px;
-      color: #526174;
-      font-size: 0.82rem;
-      line-height: 1.45;
-    }
-
-    .summary-subitem-toggle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: fit-content;
-      margin-top: 10px;
-      padding: 6px 10px;
-      border: 1px solid #c7d7f5;
-      border-radius: 999px;
-      background: #f4f7ff;
-      color: var(--primary);
-      font: inherit;
-      font-size: 0.78rem;
-      font-weight: 850;
-      cursor: pointer;
-    }
-
-    .summary-subitem-toggle:hover {
-      background: #e9f0ff;
-    }
-
-    .summary-subitems {
-      display: grid;
-      gap: 4px;
-      margin-top: 10px;
-      padding-top: 9px;
-      border-top: 1px dashed #d7e0eb;
-    }
-
-    .summary-subitems[hidden] {
-      display: none;
-    }
-
-    .summary-subitem {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      color: #526174;
-      font-size: 0.8rem;
-      line-height: 1.35;
-    }
-
-    .summary-subitem-name {
-      min-width: 0;
-    }
-
-    .summary-subitem-amount {
-      flex: 0 0 auto;
-      color: #1f2b3d;
-      font-weight: 750;
-      white-space: nowrap;
-    }
-
-    .summary-item-amount {
-      flex-shrink: 0;
-      text-align: right;
-      font-weight: 750;
-      font-size: 1.05rem;
-      white-space: nowrap;
-    }
-
-    .summary-item-amount.is-negative {
-      color: #b24635;
-    }
-
-    .request-list {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .request-item {
-      display: grid;
-      gap: 8px;
-      padding: 14px 16px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: #fff;
-    }
-
-    .request-item.is-completed {
-      border-color: #b9e5cd;
-      background: var(--success-soft);
-    }
-
-    .request-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .request-index {
-      color: var(--primary);
-      font-size: 0.78rem;
-      font-weight: 800;
-    }
-
-    .request-title {
-      color: #1f2b3d;
-      font-size: 1rem;
-      font-weight: 650;
-      line-height: 1.4;
-      word-break: keep-all;
-    }
-
-    .request-status {
-      display: inline-flex;
-      align-items: center;
-      min-height: 26px;
-      padding: 0 9px;
-      border-radius: 999px;
-      background: var(--warning-soft);
-      color: var(--warning);
-      font-size: 0.76rem;
-      font-weight: 850;
-      white-space: nowrap;
-    }
-
-    .request-status.is-completed {
-      background: #dff5ea;
-      color: var(--success);
-    }
-
-    .request-note {
-      color: var(--muted);
-      font-size: 0.86rem;
-      line-height: 1.45;
-    }
-
-    .request-answer {
-      padding: 10px 12px;
-      border: 1px solid #cfe9db;
-      border-radius: 12px;
-      background: #fff;
-      color: #244131;
-      font-size: 0.88rem;
-      line-height: 1.5;
-    }
-
-    .request-answer-label {
-      display: block;
-      margin-bottom: 3px;
-      color: var(--success);
-      font-size: 0.76rem;
-      font-weight: 850;
-    }
-
-    .move-overview {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .move-stat {
-      padding: 14px 16px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--surface-soft);
-    }
-
-    .move-stat-label {
-      color: var(--muted);
-      font-size: 0.88rem;
-      font-weight: 800;
-    }
-
-    .move-stat-value {
-      margin-top: 8px;
-      font-size: 1.12rem;
-      font-weight: 850;
-      line-height: 1.35;
-      word-break: keep-all;
-    }
-
-    .split-tables {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
-      gap: 18px;
-      align-items: start;
-    }
-
-    .disposal-wrap {
-      margin-top: 18px;
-    }
-
-    .disposal-items {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .disposal-chip {
-      display: inline-flex;
-      align-items: center;
-      min-height: 26px;
-      padding: 4px 9px;
-      border: 1px solid #d8e1ef;
-      border-radius: 999px;
-      background: #f8fbff;
-      color: #1f2b3d;
-      font-size: 0.82rem;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
-
-    .subsection-title {
-      margin: 0 0 10px;
-      font-size: 1rem;
-      font-weight: 850;
-    }
-
-    .transfer-overview {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    input,
-    select {
-      width: 100%;
-      min-height: 40px;
-      padding: 8px 10px;
-      border: 1px solid #c8d2e0;
-      border-radius: 10px;
-      background: #fff;
-      color: var(--text);
-      font: inherit;
-      transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
-    }
-
-    input:focus,
-    select:focus {
-      outline: none;
-      border-color: rgba(59, 111, 246, 0.55);
-      box-shadow: 0 0 0 4px rgba(59, 111, 246, 0.12);
-      background: #fcfdff;
-    }
-
-    select {
-      min-width: 120px;
-      width: max(100%, 120px);
-    }
-
-    input::placeholder {
-      color: transparent;
-    }
-
-    .helper-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      margin-top: 18px;
-      margin-bottom: 10px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    @media (max-width: 980px) {
-      .grid,
-      .request-list,
-      .visual-grid,
-      .summary-list,
-      .move-overview,
-      .transfer-overview,
-      .split-tables {
-        grid-template-columns: 1fr;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>동아 인테리어 예산표</title>
+    <style>
+      :root {
+        --bg: #f8f9fa;
+        --surface: #ffffff;
+        --surface-soft: #f6f8fb;
+        --line: #e6ebf2;
+        --text: #1b2430;
+        --muted: #677489;
+        --primary: #3b6ff6;
+        --primary-soft: #eaf1ff;
+        --accent: #e57b45;
+        --success: #1f8a5b;
+        --success-soft: #eaf8f1;
+        --warning: #c18b16;
+        --warning-soft: #fff6dc;
+        --timeline-past: #97a4b8;
+        --timeline-current: #3b6ff6;
+        --timeline-future: #dfe6f0;
+        --shadow: 0 12px 30px rgba(18, 35, 58, 0.07);
+        --radius: 20px;
       }
 
-      .donut-wrap {
-        grid-template-columns: 1fr;
-        justify-items: center;
+      * {
+        box-sizing: border-box;
       }
 
-    }
+      body {
+        margin: 0;
+        font-family:
+          "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
 
-    @media (max-width: 720px) {
       .page {
-        padding: 16px 14px 44px;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 24px 20px 64px;
       }
 
       header {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 20px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 22px 26px;
+        border-radius: 22px;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(1.5rem, 3vw, 2.2rem);
+        line-height: 1.08;
+        letter-spacing: 0;
       }
 
       .meta {
-        justify-content: flex-start;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
       }
 
-      .section-head,
-      .helper-row {
-        flex-direction: column;
-        align-items: flex-start;
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 42px;
+        padding: 0 16px;
+        border-radius: 999px;
+        background: var(--surface-soft);
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .toolbar-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        appearance: none;
+        border: 0;
+        border-radius: 12px;
+        background: var(--primary);
+        color: #fff;
+        padding: 12px 16px;
+        font: inherit;
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: 0 8px 18px rgba(59, 111, 246, 0.24);
+      }
+
+      .milestone-card,
+      .panel,
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+        border-radius: var(--radius);
+      }
+
+      .milestone-card {
+        margin-top: 18px;
+        padding: 20px 22px;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 16px;
+        margin-bottom: 14px;
+      }
+
+      .section-copy {
+        display: grid;
+        gap: 4px;
+      }
+
+      .section-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      .section-title {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 800;
+      }
+
+      .section-note {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .section-date {
+        color: #888;
+        font-size: 0.8rem;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .json-toggle {
+        appearance: none;
+        border: 1px solid #c8d7f3;
+        border-radius: 999px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        padding: 8px 12px;
+        font: inherit;
+        font-size: 0.82rem;
+        font-weight: 850;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .json-toggle:hover {
+        border-color: rgba(59, 111, 246, 0.42);
+        background: #f3f7ff;
+      }
+
+      .json-panel {
+        display: none;
+        margin: 0 0 16px;
+        padding: 14px 16px;
+        max-height: 340px;
+        overflow: auto;
+        border: 1px solid #d7dfeb;
+        border-radius: 14px;
+        background: #111827;
+        color: #e6edf7;
+        font-family: "Consolas", "SFMono-Regular", "Menlo", monospace;
+        font-size: 0.78rem;
+        line-height: 1.55;
+        white-space: pre;
+      }
+
+      .json-panel.is-open {
+        display: block;
+      }
+
+      .schedule-scroll {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
       }
 
       .schedule-board {
-        grid-template-columns: repeat(7, minmax(104px, 1fr));
-        grid-template-rows: 32px;
-        grid-auto-rows: var(--calendar-row-height-mobile, 116px);
-        min-width: 728px;
+        display: grid;
+        grid-template-columns: repeat(7, minmax(150px, 1fr));
+        grid-template-rows: 34px;
+        grid-auto-rows: var(--calendar-row-height, 132px);
+        min-width: 1050px;
+        background: #fff;
+      }
+
+      .schedule-week-header {
+        padding: 9px 12px;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: #f8fbff;
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 800;
+      }
+
+      .schedule-week-header.is-sunday {
+        color: #d84f4f;
+      }
+
+      .schedule-week-header.is-saturday {
+        color: #286fe8;
       }
 
       .schedule-day {
-        min-height: 116px;
-        padding: 9px;
+        min-height: 132px;
+        padding: 12px;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: #fff;
+      }
+
+      .schedule-day.is-outside-month {
+        background: #fafbfc;
+        color: #a2adbd;
+      }
+
+      .schedule-day.is-today {
+        background: #f6f9ff;
+      }
+
+      .schedule-day.is-today .schedule-date {
+        align-items: center;
+      }
+
+      .schedule-day.is-sunday .schedule-date {
+        color: #d84f4f;
+      }
+
+      .schedule-day.is-saturday .schedule-date {
+        color: #286fe8;
+      }
+
+      .schedule-date {
+        display: flex;
+        align-items: baseline;
+        gap: 5px;
+        color: #1f2b3d;
+        font-weight: 500;
+      }
+
+      .schedule-day.is-outside-month .schedule-date {
+        color: #9aa7b8;
+      }
+
+      .schedule-date strong {
+        font-size: 1.06rem;
+        font-weight: 500;
+        line-height: 1;
+      }
+
+      .schedule-date span {
+        color: var(--muted);
+        font-size: 0.74rem;
+        font-weight: 500;
+      }
+
+      .schedule-today-badge {
+        padding: 2px 6px;
+        border-radius: 999px;
+        background: #1f6feb;
+        color: #fff !important;
+        font-size: 0.62rem;
+        font-weight: 700;
+        line-height: 1.2;
+        text-transform: uppercase;
       }
 
       .schedule-item {
-        margin-top: calc(30px + (var(--lane) * var(--calendar-lane-step-mobile, 32px)));
+        appearance: none;
+        border: 0;
+        align-self: start;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: calc(32px + (var(--lane) * var(--calendar-lane-step, 34px))) 6px
+          0;
+        padding: 4px 9px;
+        min-height: 23px;
+        border-radius: 6px;
+        color: #fff;
+        background: var(--primary);
+        box-shadow: 0 6px 14px rgba(59, 111, 246, 0.12);
+        overflow: hidden;
+        z-index: 2;
+        cursor: pointer;
+        text-align: left;
+        font: inherit;
+      }
+
+      .schedule-item:hover {
+        filter: brightness(0.97);
+      }
+
+      .schedule-item.is-past {
+        background: #7e8ea5;
+        box-shadow: none;
+      }
+
+      .schedule-item.is-today {
+        background: var(--primary);
+        outline: 2px solid rgba(59, 111, 246, 0.18);
+      }
+
+      .schedule-item.is-future {
+        background: #628ff5;
+      }
+
+      .schedule-item.color-0 {
+        background: #71c9b4;
+      }
+
+      .schedule-item.color-1 {
+        background: #8a70db;
+      }
+
+      .schedule-item.color-2 {
+        background: #f0829f;
+      }
+
+      .schedule-item.color-3 {
+        background: #f6b526;
+      }
+
+      .schedule-item.color-4 {
+        background: #5f99ef;
+      }
+
+      .schedule-item.is-delivery {
+        background: #e57b45;
+        box-shadow: 0 6px 14px rgba(229, 123, 69, 0.18);
+      }
+
+      .schedule-item-title {
+        display: block;
+        min-width: 0;
+        flex: 1 1 auto;
+        font-size: 0.78rem;
+        font-weight: 400;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .schedule-source {
+        display: inline-flex;
+        flex: 0 0 auto;
+        width: fit-content;
+        padding: 2px 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.22);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.62rem;
+        font-weight: 800;
+        line-height: 1.15;
+      }
+
+      .schedule-item-note {
+        display: none;
+      }
+
+      .schedule-popover {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: rgba(15, 23, 42, 0.18);
+        padding: 24px;
+      }
+
+      .schedule-popover.is-open {
+        display: grid;
+        place-items: center;
+      }
+
+      .schedule-popover-card {
+        width: min(440px, 100%);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.2);
+        overflow: hidden;
+      }
+
+      .schedule-popover-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 18px 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .schedule-popover-title {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 850;
+        line-height: 1.35;
+      }
+
+      .schedule-popover-close {
+        appearance: none;
+        width: 34px;
+        height: 34px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface-soft);
+        color: var(--muted);
+        cursor: pointer;
+        font: inherit;
+        font-size: 1.2rem;
+        line-height: 1;
+      }
+
+      .schedule-popover-body {
+        display: grid;
+        gap: 12px;
+        padding: 16px 18px 18px;
+      }
+
+      .schedule-popover-row {
+        display: grid;
+        gap: 4px;
+      }
+
+      .schedule-popover-label {
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+
+      .schedule-popover-value {
+        color: var(--text);
+        font-size: 0.96rem;
+        line-height: 1.5;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .card {
+        padding: 20px 22px;
+        border-top: 4px solid #2f5d8a;
+      }
+
+      .card.accent-living {
+        border-top-color: #7c5fb2;
+      }
+
+      .card.accent-total {
+        border-top-color: var(--accent);
+      }
+
+      .metric-label {
+        color: var(--muted);
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .metric {
+        margin-top: 12px;
+        font-size: clamp(1.85rem, 3vw, 2.6rem);
+        font-weight: 800;
+        line-height: 1.12;
+        letter-spacing: 0;
+        color: #1f2b3d;
+      }
+
+      .metric-sub {
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 0.98rem;
+        line-height: 1.5;
+        font-weight: 650;
+      }
+
+      .progress {
+        margin-top: 14px;
+        width: 100%;
+        height: 10px;
+        border-radius: 999px;
+        background: #edf1f6;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--primary) 0%, #5a88ff 100%);
+        transition: width 0.2s ease;
+      }
+
+      .card.accent-living .progress-bar {
+        background: linear-gradient(90deg, #7c5fb2 0%, #9a7be0 100%);
+      }
+
+      .card.accent-total .progress-bar {
+        background: linear-gradient(90deg, var(--accent) 0%, #ef9568 100%);
+      }
+
+      .visual-grid {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.3fr) minmax(
+            260px,
+            0.9fr
+          );
+        gap: 14px;
+        align-items: stretch;
+      }
+
+      .visual-card {
+        min-width: 0;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: #fff;
+      }
+
+      .visual-card-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 900;
+        line-height: 1.35;
+      }
+
+      .visual-card-note {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.45;
+      }
+
+      .donut-wrap {
+        display: grid;
+        grid-template-columns: 160px minmax(0, 1fr);
+        gap: 16px;
+        align-items: center;
+        margin-top: 16px;
+      }
+
+      .donut-chart {
+        display: grid;
+        place-items: center;
+        width: 160px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: var(--donut-gradient, #dfe6f0);
+        box-shadow: inset 0 0 0 1px rgba(18, 35, 58, 0.08);
+      }
+
+      .donut-core {
+        display: grid;
+        place-items: center;
+        width: 88px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: #fff;
+        text-align: center;
+        box-shadow: 0 0 0 1px rgba(18, 35, 58, 0.08);
+      }
+
+      .donut-core strong {
+        display: block;
+        font-size: 0.98rem;
+        line-height: 1.2;
+      }
+
+      .donut-core span {
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+
+      .chart-legend {
+        display: grid;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .legend-item {
+        display: grid;
+        grid-template-columns: 10px minmax(0, 1fr) auto;
+        gap: 8px;
+        align-items: center;
+        color: #344156;
+        font-size: 0.84rem;
+        line-height: 1.3;
+      }
+
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--legend-color);
+      }
+
+      .legend-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 800;
+      }
+
+      .legend-value {
+        color: var(--muted);
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .top-spend-list,
+      .upcoming-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .top-spend-item {
+        display: grid;
+        grid-template-columns: 30px minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .top-rank {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        color: #fff;
+        background: #26364c;
+        font-size: 0.8rem;
+        font-weight: 900;
+      }
+
+      .top-spend-main {
+        min-width: 0;
+      }
+
+      .top-spend-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        color: #243145;
+        font-size: 0.9rem;
+        font-weight: 900;
+        line-height: 1.35;
+      }
+
+      .top-spend-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .top-spend-amount {
+        white-space: nowrap;
+      }
+
+      .top-spend-bar {
+        height: 8px;
+        margin-top: 7px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #eef2f7;
+      }
+
+      .top-spend-fill {
+        width: var(--bar-width);
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #3b6ff6, #7c5fb2);
+      }
+
+      .top-spend-category {
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .upcoming-item {
+        display: grid;
+        grid-template-columns: 58px minmax(0, 1fr);
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--surface-soft);
+      }
+
+      .upcoming-date {
+        display: grid;
+        place-items: center;
+        min-height: 54px;
+        border-radius: 12px;
+        color: #fff;
+        background: var(--accent);
+        text-align: center;
+        font-weight: 900;
+        line-height: 1.15;
+      }
+
+      .upcoming-date span {
+        display: block;
+        font-size: 0.74rem;
+        opacity: 0.9;
+      }
+
+      .upcoming-name {
+        color: #243145;
+        font-size: 0.93rem;
+        font-weight: 900;
+        line-height: 1.35;
+      }
+
+      .upcoming-meta {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-weight: 750;
+        line-height: 1.4;
+      }
+
+      .empty-state {
+        margin-top: 16px;
+        padding: 18px;
+        border: 1px dashed #cfd8e6;
+        border-radius: 14px;
+        color: var(--muted);
+        background: #fbfcfe;
+        text-align: center;
+        font-weight: 800;
+      }
+
+      .panel {
+        margin-top: 18px;
+        padding: 20px 22px;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
       }
 
       th,
       td {
-        padding: 12px 10px;
-      }
-    }
-
-    @media print {
-      @page {
-        size: A4;
-        margin: 12mm;
+        padding: 14px 12px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: middle;
       }
 
-      body {
+      th {
+        color: var(--muted);
+        font-size: 0.94rem;
+        font-weight: 800;
+        background: var(--surface-soft);
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      tbody tr {
+        transition: background-color 0.16s ease;
+      }
+
+      tbody tr:hover {
+        background: #f8fbff;
+      }
+
+      .amount-cell {
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 0.86rem;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .status-planned {
+        color: #7d5a19;
+        background: #fff3dc;
+      }
+
+      .status-purchased,
+      .status-paid {
+        color: var(--success);
+        background: var(--success-soft);
+      }
+
+      .summary-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .summary-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+        transition:
+          transform 0.16s ease,
+          box-shadow 0.16s ease;
+      }
+
+      .summary-item:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 18px rgba(18, 35, 58, 0.06);
+      }
+
+      .summary-item-main {
+        min-width: 0;
+      }
+
+      .summary-item-name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 800;
+        line-height: 1.3;
+      }
+
+      .summary-item-meta {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+
+      .summary-item-note {
+        margin-top: 5px;
+        color: #526174;
+        font-size: 0.82rem;
+        line-height: 1.45;
+      }
+
+      .summary-subitem-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        margin-top: 10px;
+        padding: 6px 10px;
+        border: 1px solid #c7d7f5;
+        border-radius: 999px;
+        background: #f4f7ff;
+        color: var(--primary);
+        font: inherit;
+        font-size: 0.78rem;
+        font-weight: 850;
+        cursor: pointer;
+      }
+
+      .summary-subitem-toggle:hover {
+        background: #e9f0ff;
+      }
+
+      .summary-subitems {
+        display: grid;
+        gap: 4px;
+        margin-top: 10px;
+        padding-top: 9px;
+        border-top: 1px dashed #d7e0eb;
+      }
+
+      .summary-subitems[hidden] {
+        display: none;
+      }
+
+      .summary-subitem {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        color: #526174;
+        font-size: 0.8rem;
+        line-height: 1.35;
+      }
+
+      .summary-subitem-name {
+        min-width: 0;
+      }
+
+      .summary-subitem-amount {
+        flex: 0 0 auto;
+        color: #1f2b3d;
+        font-weight: 750;
+        white-space: nowrap;
+      }
+
+      .summary-item-amount {
+        flex-shrink: 0;
+        text-align: right;
+        font-weight: 750;
+        font-size: 1.05rem;
+        white-space: nowrap;
+      }
+
+      .summary-item-amount.is-negative {
+        color: #b24635;
+      }
+
+      .request-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .request-item {
+        display: grid;
+        gap: 8px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
         background: #fff;
       }
 
-      .page {
-        max-width: none;
-        padding: 0;
+      .request-item.is-completed {
+        border-color: #b9e5cd;
+        background: var(--success-soft);
       }
 
-      header,
-      .milestone-card,
-      .card,
-      .panel {
-        box-shadow: none;
-        border: 1px solid #d7dfeb;
+      .request-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
       }
 
-      .toolbar-button {
-        display: none !important;
+      .request-index {
+        color: var(--primary);
+        font-size: 0.78rem;
+        font-weight: 800;
       }
-    }
-  </style>
-</head>
-<body>
-  <main class="page">
-    <header>
-      <div>
-        <h1>동아 인테리어 예산표</h1>
-      </div>
-      <div class="meta">
-        <span class="pill" id="todayLabel">기준일</span>
-        <a class="toolbar-button" href="entrance_middle_door_request.html">현관·중문 요청서</a>
-        <button class="toolbar-button" id="printButton" type="button">인쇄</button>
-      </div>
-    </header>
 
-    <section class="milestone-card" aria-label="진행 일정">
-      <div class="section-head">
-        <div class="section-copy">
-          <h2 class="section-title">진행 일정</h2>
-          <div class="section-note">전체 날짜를 이어서 표시하고, 일정이 있는 날짜와 기간만 막대로 표시합니다.</div>
-        </div>
-        <div class="section-actions">
-          <div class="section-date" id="scheduleTodayLabel"></div>
-          <button class="json-toggle" type="button" data-json-target="scheduleJson">JSON 보기</button>
-        </div>
-      </div>
-      <pre class="json-panel" id="scheduleJson"></pre>
-      <div class="schedule-scroll">
-        <div class="schedule-board" id="scheduleBoard"></div>
-      </div>
-    </section>
+      .request-title {
+        color: #1f2b3d;
+        font-size: 1rem;
+        font-weight: 650;
+        line-height: 1.4;
+        word-break: keep-all;
+      }
 
-    <div class="schedule-popover" id="schedulePopover" role="dialog" aria-modal="true" aria-labelledby="schedulePopoverTitle">
-      <article class="schedule-popover-card">
-        <div class="schedule-popover-head">
-          <h3 class="schedule-popover-title" id="schedulePopoverTitle"></h3>
-          <button class="schedule-popover-close" id="schedulePopoverClose" type="button" aria-label="일정 상세 닫기">×</button>
-        </div>
-        <div class="schedule-popover-body" id="schedulePopoverBody"></div>
-      </article>
-    </div>
+      .request-status {
+        display: inline-flex;
+        align-items: center;
+        min-height: 26px;
+        padding: 0 9px;
+        border-radius: 999px;
+        background: var(--warning-soft);
+        color: var(--warning);
+        font-size: 0.76rem;
+        font-weight: 850;
+        white-space: nowrap;
+      }
 
-    <section class="panel" aria-label="인테리어 추가 요청 사항">
-      <div class="section-head">
-        <div class="section-copy">
-          <h2 class="section-title">인테리어 사장님 추가 요청 사항</h2>
-          <div class="section-note">현장에서 추가로 확인하거나 확정해야 할 내용을 모았습니다.</div>
-        </div>
-        <div class="section-actions">
-          <button class="json-toggle" type="button" data-json-target="interiorRequestJson">JSON 보기</button>
-        </div>
-      </div>
-      <pre class="json-panel" id="interiorRequestJson"></pre>
-      <div class="request-list" id="interiorRequestList"></div>
-    </section>
+      .request-status.is-completed {
+        background: #dff5ea;
+        color: var(--success);
+      }
 
-    <section class="grid" aria-label="상단 요약">
-      <article class="card">
-        <div class="metric-label">인테리어 비용</div>
-        <div class="metric" id="constructionMetric"></div>
-        <div class="metric-sub" id="constructionSub"></div>
-        <div class="progress" aria-hidden="true"><div class="progress-bar" id="constructionProgress"></div></div>
-      </article>
-      <article class="card accent-living">
-        <div class="metric-label">이사·가전가구 비용</div>
-        <div class="metric" id="livingMetric"></div>
-        <div class="metric-sub" id="livingSub"></div>
-        <div class="progress" aria-hidden="true"><div class="progress-bar" id="livingProgress"></div></div>
-      </article>
-      <article class="card accent-total">
-        <div class="metric-label">전체 비용</div>
-        <div class="metric" id="grandMetric"></div>
-        <div class="metric-sub" id="grandSub"></div>
-        <div class="progress" aria-hidden="true"><div class="progress-bar" id="grandProgress"></div></div>
-      </article>
-    </section>
+      .request-note {
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.45;
+      }
 
-    <section class="panel" aria-label="비용 시각화">
-      <div class="section-head">
-        <div class="section-copy">
-          <h2 class="section-title">비용 한눈에 보기</h2>
-          <div class="section-note">구매 금액 비율, 큰 지출 항목, 다가오는 설치 일정을 같이 봅니다.</div>
+      .request-answer {
+        padding: 10px 12px;
+        border: 1px solid #cfe9db;
+        border-radius: 12px;
+        background: #fff;
+        color: #244131;
+        font-size: 0.88rem;
+        line-height: 1.5;
+      }
+
+      .request-answer-label {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--success);
+        font-size: 0.76rem;
+        font-weight: 850;
+      }
+
+      .move-overview {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .move-stat {
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--surface-soft);
+      }
+
+      .move-stat-label {
+        color: var(--muted);
+        font-size: 0.88rem;
+        font-weight: 800;
+      }
+
+      .move-stat-value {
+        margin-top: 8px;
+        font-size: 1.12rem;
+        font-weight: 850;
+        line-height: 1.35;
+        word-break: keep-all;
+      }
+
+      .split-tables {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .disposal-wrap {
+        margin-top: 18px;
+      }
+
+      .disposal-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .disposal-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 26px;
+        padding: 4px 9px;
+        border: 1px solid #d8e1ef;
+        border-radius: 999px;
+        background: #f8fbff;
+        color: #1f2b3d;
+        font-size: 0.82rem;
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+
+      .subsection-title {
+        margin: 0 0 10px;
+        font-size: 1rem;
+        font-weight: 850;
+      }
+
+      .transfer-overview {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        min-height: 40px;
+        padding: 8px 10px;
+        border: 1px solid #c8d2e0;
+        border-radius: 10px;
+        background: #fff;
+        color: var(--text);
+        font: inherit;
+        transition:
+          border-color 0.16s ease,
+          box-shadow 0.16s ease,
+          background-color 0.16s ease;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: rgba(59, 111, 246, 0.55);
+        box-shadow: 0 0 0 4px rgba(59, 111, 246, 0.12);
+        background: #fcfdff;
+      }
+
+      select {
+        min-width: 120px;
+        width: max(100%, 120px);
+      }
+
+      input::placeholder {
+        color: transparent;
+      }
+
+      .helper-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-top: 18px;
+        margin-bottom: 10px;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 0.94rem;
+      }
+
+      @media (max-width: 980px) {
+        .grid,
+        .request-list,
+        .visual-grid,
+        .summary-list,
+        .move-overview,
+        .transfer-overview,
+        .split-tables {
+          grid-template-columns: 1fr;
+        }
+
+        .donut-wrap {
+          grid-template-columns: 1fr;
+          justify-items: center;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding: 16px 14px 44px;
+        }
+
+        header {
+          flex-direction: column;
+          align-items: stretch;
+          padding: 20px 18px;
+        }
+
+        .meta {
+          justify-content: flex-start;
+        }
+
+        .section-head,
+        .helper-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .schedule-board {
+          grid-template-columns: repeat(7, minmax(104px, 1fr));
+          grid-template-rows: 32px;
+          grid-auto-rows: var(--calendar-row-height-mobile, 116px);
+          min-width: 728px;
+        }
+
+        .schedule-day {
+          min-height: 116px;
+          padding: 9px;
+        }
+
+        .schedule-item {
+          margin-top: calc(
+            30px + (var(--lane) * var(--calendar-lane-step-mobile, 32px))
+          );
+        }
+
+        th,
+        td {
+          padding: 12px 10px;
+        }
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 12mm;
+        }
+
+        body {
+          background: #fff;
+        }
+
+        .page {
+          max-width: none;
+          padding: 0;
+        }
+
+        header,
+        .milestone-card,
+        .card,
+        .panel {
+          box-shadow: none;
+          border: 1px solid #d7dfeb;
+        }
+
+        .toolbar-button {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <div>
+          <h1>동아 인테리어 예산표</h1>
         </div>
-      </div>
-      <div class="visual-grid">
-        <article class="visual-card">
-          <h3 class="visual-card-title">카테고리별 비율</h3>
-          <p class="visual-card-note">이사집 비용을 제외한 구매 항목 기준입니다.</p>
-          <div class="donut-wrap">
-            <div class="donut-chart" id="categoryDonut" aria-label="카테고리별 구매 비율">
-              <div class="donut-core">
-                <strong id="donutTotal"></strong>
-                <span>구매예산</span>
-              </div>
+        <div class="meta">
+          <span class="pill" id="todayLabel">기준일</span>
+          <a class="toolbar-button" href="entrance_middle_door_request.html"
+            >현관·중문 요청서</a
+          >
+          <button class="toolbar-button" id="printButton" type="button">
+            인쇄
+          </button>
+        </div>
+      </header>
+
+      <section class="milestone-card" aria-label="진행 일정">
+        <div class="section-head">
+          <div class="section-copy">
+            <h2 class="section-title">진행 일정</h2>
+            <div class="section-note">
+              전체 날짜를 이어서 표시하고, 일정이 있는 날짜와 기간만 막대로
+              표시합니다.
             </div>
-            <div class="chart-legend" id="categoryLegend"></div>
+          </div>
+          <div class="section-actions">
+            <div class="section-date" id="scheduleTodayLabel"></div>
+            <button
+              class="json-toggle"
+              type="button"
+              data-json-target="scheduleJson"
+            >
+              JSON 보기
+            </button>
+          </div>
+        </div>
+        <pre class="json-panel" id="scheduleJson"></pre>
+        <div class="schedule-scroll">
+          <div class="schedule-board" id="scheduleBoard"></div>
+        </div>
+      </section>
+
+      <div
+        class="schedule-popover"
+        id="schedulePopover"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="schedulePopoverTitle"
+      >
+        <article class="schedule-popover-card">
+          <div class="schedule-popover-head">
+            <h3 class="schedule-popover-title" id="schedulePopoverTitle"></h3>
+            <button
+              class="schedule-popover-close"
+              id="schedulePopoverClose"
+              type="button"
+              aria-label="일정 상세 닫기"
+            >
+              ×
+            </button>
+          </div>
+          <div class="schedule-popover-body" id="schedulePopoverBody"></div>
+        </article>
+      </div>
+
+      <section class="panel" aria-label="인테리어 추가 요청 사항">
+        <div class="section-head">
+          <div class="section-copy">
+            <h2 class="section-title">인테리어 사장님 추가 요청 사항</h2>
+            <div class="section-note">
+              현장에서 추가로 확인하거나 확정해야 할 내용을 모았습니다.
+            </div>
+          </div>
+          <div class="section-actions">
+            <button
+              class="json-toggle"
+              type="button"
+              data-json-target="interiorRequestJson"
+            >
+              JSON 보기
+            </button>
+          </div>
+        </div>
+        <pre class="json-panel" id="interiorRequestJson"></pre>
+        <div class="request-list" id="interiorRequestList"></div>
+      </section>
+
+      <section class="grid" aria-label="상단 요약">
+        <article class="card">
+          <div class="metric-label">인테리어 비용</div>
+          <div class="metric" id="constructionMetric"></div>
+          <div class="metric-sub" id="constructionSub"></div>
+          <div class="progress" aria-hidden="true">
+            <div class="progress-bar" id="constructionProgress"></div>
           </div>
         </article>
-        <article class="visual-card">
-          <h3 class="visual-card-title">상위 지출 TOP 8</h3>
-          <p class="visual-card-note">예상 금액과 실제 결제 금액 중 표시 금액 기준입니다.</p>
-          <div class="top-spend-list" id="topSpendList"></div>
+        <article class="card accent-living">
+          <div class="metric-label">이사·가전가구 비용</div>
+          <div class="metric" id="livingMetric"></div>
+          <div class="metric-sub" id="livingSub"></div>
+          <div class="progress" aria-hidden="true">
+            <div class="progress-bar" id="livingProgress"></div>
+          </div>
         </article>
-        <article class="visual-card">
-          <h3 class="visual-card-title">다가오는 설치</h3>
-          <p class="visual-card-note">구매 항목의 설치 속성에서 자동으로 가져옵니다.</p>
-          <div class="upcoming-list" id="upcomingDeliveryList"></div>
+        <article class="card accent-total">
+          <div class="metric-label">전체 비용</div>
+          <div class="metric" id="grandMetric"></div>
+          <div class="metric-sub" id="grandSub"></div>
+          <div class="progress" aria-hidden="true">
+            <div class="progress-bar" id="grandProgress"></div>
+          </div>
         </article>
-      </div>
-    </section>
+      </section>
 
-    <section class="panel" aria-label="이사 정리">
-      <div class="section-head">
-        <div class="section-copy">
-          <h2 class="section-title">이사 정리</h2>
-          <div class="section-note">이사 일정, 주소, 이사집 관련 지출 금액과 폐기 목록을 따로 모았습니다.</div>
+      <section class="panel" aria-label="비용 시각화">
+        <div class="section-head">
+          <div class="section-copy">
+            <h2 class="section-title">비용 한눈에 보기</h2>
+            <div class="section-note">
+              구매 금액 비율, 큰 지출 항목, 다가오는 설치 일정을 같이 봅니다.
+            </div>
+          </div>
         </div>
-        <div class="section-actions">
-          <button class="json-toggle" type="button" data-json-target="movingJson">JSON 보기</button>
+        <div class="visual-grid">
+          <article class="visual-card">
+            <h3 class="visual-card-title">카테고리별 비율</h3>
+            <p class="visual-card-note">
+              이사집 비용을 제외한 구매 항목 기준입니다.
+            </p>
+            <div class="donut-wrap">
+              <div
+                class="donut-chart"
+                id="categoryDonut"
+                aria-label="카테고리별 구매 비율"
+              >
+                <div class="donut-core">
+                  <strong id="donutTotal"></strong>
+                  <span>구매예산</span>
+                </div>
+              </div>
+              <div class="chart-legend" id="categoryLegend"></div>
+            </div>
+          </article>
+          <article class="visual-card">
+            <h3 class="visual-card-title">상위 지출 TOP 8</h3>
+            <p class="visual-card-note">
+              예상 금액과 실제 결제 금액 중 표시 금액 기준입니다.
+            </p>
+            <div class="top-spend-list" id="topSpendList"></div>
+          </article>
+          <article class="visual-card">
+            <h3 class="visual-card-title">다가오는 설치</h3>
+            <p class="visual-card-note">
+              구매 항목의 설치 속성에서 자동으로 가져옵니다.
+            </p>
+            <div class="upcoming-list" id="upcomingDeliveryList"></div>
+          </article>
         </div>
-      </div>
-      <pre class="json-panel" id="movingJson"></pre>
-      <div class="move-overview" id="movingOverview"></div>
-      <div class="split-tables">
-        <div class="table-wrap">
-          <h3 class="subsection-title">이사 일정</h3>
+      </section>
+
+      <section class="panel" aria-label="이사 정리">
+        <div class="section-head">
+          <div class="section-copy">
+            <h2 class="section-title">이사 정리</h2>
+            <div class="section-note">
+              이사 일정, 주소, 이사집 관련 지출 금액과 폐기 목록을 따로
+              모았습니다.
+            </div>
+          </div>
+          <div class="section-actions">
+            <button
+              class="json-toggle"
+              type="button"
+              data-json-target="movingJson"
+            >
+              JSON 보기
+            </button>
+          </div>
+        </div>
+        <pre class="json-panel" id="movingJson"></pre>
+        <div class="move-overview" id="movingOverview"></div>
+        <div class="split-tables">
+          <div class="table-wrap">
+            <h3 class="subsection-title">이사 일정</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>일정</th>
+                  <th>날짜</th>
+                  <th>메모</th>
+                </tr>
+              </thead>
+              <tbody id="movingScheduleTableBody"></tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <h3 class="subsection-title">이사 금액</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>구분</th>
+                  <th>항목</th>
+                  <th>금액</th>
+                  <th>상태</th>
+                  <th>날짜</th>
+                  <th>메모</th>
+                </tr>
+              </thead>
+              <tbody id="movingCostTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="table-wrap disposal-wrap">
+          <h3 class="subsection-title">가전가구 폐기 목록</h3>
           <table>
             <thead>
               <tr>
-                <th>일정</th>
-                <th>날짜</th>
-                <th>메모</th>
+                <th>공간</th>
+                <th>폐기 품목</th>
               </tr>
             </thead>
-            <tbody id="movingScheduleTableBody"></tbody>
+            <tbody id="disposalTableBody"></tbody>
           </table>
         </div>
+      </section>
+
+      <section class="panel" aria-label="돈 입출금 내역">
+        <div class="section-head">
+          <div class="section-copy">
+            <h2 class="section-title">돈 입출금 내역</h2>
+            <div class="section-note">
+              가족 간 돈을 주고받은 기록입니다. 지출 금액 계산에는 포함하지
+              않습니다.
+            </div>
+          </div>
+          <div class="section-actions">
+            <button
+              class="json-toggle"
+              type="button"
+              data-json-target="transferJson"
+            >
+              JSON 보기
+            </button>
+          </div>
+        </div>
+        <pre class="json-panel" id="transferJson"></pre>
+        <div class="transfer-overview" id="transferOverview"></div>
         <div class="table-wrap">
-          <h3 class="subsection-title">이사 금액</h3>
           <table>
             <thead>
               <tr>
-                <th>구분</th>
-                <th>항목</th>
+                <th>날짜</th>
+                <th>보낸 사람</th>
+                <th>받은 사람</th>
                 <th>금액</th>
-                <th>상태</th>
-                <th>날짜</th>
                 <th>메모</th>
               </tr>
             </thead>
-            <tbody id="movingCostTableBody"></tbody>
+            <tbody id="transferTableBody"></tbody>
           </table>
         </div>
-      </div>
-      <div class="table-wrap disposal-wrap">
-        <h3 class="subsection-title">가전가구 폐기 목록</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>공간</th>
-              <th>폐기 품목</th>
-            </tr>
-          </thead>
-          <tbody id="disposalTableBody"></tbody>
-        </table>
-      </div>
-    </section>
+      </section>
 
-    <section class="panel" aria-label="돈 입출금 내역">
-      <div class="section-head">
-        <div class="section-copy">
-          <h2 class="section-title">돈 입출금 내역</h2>
-          <div class="section-note">가족 간 돈을 주고받은 기록입니다. 지출 금액 계산에는 포함하지 않습니다.</div>
+      <section class="panel" aria-label="인테리어 비용 지급 현황">
+        <div class="section-head">
+          <div class="section-copy">
+            <h2 class="section-title">인테리어 비용</h2>
+            <div class="section-note">
+              인테리어 비용은 단계별 일정과 지급 여부를 기록합니다.
+            </div>
+          </div>
+          <div class="section-actions">
+            <button
+              class="json-toggle"
+              type="button"
+              data-json-target="constructionJson"
+            >
+              JSON 보기
+            </button>
+          </div>
         </div>
-        <div class="section-actions">
-          <button class="json-toggle" type="button" data-json-target="transferJson">JSON 보기</button>
+        <pre class="json-panel" id="constructionJson"></pre>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>단계</th>
+                <th>예정 금액</th>
+                <th>상태</th>
+                <th>지급일</th>
+                <th>지급 경로</th>
+                <th>메모</th>
+              </tr>
+            </thead>
+            <tbody id="constructionTableBody"></tbody>
+          </table>
         </div>
-      </div>
-      <pre class="json-panel" id="transferJson"></pre>
-      <div class="transfer-overview" id="transferOverview"></div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>날짜</th>
-              <th>보낸 사람</th>
-              <th>받은 사람</th>
-              <th>금액</th>
-              <th>메모</th>
-            </tr>
-          </thead>
-          <tbody id="transferTableBody"></tbody>
-        </table>
-      </div>
-    </section>
+      </section>
 
-    <section class="panel" aria-label="인테리어 비용 지급 현황">
-      <div class="section-head">
-        <div class="section-copy">
-          <h2 class="section-title">인테리어 비용</h2>
-          <div class="section-note">인테리어 비용은 단계별 일정과 지급 여부를 기록합니다.</div>
+      <section class="panel" aria-label="가전가구 구매 항목">
+        <div class="section-head">
+          <div class="section-copy">
+            <h2 class="section-title">가전·가구</h2>
+            <div class="section-note">
+              예상 금액, 상태, 구매일, 구매 경로, 메모를 한 화면에서 확인합니다.
+            </div>
+          </div>
+          <div class="section-actions">
+            <button
+              class="json-toggle"
+              type="button"
+              data-json-target="purchaseJson"
+            >
+              JSON 보기
+            </button>
+          </div>
         </div>
-        <div class="section-actions">
-          <button class="json-toggle" type="button" data-json-target="constructionJson">JSON 보기</button>
-        </div>
-      </div>
-      <pre class="json-panel" id="constructionJson"></pre>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>단계</th>
-              <th>예정 금액</th>
-              <th>상태</th>
-              <th>지급일</th>
-              <th>지급 경로</th>
-              <th>메모</th>
-            </tr>
-          </thead>
-          <tbody id="constructionTableBody"></tbody>
-        </table>
-      </div>
-    </section>
+        <pre class="json-panel" id="purchaseJson"></pre>
+        <div class="summary-list" id="pricedItemsSummary"></div>
+      </section>
+    </main>
 
-    <section class="panel" aria-label="가전가구 구매 항목">
-      <div class="section-head">
-        <div class="section-copy">
-          <h2 class="section-title">가전·가구</h2>
-          <div class="section-note">예상 금액, 상태, 구매일, 구매 경로, 메모를 한 화면에서 확인합니다.</div>
-        </div>
-        <div class="section-actions">
-          <button class="json-toggle" type="button" data-json-target="purchaseJson">JSON 보기</button>
-        </div>
-      </div>
-      <pre class="json-panel" id="purchaseJson"></pre>
-      <div class="summary-list" id="pricedItemsSummary"></div>
-    </section>
-  </main>
-
-  <script>
-    function getToday() {
-      return new Date();
-    }
-
-    function formatTodayLabel(date) {
-      const formatter = new Intl.DateTimeFormat("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        weekday: "long"
-      });
-      return `기준일 ${formatter.format(date)}`;
-    }
-
-    function formatDateLabel(value) {
-      if (!value) return "";
-      const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return value;
-      return new Intl.DateTimeFormat("ko-KR", {
-        month: "long",
-        day: "numeric",
-        weekday: "short"
-      }).format(date);
-    }
-
-    function formatScheduleTodayLabel(date) {
-      return `오늘: ${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
-    }
-
-    function formatWon(value) {
-      const number = Number(value || 0);
-      return `${number.toLocaleString("ko-KR")}원`;
-    }
-
-    function parseWonInput(value) {
-      const numeric = String(value || "").replace(/,/g, "").trim();
-      if (!numeric) return 0;
-      return Number(numeric) || 0;
-    }
-
-    function formatInputNumber(value) {
-      const numeric = Number(value || 0);
-      if (!numeric) return "";
-      return numeric.toLocaleString("ko-KR");
-    }
-
-    function getStatusMeta(status) {
-      if (status === "purchased") {
-        return { label: "구매완료", className: "status-badge status-purchased" };
+    <script>
+      function getToday() {
+        return new Date();
       }
-      if (status === "paid") {
-        return { label: "지급완료", className: "status-badge status-paid" };
+
+      function formatTodayLabel(date) {
+        const formatter = new Intl.DateTimeFormat("ko-KR", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          weekday: "long",
+        });
+        return `기준일 ${formatter.format(date)}`;
       }
-      return { label: "예정", className: "status-badge status-planned" };
-    }
 
-    function getDateState(date) {
-      const today = getToday();
-      today.setHours(0, 0, 0, 0);
-      const target = new Date(date);
-      target.setHours(0, 0, 0, 0);
-
-      if (target.getTime() < today.getTime()) return "past";
-      if (target.getTime() === today.getTime()) return "today";
-      return "future";
-    }
-
-    function isMovingSchedule(item) {
-      return item.name.includes("이사") || item.name.includes("가스");
-    }
-
-    function isMovingPurchase(item) {
-      return item.category === "이사집";
-    }
-
-    function isCompletedExpense(item) {
-      return item.status === "purchased" || item.status === "paid";
-    }
-
-    function getMovingAddress() {
-      const addressItem = purchaseData.find((item) => item.category === "이사집" && item.memo);
-      return addressItem ? addressItem.memo : "-";
-    }
-
-    function getDisplayPurchaseAmount(item) {
-      if (isCompletedExpense(item) && Number(item.actualWon) !== 0) {
-        return Number(item.actualWon);
+      function formatDateLabel(value) {
+        if (!value) return "";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return value;
+        return new Intl.DateTimeFormat("ko-KR", {
+          month: "long",
+          day: "numeric",
+          weekday: "short",
+        }).format(date);
       }
-      return Number(item.expectedWon || 0);
-    }
 
-    function addDays(date, days) {
-      const next = new Date(date);
-      next.setDate(next.getDate() + days);
-      return next;
-    }
-
-    function parseDateOnly(value) {
-      const [year, month, day] = value.split("-").map(Number);
-      return new Date(year, month - 1, day);
-    }
-
-    function toIsoDate(date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    }
-
-    function getDateRange(startDate, endDate) {
-      const start = parseDateOnly(startDate);
-      const end = endDate ? parseDateOnly(endDate) : parseDateOnly(startDate);
-      start.setHours(0, 0, 0, 0);
-      end.setHours(0, 0, 0, 0);
-
-      const dates = [];
-      for (let cursor = new Date(start); cursor.getTime() <= end.getTime(); cursor = addDays(cursor, 1)) {
-        dates.push(toIsoDate(cursor));
+      function formatScheduleTodayLabel(date) {
+        return `오늘: ${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
       }
-      return dates;
-    }
 
-    function getPurchaseDeliveryCalendarItems() {
-      return purchaseData.flatMap((item, purchaseIndex) => {
-        if (!item.deliveryDate) return [];
+      function formatWon(value) {
+        const number = Number(value || 0);
+        return `${number.toLocaleString("ko-KR")}원`;
+      }
 
-        const deliveryType = item.deliveryType || "배송";
-        const timeLabel = item.deliveryTime ? `시간 ${item.deliveryTime}` : "";
-        const noteParts = [timeLabel, item.deliveryNote].filter(Boolean);
-        return [{
-          name: `${item.name} ${deliveryType}`,
-          startDate: item.deliveryDate,
-          endDate: item.deliveryEndDate || "",
-          note: noteParts.join(" · "),
-          sourceType: "delivery",
-          purchaseIndex
-        }];
-      });
-    }
+      function parseWonInput(value) {
+        const numeric = String(value || "")
+          .replace(/,/g, "")
+          .trim();
+        if (!numeric) return 0;
+        return Number(numeric) || 0;
+      }
 
-    function getCalendarItems() {
-      const manualItems = scheduleData.map((item, originalIndex) => ({
-        ...item,
-        sourceType: "schedule",
-        originalIndex
-      }));
-      const deliveryItems = getPurchaseDeliveryCalendarItems().map((item, deliveryIndex) => ({
-        ...item,
-        originalIndex: scheduleData.length + deliveryIndex
-      }));
+      function formatInputNumber(value) {
+        const numeric = Number(value || 0);
+        if (!numeric) return "";
+        return numeric.toLocaleString("ko-KR");
+      }
 
-      return [...manualItems, ...deliveryItems].sort((a, b) => {
-        const dateDiff = parseDateOnly(a.startDate).getTime() - parseDateOnly(b.startDate).getTime();
-        if (dateDiff !== 0) return dateDiff;
-        return a.originalIndex - b.originalIndex;
-      });
-    }
+      function getStatusMeta(status) {
+        if (status === "purchased") {
+          return {
+            label: "구매완료",
+            className: "status-badge status-purchased",
+          };
+        }
+        if (status === "paid") {
+          return { label: "지급완료", className: "status-badge status-paid" };
+        }
+        return { label: "예정", className: "status-badge status-planned" };
+      }
 
-    function renderScheduleBoard() {
-      const container = document.getElementById("scheduleBoard");
-      const scheduleItems = getCalendarItems();
+      function getDateState(date) {
+        const today = getToday();
+        today.setHours(0, 0, 0, 0);
+        const target = new Date(date);
+        target.setHours(0, 0, 0, 0);
 
-      const firstScheduleDate = parseDateOnly(scheduleItems[0].startDate);
-      const firstMonthDate = new Date(firstScheduleDate.getFullYear(), firstScheduleDate.getMonth(), 1);
-      const lastScheduleDate = scheduleItems.reduce((latest, item) => {
-        const itemEnd = parseDateOnly(item.endDate || item.startDate);
-        return itemEnd.getTime() > latest.getTime() ? itemEnd : latest;
-      }, parseDateOnly(scheduleItems[0].endDate || scheduleItems[0].startDate));
-      const calendarStart = addDays(firstMonthDate, -firstMonthDate.getDay());
-      const calendarEnd = addDays(lastScheduleDate, 6 - lastScheduleDate.getDay());
-      const visibleDates = getDateRange(toIsoDate(calendarStart), toIsoDate(calendarEnd));
-      const dateIndex = new Map(visibleDates.map((date, index) => [date, index]));
-      const weekCount = Math.ceil(visibleDates.length / 7);
-      const todayIso = toIsoDate(getToday());
-      const monthLabel = `${firstMonthDate.getFullYear()}년 ${firstMonthDate.getMonth() + 1}월`;
-      const laneEndsByWeek = Array.from({ length: weekCount }, () => []);
-      const weekLaneCounts = Array.from({ length: weekCount }, () => 0);
-      const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+        if (target.getTime() < today.getTime()) return "past";
+        if (target.getTime() === today.getTime()) return "today";
+        return "future";
+      }
 
-      const weekHeaders = weekdays.map((weekday, index) => {
-        const sundayClass = index === 0 ? " is-sunday" : "";
-        const saturdayClass = index === 6 ? " is-saturday" : "";
-        return `<div class="schedule-week-header${sundayClass}${saturdayClass}" style="grid-column:${index + 1};grid-row:1">${weekday}</div>`;
-      }).join("");
+      function isMovingSchedule(item) {
+        return item.name.includes("이사") || item.name.includes("가스");
+      }
 
-      const headers = visibleDates.map((iso, index) => {
-        const date = parseDateOnly(iso);
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-        const week = Math.floor(index / 7);
-        const column = (index % 7) + 1;
-        const outsideClass = date.getMonth() !== firstMonthDate.getMonth() ? " is-outside-month" : "";
-        const todayClass = iso === todayIso ? " is-today" : "";
-        const todayBadge = iso === todayIso ? `<span class="schedule-today-badge">today</span>` : "";
-        const sundayClass = date.getDay() === 0 ? " is-sunday" : "";
-        const saturdayClass = date.getDay() === 6 ? " is-saturday" : "";
-        return `
+      function isMovingPurchase(item) {
+        return item.category === "이사집";
+      }
+
+      function isCompletedExpense(item) {
+        return item.status === "purchased" || item.status === "paid";
+      }
+
+      function getMovingAddress() {
+        const addressItem = purchaseData.find(
+          (item) => item.category === "이사집" && item.memo,
+        );
+        return addressItem ? addressItem.memo : "-";
+      }
+
+      function getDisplayPurchaseAmount(item) {
+        if (isCompletedExpense(item) && Number(item.actualWon) !== 0) {
+          return Number(item.actualWon);
+        }
+        return Number(item.expectedWon || 0);
+      }
+
+      function addDays(date, days) {
+        const next = new Date(date);
+        next.setDate(next.getDate() + days);
+        return next;
+      }
+
+      function parseDateOnly(value) {
+        const [year, month, day] = value.split("-").map(Number);
+        return new Date(year, month - 1, day);
+      }
+
+      function toIsoDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
+      function getDateRange(startDate, endDate) {
+        const start = parseDateOnly(startDate);
+        const end = endDate ? parseDateOnly(endDate) : parseDateOnly(startDate);
+        start.setHours(0, 0, 0, 0);
+        end.setHours(0, 0, 0, 0);
+
+        const dates = [];
+        for (
+          let cursor = new Date(start);
+          cursor.getTime() <= end.getTime();
+          cursor = addDays(cursor, 1)
+        ) {
+          dates.push(toIsoDate(cursor));
+        }
+        return dates;
+      }
+
+      function getPurchaseDeliveryCalendarItems() {
+        return purchaseData.flatMap((item, purchaseIndex) => {
+          if (!item.deliveryDate) return [];
+
+          const deliveryType = item.deliveryType || "배송";
+          const timeLabel = item.deliveryTime
+            ? `시간 ${item.deliveryTime}`
+            : "";
+          const noteParts = [timeLabel, item.deliveryNote].filter(Boolean);
+          return [
+            {
+              name: `${item.name} ${deliveryType}`,
+              startDate: item.deliveryDate,
+              endDate: item.deliveryEndDate || "",
+              note: noteParts.join(" · "),
+              sourceType: "delivery",
+              purchaseIndex,
+            },
+          ];
+        });
+      }
+
+      function getCalendarItems() {
+        const manualItems = scheduleData.map((item, originalIndex) => ({
+          ...item,
+          sourceType: "schedule",
+          originalIndex,
+        }));
+        const deliveryItems = getPurchaseDeliveryCalendarItems().map(
+          (item, deliveryIndex) => ({
+            ...item,
+            originalIndex: scheduleData.length + deliveryIndex,
+          }),
+        );
+
+        return [...manualItems, ...deliveryItems].sort((a, b) => {
+          const dateDiff =
+            parseDateOnly(a.startDate).getTime() -
+            parseDateOnly(b.startDate).getTime();
+          if (dateDiff !== 0) return dateDiff;
+          return a.originalIndex - b.originalIndex;
+        });
+      }
+
+      function renderScheduleBoard() {
+        const container = document.getElementById("scheduleBoard");
+        const scheduleItems = getCalendarItems();
+
+        const firstScheduleDate = parseDateOnly(scheduleItems[0].startDate);
+        const firstMonthDate = new Date(
+          firstScheduleDate.getFullYear(),
+          firstScheduleDate.getMonth(),
+          1,
+        );
+        const lastScheduleDate = scheduleItems.reduce(
+          (latest, item) => {
+            const itemEnd = parseDateOnly(item.endDate || item.startDate);
+            return itemEnd.getTime() > latest.getTime() ? itemEnd : latest;
+          },
+          parseDateOnly(scheduleItems[0].endDate || scheduleItems[0].startDate),
+        );
+        const calendarStart = addDays(firstMonthDate, -firstMonthDate.getDay());
+        const calendarEnd = addDays(
+          lastScheduleDate,
+          6 - lastScheduleDate.getDay(),
+        );
+        const visibleDates = getDateRange(
+          toIsoDate(calendarStart),
+          toIsoDate(calendarEnd),
+        );
+        const dateIndex = new Map(
+          visibleDates.map((date, index) => [date, index]),
+        );
+        const weekCount = Math.ceil(visibleDates.length / 7);
+        const todayIso = toIsoDate(getToday());
+        const monthLabel = `${firstMonthDate.getFullYear()}년 ${firstMonthDate.getMonth() + 1}월`;
+        const laneEndsByWeek = Array.from({ length: weekCount }, () => []);
+        const weekLaneCounts = Array.from({ length: weekCount }, () => 0);
+        const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+
+        const weekHeaders = weekdays
+          .map((weekday, index) => {
+            const sundayClass = index === 0 ? " is-sunday" : "";
+            const saturdayClass = index === 6 ? " is-saturday" : "";
+            return `<div class="schedule-week-header${sundayClass}${saturdayClass}" style="grid-column:${index + 1};grid-row:1">${weekday}</div>`;
+          })
+          .join("");
+
+        const headers = visibleDates
+          .map((iso, index) => {
+            const date = parseDateOnly(iso);
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const week = Math.floor(index / 7);
+            const column = (index % 7) + 1;
+            const outsideClass =
+              date.getMonth() !== firstMonthDate.getMonth()
+                ? " is-outside-month"
+                : "";
+            const todayClass = iso === todayIso ? " is-today" : "";
+            const todayBadge =
+              iso === todayIso
+                ? `<span class="schedule-today-badge">today</span>`
+                : "";
+            const sundayClass = date.getDay() === 0 ? " is-sunday" : "";
+            const saturdayClass = date.getDay() === 6 ? " is-saturday" : "";
+            return `
           <div class="schedule-day${outsideClass}${todayClass}${sundayClass}${saturdayClass}" style="grid-column:${column};grid-row:${week + 2}">
             <div class="schedule-date"><strong>${day}</strong><span>${month}월</span>${todayBadge}</div>
           </div>
         `;
-      }).join("");
+          })
+          .join("");
 
-      const bars = scheduleItems.flatMap((item, index) => {
-        const itemDates = getDateRange(item.startDate, item.endDate);
-        const startIndex = dateIndex.get(itemDates[0]);
-        const endIndex = dateIndex.get(itemDates[itemDates.length - 1]);
-        const segments = [];
+        const bars = scheduleItems
+          .flatMap((item, index) => {
+            const itemDates = getDateRange(item.startDate, item.endDate);
+            const startIndex = dateIndex.get(itemDates[0]);
+            const endIndex = dateIndex.get(itemDates[itemDates.length - 1]);
+            const segments = [];
 
-        for (let cursor = startIndex; cursor <= endIndex;) {
-          const week = Math.floor(cursor / 7);
-          const weekEnd = Math.min((week + 1) * 7 - 1, endIndex);
-          const laneEnds = laneEndsByWeek[week];
-          let lane = laneEnds.findIndex((lastEnd) => cursor > lastEnd);
-          if (lane === -1) {
-            lane = laneEnds.length;
-          }
-          laneEnds[lane] = weekEnd;
-          weekLaneCounts[week] = Math.max(weekLaneCounts[week], lane + 1);
-          segments.push({ item, index, week, lane, startColumn: (cursor % 7) + 1, endColumn: (weekEnd % 7) + 2 });
-          cursor = weekEnd + 1;
-        }
+            for (let cursor = startIndex; cursor <= endIndex; ) {
+              const week = Math.floor(cursor / 7);
+              const weekEnd = Math.min((week + 1) * 7 - 1, endIndex);
+              const laneEnds = laneEndsByWeek[week];
+              let lane = laneEnds.findIndex((lastEnd) => cursor > lastEnd);
+              if (lane === -1) {
+                lane = laneEnds.length;
+              }
+              laneEnds[lane] = weekEnd;
+              weekLaneCounts[week] = Math.max(weekLaneCounts[week], lane + 1);
+              segments.push({
+                item,
+                index,
+                week,
+                lane,
+                startColumn: (cursor % 7) + 1,
+                endColumn: (weekEnd % 7) + 2,
+              });
+              cursor = weekEnd + 1;
+            }
 
-        return segments;
-      }).map(({ item, index, week, lane, startColumn, endColumn }) => {
-        const state = getDateState(item.startDate);
-        const deliveryClass = item.sourceType === "delivery" ? " is-delivery" : "";
-        const sourceLabel = item.sourceType === "delivery" ? `<span class="schedule-source">${item.deliveryType || "배송"}</span>` : "";
-        return `
+            return segments;
+          })
+          .map(({ item, index, week, lane, startColumn, endColumn }) => {
+            const state = getDateState(item.startDate);
+            const deliveryClass =
+              item.sourceType === "delivery" ? " is-delivery" : "";
+            const sourceLabel =
+              item.sourceType === "delivery"
+                ? `<span class="schedule-source">${item.deliveryType || "배송"}</span>`
+                : "";
+            return `
           <button class="schedule-item is-${state}${deliveryClass} color-${index % 5}" type="button" data-calendar-index="${index}" style="grid-column:${startColumn} / ${endColumn};grid-row:${week + 2};--lane:${lane}">
             <span class="schedule-item-title">${item.name}</span>
             ${sourceLabel}
           </button>
         `;
-      }).join("");
+          })
+          .join("");
 
-      container.setAttribute("aria-label", `${monthLabel} 월간 일정`);
-      container.style.gridTemplateRows = [
-        "34px",
-        ...weekLaneCounts.map((laneCount) => `${Math.max(132, 56 + Math.max(laneCount, 1) * 34)}px`)
-      ].join(" ");
-      container.innerHTML = `${weekHeaders}${headers}${bars}`;
-    }
+        container.setAttribute("aria-label", `${monthLabel} 월간 일정`);
+        container.style.gridTemplateRows = [
+          "34px",
+          ...weekLaneCounts.map(
+            (laneCount) =>
+              `${Math.max(132, 56 + Math.max(laneCount, 1) * 34)}px`,
+          ),
+        ].join(" ");
+        container.innerHTML = `${weekHeaders}${headers}${bars}`;
+      }
 
-    function renderInteriorRequests() {
-      document.getElementById("interiorRequestList").innerHTML = interiorRequestData.map((item, index) => `
+      function renderInteriorRequests() {
+        document.getElementById("interiorRequestList").innerHTML =
+          interiorRequestData
+            .map(
+              (item, index) => `
         <article class="request-item${item.status === "completed" ? " is-completed" : ""}">
           <div class="request-head">
             <div class="request-index">${String(index + 1).padStart(2, "0")}</div>
@@ -1721,21 +1882,23 @@
           ${item.note ? `<div class="request-note">${item.note}</div>` : ""}
           ${item.answer ? `<div class="request-answer"><span class="request-answer-label">답변${item.completedDate ? ` · ${item.completedDate}` : ""}</span>${item.answer}</div>` : ""}
         </article>
-      `).join("");
-    }
+      `,
+            )
+            .join("");
+      }
 
-    function renderMovingSection() {
-      const movingSchedules = scheduleData.filter(isMovingSchedule);
-      const movingPurchases = purchaseData.filter(isMovingPurchase);
-      const paidTotal = movingPurchases
-        .filter(isCompletedExpense)
-        .reduce((sum, item) => sum + getDisplayPurchaseAmount(item), 0);
-      const plannedTotal = movingPurchases
-        .filter((item) => !isCompletedExpense(item))
-        .reduce((sum, item) => sum + Number(item.expectedWon || 0), 0);
-      const movingTotal = paidTotal + plannedTotal;
+      function renderMovingSection() {
+        const movingSchedules = scheduleData.filter(isMovingSchedule);
+        const movingPurchases = purchaseData.filter(isMovingPurchase);
+        const paidTotal = movingPurchases
+          .filter(isCompletedExpense)
+          .reduce((sum, item) => sum + getDisplayPurchaseAmount(item), 0);
+        const plannedTotal = movingPurchases
+          .filter((item) => !isCompletedExpense(item))
+          .reduce((sum, item) => sum + Number(item.expectedWon || 0), 0);
+        const movingTotal = paidTotal + plannedTotal;
 
-      document.getElementById("movingOverview").innerHTML = `
+        document.getElementById("movingOverview").innerHTML = `
         <article class="move-stat">
           <div class="move-stat-label">이사집 주소</div>
           <div class="move-stat-value">${getMovingAddress()}</div>
@@ -1754,22 +1917,29 @@
         </article>
       `;
 
-      document.getElementById("movingScheduleTableBody").innerHTML = movingSchedules.map((item) => {
-        const startLabel = formatDateLabel(item.startDate);
-        const endLabel = item.endDate ? formatDateLabel(item.endDate) : "";
-        return `
+        document.getElementById("movingScheduleTableBody").innerHTML =
+          movingSchedules
+            .map((item) => {
+              const startLabel = formatDateLabel(item.startDate);
+              const endLabel = item.endDate
+                ? formatDateLabel(item.endDate)
+                : "";
+              return `
           <tr>
             <td>${item.name}</td>
             <td>${endLabel ? `${startLabel} ~ ${endLabel}` : startLabel}</td>
             <td>${item.note || "-"}</td>
           </tr>
         `;
-      }).join("");
+            })
+            .join("");
 
-      document.getElementById("movingCostTableBody").innerHTML = movingPurchases.map((item) => {
-        const statusMeta = getStatusMeta(item.status);
-        const amount = getDisplayPurchaseAmount(item);
-        return `
+        document.getElementById("movingCostTableBody").innerHTML =
+          movingPurchases
+            .map((item) => {
+              const statusMeta = getStatusMeta(item.status);
+              const amount = getDisplayPurchaseAmount(item);
+              return `
           <tr>
             <td>${item.category}</td>
             <td>${item.name}</td>
@@ -1779,9 +1949,12 @@
             <td>${item.purchaseRoute || item.memo || "-"}</td>
           </tr>
         `;
-      }).join("");
+            })
+            .join("");
 
-      document.getElementById("disposalTableBody").innerHTML = disposalData.map((group) => `
+        document.getElementById("disposalTableBody").innerHTML = disposalData
+          .map(
+            (group) => `
         <tr>
           <td>${group.room}</td>
           <td>
@@ -1790,19 +1963,21 @@
             </div>
           </td>
         </tr>
-      `).join("");
-    }
+      `,
+          )
+          .join("");
+      }
 
-    function renderTransferSection() {
-      const incomingTotal = transferData
-        .filter((item) => item.receiver === "김하늘")
-        .reduce((sum, item) => sum + Number(item.amountWon || 0), 0);
-      const outgoingTotal = transferData
-        .filter((item) => item.sender === "김하늘")
-        .reduce((sum, item) => sum + Number(item.amountWon || 0), 0);
-      const netTotal = incomingTotal - outgoingTotal;
+      function renderTransferSection() {
+        const incomingTotal = transferData
+          .filter((item) => item.receiver === "김하늘")
+          .reduce((sum, item) => sum + Number(item.amountWon || 0), 0);
+        const outgoingTotal = transferData
+          .filter((item) => item.sender === "김하늘")
+          .reduce((sum, item) => sum + Number(item.amountWon || 0), 0);
+        const netTotal = incomingTotal - outgoingTotal;
 
-      document.getElementById("transferOverview").innerHTML = `
+        document.getElementById("transferOverview").innerHTML = `
         <article class="move-stat">
           <div class="move-stat-label">받은 돈</div>
           <div class="move-stat-value">${formatWon(incomingTotal)}</div>
@@ -1817,7 +1992,9 @@
         </article>
       `;
 
-      document.getElementById("transferTableBody").innerHTML = transferData.map((item) => `
+        document.getElementById("transferTableBody").innerHTML = transferData
+          .map(
+            (item) => `
         <tr>
           <td>${item.date ? formatDateLabel(item.date) : "-"}</td>
           <td>${item.sender}</td>
@@ -1825,14 +2002,17 @@
           <td class="amount-cell">${formatWon(item.amountWon)}</td>
           <td>${item.memo || "-"}</td>
         </tr>
-      `).join("");
-    }
+      `,
+          )
+          .join("");
+      }
 
-    function renderConstructionTable() {
-      const tbody = document.getElementById("constructionTableBody");
-      tbody.innerHTML = constructionData.map((item) => {
-        const statusMeta = getStatusMeta(item.status);
-        return `
+      function renderConstructionTable() {
+        const tbody = document.getElementById("constructionTableBody");
+        tbody.innerHTML = constructionData
+          .map((item) => {
+            const statusMeta = getStatusMeta(item.status);
+            return `
           <tr>
             <td>${item.stage}</td>
             <td class="amount-cell">${formatWon(item.amountWon)}</td>
@@ -1842,38 +2022,52 @@
             <td>${item.memo || "-"}</td>
           </tr>
         `;
-      }).join("");
-    }
+          })
+          .join("");
+      }
 
-    function renderPurchaseSummary() {
-      const container = document.getElementById("pricedItemsSummary");
-      const visibleItems = purchaseData.filter((item) => Number(item.expectedWon) > 0 && !isMovingPurchase(item));
+      function renderPurchaseSummary() {
+        const container = document.getElementById("pricedItemsSummary");
+        const visibleItems = purchaseData.filter(
+          (item) => Number(item.expectedWon) > 0 && !isMovingPurchase(item),
+        );
 
-      container.innerHTML = visibleItems.map((item, index) => {
-        const statusMeta = getStatusMeta(item.status);
-        const amount = getDisplayPurchaseAmount(item);
-        const dateLabel = item.purchaseDate ? formatDateLabel(item.purchaseDate) : "일정 미정";
-        const deliveryLabel = item.deliveryDate ? `${item.deliveryType || "배송"} ${formatDateLabel(item.deliveryDate)}${item.deliveryTime ? ` ${item.deliveryTime}` : ""}` : "";
-        const routeLabel = item.purchaseRoute || "경로 미정";
-        const amountClass = amount < 0 ? " is-negative" : "";
-        const subItems = Array.isArray(item.subItems) ? item.subItems : [];
-        const subItemsId = `purchaseSubItems-${index}`;
-        const subItemsMarkup = subItems.length ? `
+        container.innerHTML = visibleItems
+          .map((item, index) => {
+            const statusMeta = getStatusMeta(item.status);
+            const amount = getDisplayPurchaseAmount(item);
+            const dateLabel = item.purchaseDate
+              ? formatDateLabel(item.purchaseDate)
+              : "일정 미정";
+            const deliveryLabel = item.deliveryDate
+              ? `${item.deliveryType || "배송"} ${formatDateLabel(item.deliveryDate)}${item.deliveryTime ? ` ${item.deliveryTime}` : ""}`
+              : "";
+            const routeLabel = item.purchaseRoute || "경로 미정";
+            const amountClass = amount < 0 ? " is-negative" : "";
+            const subItems = Array.isArray(item.subItems) ? item.subItems : [];
+            const subItemsId = `purchaseSubItems-${index}`;
+            const subItemsMarkup = subItems.length
+              ? `
           <button class="summary-subitem-toggle" type="button" aria-expanded="false" aria-controls="${subItemsId}">품목 보기</button>
           <div class="summary-subitems" id="${subItemsId}" hidden>
-            ${subItems.map((subItem) => {
-              const subAmount = Number(subItem.actualWon || subItem.expectedWon || 0);
-              return `
+            ${subItems
+              .map((subItem) => {
+                const subAmount = Number(
+                  subItem.actualWon || subItem.expectedWon || 0,
+                );
+                return `
                 <div class="summary-subitem">
                   <span class="summary-subitem-name">${subItem.name}</span>
                   <span class="summary-subitem-amount">${formatWon(subAmount)}</span>
                 </div>
               `;
-            }).join("")}
+              })
+              .join("")}
           </div>
-        ` : "";
+        `
+              : "";
 
-        return `
+            return `
           <article class="summary-item">
             <div class="summary-item-main">
               <div class="summary-item-name">
@@ -1888,91 +2082,122 @@
             <div class="summary-item-amount${amountClass}">${formatWon(amount)}</div>
           </article>
         `;
-      }).join("");
-    }
-
-    function bindPurchaseSubItemToggles() {
-      document.getElementById("pricedItemsSummary").addEventListener("click", (event) => {
-        const button = event.target.closest(".summary-subitem-toggle");
-        if (!button) return;
-        const target = document.getElementById(button.getAttribute("aria-controls"));
-        if (!target) return;
-        const isOpen = button.getAttribute("aria-expanded") === "true";
-        button.setAttribute("aria-expanded", String(!isOpen));
-        button.textContent = isOpen ? "품목 보기" : "품목 닫기";
-        target.hidden = isOpen;
-      });
-    }
-
-    function getVisiblePurchaseItems() {
-      return purchaseData
-        .filter((item) => Number(item.expectedWon) > 0 && !isMovingPurchase(item))
-        .map((item) => ({ ...item, displayAmount: getDisplayPurchaseAmount(item) }))
-        .filter((item) => item.displayAmount > 0);
-    }
-
-    function getCategorySpendData() {
-      const categoryMap = new Map();
-      getVisiblePurchaseItems().forEach((item) => {
-        categoryMap.set(item.category, (categoryMap.get(item.category) || 0) + item.displayAmount);
-      });
-
-      return Array.from(categoryMap, ([category, amount]) => ({ category, amount }))
-        .sort((a, b) => b.amount - a.amount);
-    }
-
-    function renderCategoryDonut() {
-      const colors = ["#3b6ff6", "#7c5fb2", "#e57b45", "#1f8a5b", "#f6b526", "#f0829f", "#5f99ef", "#71c9b4"];
-      const categoryData = getCategorySpendData();
-      const total = categoryData.reduce((sum, item) => sum + item.amount, 0);
-      const donut = document.getElementById("categoryDonut");
-      const legend = document.getElementById("categoryLegend");
-
-      document.getElementById("donutTotal").textContent = formatWon(total);
-
-      if (!total) {
-        donut.style.setProperty("--donut-gradient", "#dfe6f0");
-        legend.innerHTML = `<div class="empty-state">표시할 구매 금액이 없습니다.</div>`;
-        return;
+          })
+          .join("");
       }
 
-      let cursor = 0;
-      const gradientStops = categoryData.map((item, index) => {
-        const start = cursor;
-        const end = cursor + (item.amount / total) * 100;
-        cursor = end;
-        const color = colors[index % colors.length];
-        return `${color} ${start.toFixed(2)}% ${end.toFixed(2)}%`;
-      });
+      function bindPurchaseSubItemToggles() {
+        document
+          .getElementById("pricedItemsSummary")
+          .addEventListener("click", (event) => {
+            const button = event.target.closest(".summary-subitem-toggle");
+            if (!button) return;
+            const target = document.getElementById(
+              button.getAttribute("aria-controls"),
+            );
+            if (!target) return;
+            const isOpen = button.getAttribute("aria-expanded") === "true";
+            button.setAttribute("aria-expanded", String(!isOpen));
+            button.textContent = isOpen ? "품목 보기" : "품목 닫기";
+            target.hidden = isOpen;
+          });
+      }
 
-      donut.style.setProperty("--donut-gradient", `conic-gradient(${gradientStops.join(", ")})`);
-      legend.innerHTML = categoryData.map((item, index) => {
-        const percent = total > 0 ? (item.amount / total) * 100 : 0;
-        return `
+      function getVisiblePurchaseItems() {
+        return purchaseData
+          .filter(
+            (item) => Number(item.expectedWon) > 0 && !isMovingPurchase(item),
+          )
+          .map((item) => ({
+            ...item,
+            displayAmount: getDisplayPurchaseAmount(item),
+          }))
+          .filter((item) => item.displayAmount > 0);
+      }
+
+      function getCategorySpendData() {
+        const categoryMap = new Map();
+        getVisiblePurchaseItems().forEach((item) => {
+          categoryMap.set(
+            item.category,
+            (categoryMap.get(item.category) || 0) + item.displayAmount,
+          );
+        });
+
+        return Array.from(categoryMap, ([category, amount]) => ({
+          category,
+          amount,
+        })).sort((a, b) => b.amount - a.amount);
+      }
+
+      function renderCategoryDonut() {
+        const colors = [
+          "#3b6ff6",
+          "#7c5fb2",
+          "#e57b45",
+          "#1f8a5b",
+          "#f6b526",
+          "#f0829f",
+          "#5f99ef",
+          "#71c9b4",
+        ];
+        const categoryData = getCategorySpendData();
+        const total = categoryData.reduce((sum, item) => sum + item.amount, 0);
+        const donut = document.getElementById("categoryDonut");
+        const legend = document.getElementById("categoryLegend");
+
+        document.getElementById("donutTotal").textContent = formatWon(total);
+
+        if (!total) {
+          donut.style.setProperty("--donut-gradient", "#dfe6f0");
+          legend.innerHTML = `<div class="empty-state">표시할 구매 금액이 없습니다.</div>`;
+          return;
+        }
+
+        let cursor = 0;
+        const gradientStops = categoryData.map((item, index) => {
+          const start = cursor;
+          const end = cursor + (item.amount / total) * 100;
+          cursor = end;
+          const color = colors[index % colors.length];
+          return `${color} ${start.toFixed(2)}% ${end.toFixed(2)}%`;
+        });
+
+        donut.style.setProperty(
+          "--donut-gradient",
+          `conic-gradient(${gradientStops.join(", ")})`,
+        );
+        legend.innerHTML = categoryData
+          .map((item, index) => {
+            const percent = total > 0 ? (item.amount / total) * 100 : 0;
+            return `
           <div class="legend-item">
             <span class="legend-dot" style="--legend-color:${colors[index % colors.length]}"></span>
             <span class="legend-name">${item.category}</span>
             <span class="legend-value">${percent.toFixed(1)}% · ${formatWon(item.amount)}</span>
           </div>
         `;
-      }).join("");
-    }
-
-    function renderTopSpendList() {
-      const container = document.getElementById("topSpendList");
-      const items = getVisiblePurchaseItems()
-        .sort((a, b) => b.displayAmount - a.displayAmount)
-        .slice(0, 8);
-      const maxAmount = items[0] ? items[0].displayAmount : 0;
-
-      if (!items.length) {
-        container.innerHTML = `<div class="empty-state">표시할 지출 항목이 없습니다.</div>`;
-        return;
+          })
+          .join("");
       }
 
-      container.innerHTML = items.map((item, index) => {
-        const width = maxAmount > 0 ? (item.displayAmount / maxAmount) * 100 : 0;
-        return `
+      function renderTopSpendList() {
+        const container = document.getElementById("topSpendList");
+        const items = getVisiblePurchaseItems()
+          .sort((a, b) => b.displayAmount - a.displayAmount)
+          .slice(0, 8);
+        const maxAmount = items[0] ? items[0].displayAmount : 0;
+
+        if (!items.length) {
+          container.innerHTML = `<div class="empty-state">표시할 지출 항목이 없습니다.</div>`;
+          return;
+        }
+
+        container.innerHTML = items
+          .map((item, index) => {
+            const width =
+              maxAmount > 0 ? (item.displayAmount / maxAmount) * 100 : 0;
+            return `
           <article class="top-spend-item">
             <div class="top-rank">${index + 1}</div>
             <div class="top-spend-main">
@@ -1985,32 +2210,44 @@
             <div class="top-spend-category">${item.category}</div>
           </article>
         `;
-      }).join("");
-    }
-
-    function renderUpcomingDeliveryList() {
-      const container = document.getElementById("upcomingDeliveryList");
-      const today = getToday();
-      today.setHours(0, 0, 0, 0);
-
-      const items = purchaseData
-        .filter((item) => item.deliveryDate && parseDateOnly(item.deliveryDate).getTime() >= today.getTime())
-        .sort((a, b) => parseDateOnly(a.deliveryDate).getTime() - parseDateOnly(b.deliveryDate).getTime())
-        .slice(0, 5);
-
-      if (!items.length) {
-        container.innerHTML = `<div class="empty-state">예정된 설치 일정이 없습니다.</div>`;
-        return;
+          })
+          .join("");
       }
 
-      container.innerHTML = items.map((item) => {
-        const date = parseDateOnly(item.deliveryDate);
-        const dateLabel = `${date.getMonth() + 1}/${date.getDate()}`;
-        const weekday = new Intl.DateTimeFormat("ko-KR", { weekday: "short" }).format(date);
-        const type = item.deliveryType || "배송";
-        const time = item.deliveryTime ? ` · ${item.deliveryTime}` : "";
-        const note = item.deliveryNote ? ` · ${item.deliveryNote}` : "";
-        return `
+      function renderUpcomingDeliveryList() {
+        const container = document.getElementById("upcomingDeliveryList");
+        const today = getToday();
+        today.setHours(0, 0, 0, 0);
+
+        const items = purchaseData
+          .filter(
+            (item) =>
+              item.deliveryDate &&
+              parseDateOnly(item.deliveryDate).getTime() >= today.getTime(),
+          )
+          .sort(
+            (a, b) =>
+              parseDateOnly(a.deliveryDate).getTime() -
+              parseDateOnly(b.deliveryDate).getTime(),
+          )
+          .slice(0, 5);
+
+        if (!items.length) {
+          container.innerHTML = `<div class="empty-state">예정된 설치 일정이 없습니다.</div>`;
+          return;
+        }
+
+        container.innerHTML = items
+          .map((item) => {
+            const date = parseDateOnly(item.deliveryDate);
+            const dateLabel = `${date.getMonth() + 1}/${date.getDate()}`;
+            const weekday = new Intl.DateTimeFormat("ko-KR", {
+              weekday: "short",
+            }).format(date);
+            const type = item.deliveryType || "배송";
+            const time = item.deliveryTime ? ` · ${item.deliveryTime}` : "";
+            const note = item.deliveryNote ? ` · ${item.deliveryNote}` : "";
+            return `
           <article class="upcoming-item">
             <div class="upcoming-date">${dateLabel}<span>${weekday}</span></div>
             <div>
@@ -2019,138 +2256,159 @@
             </div>
           </article>
         `;
-      }).join("");
-    }
+          })
+          .join("");
+      }
 
-    function renderVisualAnalytics() {
-      renderCategoryDonut();
-      renderTopSpendList();
-      renderUpcomingDeliveryList();
-    }
+      function renderVisualAnalytics() {
+        renderCategoryDonut();
+        renderTopSpendList();
+        renderUpcomingDeliveryList();
+      }
 
-    function calculateTotals() {
-      const constructionTotal = constructionData.reduce((sum, item) => sum + Number(item.amountWon || 0), 0);
-      const constructionSpent = constructionData
-        .filter((item) => item.status === "paid")
-        .reduce((sum, item) => sum + Number(item.amountWon || 0), 0);
-      const constructionRemaining = constructionTotal - constructionSpent;
+      function calculateTotals() {
+        const constructionTotal = constructionData.reduce(
+          (sum, item) => sum + Number(item.amountWon || 0),
+          0,
+        );
+        const constructionSpent = constructionData
+          .filter((item) => item.status === "paid")
+          .reduce((sum, item) => sum + Number(item.amountWon || 0), 0);
+        const constructionRemaining = constructionTotal - constructionSpent;
 
-      const purchasedTotal = purchaseData
-        .filter(isCompletedExpense)
-        .reduce((sum, item) => {
-          const actual = Number(item.actualWon || 0);
-          return sum + (actual !== 0 ? actual : Number(item.expectedWon || 0));
-        }, 0);
+        const purchasedTotal = purchaseData
+          .filter(isCompletedExpense)
+          .reduce((sum, item) => {
+            const actual = Number(item.actualWon || 0);
+            return (
+              sum + (actual !== 0 ? actual : Number(item.expectedWon || 0))
+            );
+          }, 0);
 
-      const plannedTotal = purchaseData
-        .filter((item) => !isCompletedExpense(item))
-        .reduce((sum, item) => sum + Number(item.expectedWon || 0), 0);
+        const plannedTotal = purchaseData
+          .filter((item) => !isCompletedExpense(item))
+          .reduce((sum, item) => sum + Number(item.expectedWon || 0), 0);
 
-      const livingTotal = purchasedTotal + plannedTotal;
-      const grandTotal = constructionTotal + livingTotal;
+        const livingTotal = purchasedTotal + plannedTotal;
+        const grandTotal = constructionTotal + livingTotal;
 
-      return {
-        constructionTotal,
-        constructionSpent,
-        constructionRemaining,
-        purchasedTotal,
-        plannedTotal,
-        livingTotal,
-        grandTotal
-      };
-    }
+        return {
+          constructionTotal,
+          constructionSpent,
+          constructionRemaining,
+          purchasedTotal,
+          plannedTotal,
+          livingTotal,
+          grandTotal,
+        };
+      }
 
-    function renderDashboard() {
-      const totals = calculateTotals();
-      const constructionRatio = totals.constructionTotal > 0
-        ? (totals.constructionSpent / totals.constructionTotal) * 100
-        : 0;
-      const livingRatio = totals.livingTotal > 0
-        ? (totals.purchasedTotal / totals.livingTotal) * 100
-        : 0;
-      const grandSpent = totals.constructionSpent + totals.purchasedTotal;
-      const grandRatio = totals.grandTotal > 0
-        ? (grandSpent / totals.grandTotal) * 100
-        : 0;
+      function renderDashboard() {
+        const totals = calculateTotals();
+        const constructionRatio =
+          totals.constructionTotal > 0
+            ? (totals.constructionSpent / totals.constructionTotal) * 100
+            : 0;
+        const livingRatio =
+          totals.livingTotal > 0
+            ? (totals.purchasedTotal / totals.livingTotal) * 100
+            : 0;
+        const grandSpent = totals.constructionSpent + totals.purchasedTotal;
+        const grandRatio =
+          totals.grandTotal > 0 ? (grandSpent / totals.grandTotal) * 100 : 0;
 
-      document.getElementById("constructionMetric").textContent = formatWon(totals.constructionTotal);
-      document.getElementById("constructionSub").textContent =
-        `지출 ${formatWon(totals.constructionSpent)} / 남은 금액 ${formatWon(totals.constructionRemaining)}`;
-      document.getElementById("constructionProgress").style.width = `${Math.min(constructionRatio, 100)}%`;
+        document.getElementById("constructionMetric").textContent = formatWon(
+          totals.constructionTotal,
+        );
+        document.getElementById("constructionSub").textContent =
+          `지출 ${formatWon(totals.constructionSpent)} / 남은 금액 ${formatWon(totals.constructionRemaining)}`;
+        document.getElementById("constructionProgress").style.width =
+          `${Math.min(constructionRatio, 100)}%`;
 
-      document.getElementById("livingMetric").textContent = formatWon(totals.livingTotal);
-      document.getElementById("livingSub").textContent =
-        `예정 ${formatWon(totals.plannedTotal)} / 지출 ${formatWon(totals.purchasedTotal)}`;
-      document.getElementById("livingProgress").style.width = `${Math.min(livingRatio, 100)}%`;
+        document.getElementById("livingMetric").textContent = formatWon(
+          totals.livingTotal,
+        );
+        document.getElementById("livingSub").textContent =
+          `예정 ${formatWon(totals.plannedTotal)} / 지출 ${formatWon(totals.purchasedTotal)}`;
+        document.getElementById("livingProgress").style.width =
+          `${Math.min(livingRatio, 100)}%`;
 
-      document.getElementById("grandMetric").textContent = formatWon(totals.grandTotal);
-      document.getElementById("grandSub").textContent =
-        `총지출 ${formatWon(grandSpent)} / 남은 비용 ${formatWon(totals.grandTotal - grandSpent)}`;
-      document.getElementById("grandProgress").style.width = `${Math.min(grandRatio, 100)}%`;
-    }
+        document.getElementById("grandMetric").textContent = formatWon(
+          totals.grandTotal,
+        );
+        document.getElementById("grandSub").textContent =
+          `총지출 ${formatWon(grandSpent)} / 남은 비용 ${formatWon(totals.grandTotal - grandSpent)}`;
+        document.getElementById("grandProgress").style.width =
+          `${Math.min(grandRatio, 100)}%`;
+      }
 
-    function bindPrintButton() {
-      document.getElementById("printButton").addEventListener("click", () => {
-        window.print();
-      });
-    }
-
-    function renderTodayLabel() {
-      document.getElementById("todayLabel").textContent = formatTodayLabel(getToday());
-    }
-
-    function renderScheduleTodayLabel() {
-      const today = getToday();
-      document.getElementById("scheduleTodayLabel").textContent = formatScheduleTodayLabel(today);
-    }
-
-    function renderJsonPanels() {
-      const movingJson = {
-        scheduleData: scheduleData.filter(isMovingSchedule),
-        purchaseData: purchaseData.filter(isMovingPurchase),
-        disposalData
-      };
-      const purchaseJson = purchaseData.filter((item) => !isMovingPurchase(item));
-      const jsonMap = {
-        scheduleJson: scheduleData,
-        interiorRequestJson: interiorRequestData,
-        movingJson,
-        transferJson: transferData,
-        constructionJson: constructionData,
-        purchaseJson
-      };
-
-      Object.entries(jsonMap).forEach(([id, data]) => {
-        const panel = document.getElementById(id);
-        if (panel) {
-          panel.textContent = JSON.stringify(data, null, 2);
-        }
-      });
-    }
-
-    function bindJsonToggles() {
-      document.querySelectorAll(".json-toggle").forEach((button) => {
-        button.addEventListener("click", () => {
-          const targetId = button.dataset.jsonTarget;
-          const panel = document.getElementById(targetId);
-          if (!panel) return;
-          const isOpen = panel.classList.toggle("is-open");
-          button.textContent = isOpen ? "JSON 닫기" : "JSON 보기";
+      function bindPrintButton() {
+        document.getElementById("printButton").addEventListener("click", () => {
+          window.print();
         });
-      });
-    }
+      }
 
-    function openSchedulePopover(item) {
-      const popover = document.getElementById("schedulePopover");
-      const title = document.getElementById("schedulePopoverTitle");
-      const body = document.getElementById("schedulePopoverBody");
-      const startLabel = formatDateLabel(item.startDate);
-      const endLabel = item.endDate ? formatDateLabel(item.endDate) : "";
-      const dateLabel = endLabel ? `${startLabel} ~ ${endLabel}` : startLabel;
-      const sourceLabel = item.sourceType === "delivery" ? "배송/설치" : "일정";
+      function renderTodayLabel() {
+        document.getElementById("todayLabel").textContent =
+          formatTodayLabel(getToday());
+      }
 
-      title.textContent = item.name;
-      body.innerHTML = `
+      function renderScheduleTodayLabel() {
+        const today = getToday();
+        document.getElementById("scheduleTodayLabel").textContent =
+          formatScheduleTodayLabel(today);
+      }
+
+      function renderJsonPanels() {
+        const movingJson = {
+          scheduleData: scheduleData.filter(isMovingSchedule),
+          purchaseData: purchaseData.filter(isMovingPurchase),
+          disposalData,
+        };
+        const purchaseJson = purchaseData.filter(
+          (item) => !isMovingPurchase(item),
+        );
+        const jsonMap = {
+          scheduleJson: scheduleData,
+          interiorRequestJson: interiorRequestData,
+          movingJson,
+          transferJson: transferData,
+          constructionJson: constructionData,
+          purchaseJson,
+        };
+
+        Object.entries(jsonMap).forEach(([id, data]) => {
+          const panel = document.getElementById(id);
+          if (panel) {
+            panel.textContent = JSON.stringify(data, null, 2);
+          }
+        });
+      }
+
+      function bindJsonToggles() {
+        document.querySelectorAll(".json-toggle").forEach((button) => {
+          button.addEventListener("click", () => {
+            const targetId = button.dataset.jsonTarget;
+            const panel = document.getElementById(targetId);
+            if (!panel) return;
+            const isOpen = panel.classList.toggle("is-open");
+            button.textContent = isOpen ? "JSON 닫기" : "JSON 보기";
+          });
+        });
+      }
+
+      function openSchedulePopover(item) {
+        const popover = document.getElementById("schedulePopover");
+        const title = document.getElementById("schedulePopoverTitle");
+        const body = document.getElementById("schedulePopoverBody");
+        const startLabel = formatDateLabel(item.startDate);
+        const endLabel = item.endDate ? formatDateLabel(item.endDate) : "";
+        const dateLabel = endLabel ? `${startLabel} ~ ${endLabel}` : startLabel;
+        const sourceLabel =
+          item.sourceType === "delivery" ? "배송/설치" : "일정";
+
+        title.textContent = item.name;
+        body.innerHTML = `
         <div class="schedule-popover-row">
           <div class="schedule-popover-label">구분</div>
           <div class="schedule-popover-value">${sourceLabel}</div>
@@ -2164,207 +2422,731 @@
           <div class="schedule-popover-value">${item.note || "-"}</div>
         </div>
       `;
-      popover.classList.add("is-open");
-    }
-
-    function closeSchedulePopover() {
-      document.getElementById("schedulePopover").classList.remove("is-open");
-    }
-
-    function bindSchedulePopover() {
-      document.getElementById("scheduleBoard").addEventListener("click", (event) => {
-        const button = event.target.closest(".schedule-item");
-        if (!button) return;
-        const index = Number(button.dataset.calendarIndex);
-        const calendarItems = getCalendarItems();
-        if (Number.isNaN(index) || !calendarItems[index]) return;
-        openSchedulePopover(calendarItems[index]);
-      });
-
-      document.getElementById("schedulePopoverClose").addEventListener("click", closeSchedulePopover);
-      document.getElementById("schedulePopover").addEventListener("click", (event) => {
-        if (event.target.id === "schedulePopover") {
-          closeSchedulePopover();
-        }
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          closeSchedulePopover();
-        }
-      });
-    }
-
-    function initializePage() {
-      renderTodayLabel();
-      renderScheduleTodayLabel();
-      renderJsonPanels();
-      renderScheduleBoard();
-      renderInteriorRequests();
-      renderMovingSection();
-      renderTransferSection();
-      renderConstructionTable();
-      renderPurchaseSummary();
-      renderDashboard();
-      renderVisualAnalytics();
-      bindJsonToggles();
-      bindPurchaseSubItemToggles();
-      bindSchedulePopover();
-      bindPrintButton();
-    }
-
-    const interiorRequestData = [
-      { 
-        title: "싱크대 길이 확정", 
-        note: "시공 전 최종 길이 확인", 
-        status: "completed", 
-        answer: "냉장고턱까지 확정", 
-        completedDate: "2026-05-11" },
-      {
-        title: "싱크대 색상 확정",
-        note: "상판, 하부장, 상부장 색상 확인",
-        status: "completed",
-        answer: "상:웜코튼, 하부장:네추럴오크, 상판은 무드베이지플러스, 키친판넬은 엠보로프트로 확정.",
-        completedDate: "2026-05-11"
-      },
-      { 
-        title: "현관문, 중문 우드부분, 신발장 오픈장을 영림170으로 통일 요청", 
-        note: "현관타일 REP-02 체리블라썸 네이비는 그대로 유지하고 현관문 시트지, 중문 프레임/하부 우드부분, 신발장 가운데 오픈장 모두 영림170 PWT1206-2 전사 루나내추럴로 통일",
-        status: "completed",
-        answer: "적용요청완료",
-        completedDate: "2026-05-08"
-      },
-      {
-        title: "인테리어 신발장에 턱이 올라오는지 질문",
-        note: "신발장 하부 또는 가운데 수납공간 쪽에 턱이 올라오는 구조인지 사전 확인",
-        status: "completed",
-        answer: "신발장 턱은 올라오지 않음. 턱을 올리려면 신발장이 거실 안쪽으로 더 들어와야 해서 하지 않기로 함.",
-        completedDate: "2026-05-08"
-      },
-      { 
-        title: "세탁실 턱 배관 체크", 
-        note: "세탁실 턱 시공 시 배관 간섭과 배수 위치 확인", 
-        status: "completed",
-        completedDate: "2026-05-11"
+        popover.classList.add("is-open");
       }
-    ];
 
-    const scheduleData = [
-      { name: "이사집 계약", startDate: "2026-05-04", endDate: "", note: "인천광역시 부평구 부평동 341-114, 302호 계약" },
-      { name: "이사집 가스 개설", startDate: "2026-05-06", endDate: "", note: "16:00~18:00" },
-      { name: "부평집 폐기물 수거", startDate: "2026-05-08", endDate: "", note: "14:00~16:00, 냉장고, 가구 등" },
-      { name: "부평집 가스 중지", startDate: "2026-05-09", endDate: "", note: "09:00~11:00" },
-      { name: "이사 짐싸기", startDate: "2026-05-04", endDate: "2026-05-09", note: "포장과 분류를 진행하는 기간" },
-      { name: "임시집으로 이사", startDate: "2026-05-10", endDate: "", note: "임시 거주지로 이동" },
-      { name: "공사 시작", startDate: "2026-05-11", endDate: "", note: "세종인테리어 공사 시작일" },
-      { name: "실측/철거", startDate: "2026-05-11", endDate: "", note: "실측/철거" },
-      { name: "이사집 티비/인터넷 설치", startDate: "2026-05-12", endDate: "", note: "" },
-      { name: "샤시", startDate: "2026-05-12", endDate: "", note: "샤시" },
-      { name: "설비", startDate: "2026-05-12", endDate: "2026-05-15", note: "설비" },
-      { name: "전기", startDate: "2026-05-15", endDate: "", note: "전기" },
-      { name: "목공/중문", startDate: "2026-05-18", endDate: "2026-05-20", note: "중문" },
-      { name: "타일", startDate: "2026-05-21", endDate: "2026-05-22", note: "타일" },
-      { name: "욕실집기", startDate: "2026-05-26", endDate: "", note: "욕실집기" },
-      { name: "페인트", startDate: "2026-05-27", endDate: "", note: "페인트" },
-      { name: "도베", startDate: "2026-05-30", endDate: "2026-05-31", note: "도베" },
-      { name: "장판", startDate: "2026-06-01", endDate: "2026-06-01", note: "장판" },
-      { name: "조명", startDate: "2026-06-01", endDate: "2026-06-01", note: "조명" },
-      { name: "싱크대", startDate: "2026-06-02", endDate: "2026-06-02", note: "싱크대" },
-      { name: "입주청소", startDate: "2026-06-03", endDate: "2026-06-03", note: "청소" },
-      { name: "공사 종료", startDate: "2026-06-04", endDate: "", note: "현장 마감 및 점검" },
-      { name: "입주 티비 인터넷 설치", startDate: "2026-06-05", endDate: "", note: "요청예정" },
-      { name: "이사집 가스 중지", startDate: "2026-06-05", endDate: "", note: "" },
-      { name: "입주", startDate: "2026-06-06", endDate: "", note: "최종 입주 예정일" }
-    ];
+      function closeSchedulePopover() {
+        document.getElementById("schedulePopover").classList.remove("is-open");
+      }
 
-    const constructionData = [
-      { stage: "계약금", amountWon: 3000000, status: "paid", date: "2026-04-25", route: "국민 632902-01-074940 이하종", memo: "입금 완료" },
-      { stage: "중도금 1 - 하늘농협", amountWon: 8000000, status: "paid", date: "2026-05-02", route: "하늘농협", memo: "24개월 할부" },
-      { stage: "중도금 1 - 연미삼성", amountWon: 2000000, status: "paid", date: "2026-05-02", route: "연미삼성", memo: "23개월 할부" },
-      { stage: "중도금 2 - 현금", amountWon: 25000000, status: "paid", date: "2026-05-15", route: "현금", memo: "2026-05-15 현금 지급" },
-      { stage: "세종 잔금", amountWon: 9500000, status: "planned", date: "", route: "", memo: "남은 세종 인테리어 잔금" },
-      { stage: "한샘 주방 추가금", amountWon: 900000, status: "planned", date: "", route: "", memo: "남은 한샘 주방 추가금" }
-    ];
+      function bindSchedulePopover() {
+        document
+          .getElementById("scheduleBoard")
+          .addEventListener("click", (event) => {
+            const button = event.target.closest(".schedule-item");
+            if (!button) return;
+            const index = Number(button.dataset.calendarIndex);
+            const calendarItems = getCalendarItems();
+            if (Number.isNaN(index) || !calendarItems[index]) return;
+            openSchedulePopover(calendarItems[index]);
+          });
 
-    const transferData = [
-      { date: "2026-05-04", sender: "김의수", receiver: "김하늘", amountWon: 2000000, memo: "국민-285102" },
-      { date: "2026-05-08", sender: "김의수", receiver: "김하늘", amountWon: 9000000, memo: "국민-285102" },
-      { date: "2026-05-09", sender: "전영희", receiver: "김하늘", amountWon: 5000000, memo: "국민-285102" },
-      { date: "2026-05-09", sender: "김의수", receiver: "김하늘", amountWon: 2000000, memo: "국민-285102" },
-      { date: "2026-05-09", sender: "김의수", receiver: "김하늘", amountWon: 32000000, memo: "현금" }
-    ];
+        document
+          .getElementById("schedulePopoverClose")
+          .addEventListener("click", closeSchedulePopover);
+        document
+          .getElementById("schedulePopover")
+          .addEventListener("click", (event) => {
+            if (event.target.id === "schedulePopover") {
+              closeSchedulePopover();
+            }
+          });
 
-    const disposalData = [
-      { room: "안방", items: ["장롱", "침대", "서랍장", "안마의자", "에어컨", "실외기"] },
-      { room: "입구방", items: ["침대", "책상", "옷장", "의자", "책꽂이 2개", "프린터"] },
-      { room: "주방방", items: ["책상", "의자", "옷장", "침대"] },
-      { room: "세탁실", items: ["쌀독", "세탁기"] },
-      { room: "주방", items: ["냉장고", "김치냉장고 2개", "전자피아노"] },
-      { room: "거실", items: ["쇼파", "에어컨", "실외기", "티비장 2개", "작은책상"] }
-    ];
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            closeSchedulePopover();
+          }
+        });
+      }
 
-    const purchaseData = [
-      { category: "가전", name: "냉장고+김치냉장고", expectedWon: 3747000, status: "purchased", actualWon: 3747000, purchaseDate: "2026-05-20", purchaseRoute: "네이버플러스스토어", memo: "연미롯카 일시불", deliveryDate: "2026-06-04", deliveryType: "설치", deliveryNote: "설치 요청" },
-      { category: "가전", name: "워시타워", expectedWon: 2300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가전", name: "에어컨", expectedWon: 2500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가전", name: "게이트맨 도어락", expectedWon: 250000, status: "purchased", actualWon: 234740, purchaseDate: "2026-04-27", purchaseRoute: "쿠팡", memo: "세종인테리어전달완료" },
-      { category: "가전", name: "게이트맨 도어락 보강판", expectedWon: 15000, status: "purchased", actualWon: 15000, purchaseDate: "2026-04-29", purchaseRoute: "네이버플러스스토어", memo: "세종인테리어전달완료" },
-      { category: "가전", name: "인덕션", expectedWon: 650000, status: "purchased", actualWon: 613800, purchaseDate: "2026-05-18", purchaseRoute: "쿠팡", memo: "롯데카드 5할", deliveryDate: "2026-06-02", deliveryType: "설치" },
-      { category: "가전", name: "iptime wifi 공유기", expectedWon: 34600, status: "purchased", actualWon: 34600, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "쿠팡" },
-      { category: "가구", name: "안방TV장", expectedWon: 220000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "쇼파", expectedWon: 1700000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "퀸침대", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "안방협탁", expectedWon: 200000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "퀸침대 매트리스", expectedWon: 450000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "슈퍼싱글침대", expectedWon: 450000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "슈퍼싱글침대 매트리스", expectedWon: 380000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "가구", name: "이케아-가구, 용품 묶음", expectedWon: 800000, status: "purchased", actualWon: 798200, purchaseDate: "2026-05-27", purchaseRoute: "이케아", memo: "롯카. 하위 금액은 총 결제액 기준 임시 배분", deliveryDate: "2026-06-04", deliveryType: "배송", deliveryTime: "09:00~20:00", subItems: [
-        { name: "화장대", expectedWon: 180000, actualWon: 179000 },
-        { name: "서랍장 2개", expectedWon: 220000, actualWon: 220000 },
-        { name: "협탁", expectedWon: 60000, actualWon: 59900 },
-        { name: "옷장", expectedWon: 140000, actualWon: 139000 },
-        { name: "스툴", expectedWon: 36000, actualWon: 36400 },
-        { name: "탁상스탠드", expectedWon: 30000, actualWon: 29900 },
-        { name: "휴지통 2개", expectedWon: 20000, actualWon: 19800 },
-        { name: "도마", expectedWon: 15000, actualWon: 14900 },
-        { name: "수납걸이", expectedWon: 10000, actualWon: 9900 },
-        { name: "거울", expectedWon: 40000, actualWon: 39900 },
-        { name: "식기건조대 2개", expectedWon: 30000, actualWon: 29900 },
-        { name: "전구 1개", expectedWon: 10000, actualWon: 9900 },
-        { name: "설거지솔", expectedWon: 5000, actualWon: 4900 },
-        { name: "바닥보호스티커 2개", expectedWon: 4000, actualWon: 4800 }
-      ] },
-      { category: "가구", name: "까사미아-식탁/수납 묶음", expectedWon: 5212680, status: "purchased", actualWon: 5212680, purchaseDate: "2026-05-26", purchaseRoute: "까사미아", memo: "롯카. 하위 금액은 총 결제액 기준 임시 배분", deliveryDate: "2026-06-04", deliveryType: "설치", subItems: [
-        { name: "포멜로 식탁", expectedWon: 1450000, actualWon: 1450000 },
-        { name: "포멜로 의자 4개", expectedWon: 760000, actualWon: 760000 },
-        { name: "바젤 거실장", expectedWon: 1850000, actualWon: 1850000 },
-        { name: "라펠 붙박이장", expectedWon: 1152680, actualWon: 1152680 }
-      ] },
-      { category: "가구", name: "식탁등-뉘모네, 천장등후크, 전구", expectedWon: 90700, status: "purchased", actualWon: 90700, purchaseDate: "2026-05-18", purchaseRoute: "이케아", memo: "롯카" },
-      { category: "가구", name: "한샘머그아일랜드-100x45", expectedWon: 229000, status: "purchased", actualWon: 229000, purchaseDate: "2026-05-21", purchaseRoute: "한샘몰", memo: "롯카", deliveryDate: "2026-06-05", deliveryType: "설치", deliveryTime: "1타임(09:00~14:00)" },
-      { category: "수납", name: "발코니 수납 선반 3개", expectedWon: 300000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "이사집", name: "이사집 월세", expectedWon: 770000, status: "paid", actualWon: 770000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
-      { category: "이사집", name: "이사집 보증금", expectedWon: 500000, status: "paid", actualWon: 500000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
-      { category: "이사집", name: "이사집 보증금 환급", expectedWon: -500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "환급 예정", memo: "보증금 반환 예정 금액. 이사 예산에서 차감" },
-      { category: "이사집", name: "이사집 수도세", expectedWon: 40000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "인천광역시 부평구 부평동 341-114, 302호" },
-      { category: "이사집", name: "이사집 부동산 중개수수료", expectedWon: 100000, status: "paid", actualWon: 100000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
-      { category: "이사집", name: "가전가구폐기물", expectedWon: 500000, status: "paid", actualWon: 500000, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "" },
-      { category: "이사집", name: "도시가스-가스비", expectedWon: 16920, status: "paid", actualWon: 16920, purchaseDate: "2026-05-09", purchaseRoute: "지불완료", memo: "" },
-      { category: "생활살림", name: "화장실 매트 2개 / 세탁실 매트 / 주방 매트", expectedWon: 60000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "주방 매트는 주방살림으로 분리" },
-      { category: "생활살림", name: "매트리스 커버 퀸, 슈퍼싱글", expectedWon: 60000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "소프트워싱 누빔 매트리스커버 SS 기준" },
-      { category: "생활살림", name: "이불 퀸, 슈퍼싱글", expectedWon: 150000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 3도씨 쿨나잇 냉감 얇은 솜이불 S 기준" },
-      { category: "생활살림", name: "퀸, 슈퍼싱글 매트", expectedWon: 100000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "3도씨 슈퍼익스트림쿨 PCM 냉감 패드 SS 기준" },
-      { category: "생활살림", name: "베개 4개, 베개커버 4개", expectedWon: 160000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "모달 100% 베개커버 50x70 4개 기준" },
-      { category: "생활살림", name: "거실 커튼", expectedWon: 128000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 높이조절 셀프맞춤 100% 빛차단 암막커튼 140x240 4장 기준" },
-      { category: "생활살림", name: "안방 커튼", expectedWon: 128000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 높이조절 셀프맞춤 100% 빛차단 암막커튼 140x240 2장 기준" },
-      { category: "생활살림", name: "작은방 커튼 3개 방", expectedWon: 100000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "작은방 3곳, 방마다 140x240 2장씩 총 6장 기준" },
-      { category: "생활살림", name: "커튼봉 5개", expectedWon: 10000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 25mm 커튼봉 5개 기준" },
-      { category: "생활살림", name: "기타생활용품", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "생활용품 예비비" },
-      { category: "주방살림", name: "냄비세트", expectedWon: 500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" },
-      { category: "주방살림", name: "칼가위세트", expectedWon: 250000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "", memo: "" }
-    ];
+      function initializePage() {
+        renderTodayLabel();
+        renderScheduleTodayLabel();
+        renderJsonPanels();
+        renderScheduleBoard();
+        renderInteriorRequests();
+        renderMovingSection();
+        renderTransferSection();
+        renderConstructionTable();
+        renderPurchaseSummary();
+        renderDashboard();
+        renderVisualAnalytics();
+        bindJsonToggles();
+        bindPurchaseSubItemToggles();
+        bindSchedulePopover();
+        bindPrintButton();
+      }
 
-    initializePage();
-  </script>
-</body>
+      const interiorRequestData = [
+        {
+          title: "싱크대 길이 확정",
+          note: "시공 전 최종 길이 확인",
+          status: "completed",
+          answer: "냉장고턱까지 확정",
+          completedDate: "2026-05-11",
+        },
+        {
+          title: "싱크대 색상 확정",
+          note: "상판, 하부장, 상부장 색상 확인",
+          status: "completed",
+          answer:
+            "상:웜코튼, 하부장:네추럴오크, 상판은 무드베이지플러스, 키친판넬은 엠보로프트로 확정.",
+          completedDate: "2026-05-11",
+        },
+        {
+          title: "현관문, 중문 우드부분, 신발장 오픈장을 영림170으로 통일 요청",
+          note: "현관타일 REP-02 체리블라썸 네이비는 그대로 유지하고 현관문 시트지, 중문 프레임/하부 우드부분, 신발장 가운데 오픈장 모두 영림170 PWT1206-2 전사 루나내추럴로 통일",
+          status: "completed",
+          answer: "적용요청완료",
+          completedDate: "2026-05-08",
+        },
+        {
+          title: "인테리어 신발장에 턱이 올라오는지 질문",
+          note: "신발장 하부 또는 가운데 수납공간 쪽에 턱이 올라오는 구조인지 사전 확인",
+          status: "completed",
+          answer:
+            "신발장 턱은 올라오지 않음. 턱을 올리려면 신발장이 거실 안쪽으로 더 들어와야 해서 하지 않기로 함.",
+          completedDate: "2026-05-08",
+        },
+        {
+          title: "세탁실 턱 배관 체크",
+          note: "세탁실 턱 시공 시 배관 간섭과 배수 위치 확인",
+          status: "completed",
+          completedDate: "2026-05-11",
+        },
+      ];
+
+      const scheduleData = [
+        {
+          name: "이사집 계약",
+          startDate: "2026-05-04",
+          endDate: "",
+          note: "인천광역시 부평구 부평동 341-114, 302호 계약",
+        },
+        {
+          name: "이사집 가스 개설",
+          startDate: "2026-05-06",
+          endDate: "",
+          note: "16:00~18:00",
+        },
+        {
+          name: "부평집 폐기물 수거",
+          startDate: "2026-05-08",
+          endDate: "",
+          note: "14:00~16:00, 냉장고, 가구 등",
+        },
+        {
+          name: "부평집 가스 중지",
+          startDate: "2026-05-09",
+          endDate: "",
+          note: "09:00~11:00",
+        },
+        {
+          name: "이사 짐싸기",
+          startDate: "2026-05-04",
+          endDate: "2026-05-09",
+          note: "포장과 분류를 진행하는 기간",
+        },
+        {
+          name: "임시집으로 이사",
+          startDate: "2026-05-10",
+          endDate: "",
+          note: "임시 거주지로 이동",
+        },
+        {
+          name: "공사 시작",
+          startDate: "2026-05-11",
+          endDate: "",
+          note: "세종인테리어 공사 시작일",
+        },
+        {
+          name: "실측/철거",
+          startDate: "2026-05-11",
+          endDate: "",
+          note: "실측/철거",
+        },
+        {
+          name: "이사집 티비/인터넷 설치",
+          startDate: "2026-05-12",
+          endDate: "",
+          note: "",
+        },
+        { name: "샤시", startDate: "2026-05-12", endDate: "", note: "샤시" },
+        {
+          name: "설비",
+          startDate: "2026-05-12",
+          endDate: "2026-05-15",
+          note: "설비",
+        },
+        { name: "전기", startDate: "2026-05-15", endDate: "", note: "전기" },
+        {
+          name: "목공/중문",
+          startDate: "2026-05-18",
+          endDate: "2026-05-20",
+          note: "중문",
+        },
+        {
+          name: "타일",
+          startDate: "2026-05-21",
+          endDate: "2026-05-22",
+          note: "타일",
+        },
+        {
+          name: "욕실집기",
+          startDate: "2026-05-26",
+          endDate: "",
+          note: "욕실집기",
+        },
+        {
+          name: "페인트",
+          startDate: "2026-05-27",
+          endDate: "",
+          note: "페인트",
+        },
+        {
+          name: "도베",
+          startDate: "2026-05-30",
+          endDate: "2026-05-31",
+          note: "도베",
+        },
+        {
+          name: "장판",
+          startDate: "2026-06-01",
+          endDate: "2026-06-01",
+          note: "장판",
+        },
+        {
+          name: "조명",
+          startDate: "2026-06-01",
+          endDate: "2026-06-01",
+          note: "조명",
+        },
+        {
+          name: "싱크대",
+          startDate: "2026-06-02",
+          endDate: "2026-06-02",
+          note: "싱크대",
+        },
+        {
+          name: "입주청소",
+          startDate: "2026-06-03",
+          endDate: "2026-06-03",
+          note: "청소",
+        },
+        {
+          name: "공사 종료",
+          startDate: "2026-06-04",
+          endDate: "",
+          note: "현장 마감 및 점검",
+        },
+        {
+          name: "입주 티비 인터넷 설치",
+          startDate: "2026-06-05",
+          endDate: "",
+          note: "요청예정",
+        },
+        {
+          name: "이사집 가스 중지",
+          startDate: "2026-06-05",
+          endDate: "",
+          note: "",
+        },
+        {
+          name: "입주",
+          startDate: "2026-06-06",
+          endDate: "",
+          note: "최종 입주 예정일",
+        },
+      ];
+
+      const constructionData = [
+        {
+          stage: "계약금",
+          amountWon: 3000000,
+          status: "paid",
+          date: "2026-04-25",
+          route: "국민 632902-01-074940 이하종",
+          memo: "입금 완료",
+        },
+        {
+          stage: "중도금 1 - 하늘농협",
+          amountWon: 8000000,
+          status: "paid",
+          date: "2026-05-02",
+          route: "하늘농협",
+          memo: "24개월 할부",
+        },
+        {
+          stage: "중도금 1 - 연미삼성",
+          amountWon: 2000000,
+          status: "paid",
+          date: "2026-05-02",
+          route: "연미삼성",
+          memo: "23개월 할부",
+        },
+        {
+          stage: "중도금 2 - 현금",
+          amountWon: 25000000,
+          status: "paid",
+          date: "2026-05-15",
+          route: "현금",
+          memo: "2026-05-15 현금 지급",
+        },
+        {
+          stage: "세종 잔금",
+          amountWon: 9500000,
+          status: "planned",
+          date: "",
+          route: "",
+          memo: "남은 세종 인테리어 잔금",
+        },
+        {
+          stage: "한샘 주방 추가금",
+          amountWon: 900000,
+          status: "planned",
+          date: "",
+          route: "",
+          memo: "남은 한샘 주방 추가금",
+        },
+      ];
+
+      const transferData = [
+        {
+          date: "2026-05-04",
+          sender: "김의수",
+          receiver: "김하늘",
+          amountWon: 2000000,
+          memo: "국민-285102",
+        },
+        {
+          date: "2026-05-08",
+          sender: "김의수",
+          receiver: "김하늘",
+          amountWon: 9000000,
+          memo: "국민-285102",
+        },
+        {
+          date: "2026-05-09",
+          sender: "전영희",
+          receiver: "김하늘",
+          amountWon: 5000000,
+          memo: "국민-285102",
+        },
+        {
+          date: "2026-05-09",
+          sender: "김의수",
+          receiver: "김하늘",
+          amountWon: 2000000,
+          memo: "국민-285102",
+        },
+        {
+          date: "2026-05-09",
+          sender: "김의수",
+          receiver: "김하늘",
+          amountWon: 32000000,
+          memo: "현금",
+        },
+      ];
+
+      const disposalData = [
+        {
+          room: "안방",
+          items: ["장롱", "침대", "서랍장", "안마의자", "에어컨", "실외기"],
+        },
+        {
+          room: "입구방",
+          items: ["침대", "책상", "옷장", "의자", "책꽂이 2개", "프린터"],
+        },
+        { room: "주방방", items: ["책상", "의자", "옷장", "침대"] },
+        { room: "세탁실", items: ["쌀독", "세탁기"] },
+        { room: "주방", items: ["냉장고", "김치냉장고 2개", "전자피아노"] },
+        {
+          room: "거실",
+          items: ["쇼파", "에어컨", "실외기", "티비장 2개", "작은책상"],
+        },
+      ];
+
+      const purchaseData = [
+        {
+          category: "가전",
+          name: "냉장고+김치냉장고",
+          expectedWon: 3747000,
+          status: "purchased",
+          actualWon: 3747000,
+          purchaseDate: "2026-05-20",
+          purchaseRoute: "네이버플러스스토어",
+          memo: "연미롯카 일시불",
+          deliveryDate: "2026-06-04",
+          deliveryType: "설치",
+          deliveryNote: "설치 요청",
+        },
+        {
+          category: "가전",
+          name: "워시타워",
+          expectedWon: 2409320,
+          status: "purchased",
+          actualWon: 2409320,
+          purchaseDate: "2026-05-31",
+          purchaseRoute: "쿠팡",
+          memo: "삼성-23할",
+          deliveryDate: "2026-06-04",
+          deliveryType: "설치",
+          deliveryNote: "설치 요청",
+        },
+        {
+          category: "가전",
+          name: "에어컨",
+          expectedWon: 2500000,
+          status: "purchased",
+          actualWon: 2579000,
+          purchaseDate: "2026-05-31",
+          purchaseRoute: "쿠팡",
+          memo: "삼성-23할",
+          deliveryDate: "2026-06-04",
+          deliveryType: "설치",
+          deliveryNote: "설치 요청",
+        },
+        {
+          category: "가전",
+          name: "게이트맨 도어락",
+          expectedWon: 250000,
+          status: "purchased",
+          actualWon: 234740,
+          purchaseDate: "2026-04-27",
+          purchaseRoute: "쿠팡",
+          memo: "세종인테리어전달완료",
+        },
+        {
+          category: "가전",
+          name: "게이트맨 도어락 보강판",
+          expectedWon: 15000,
+          status: "purchased",
+          actualWon: 15000,
+          purchaseDate: "2026-04-29",
+          purchaseRoute: "네이버플러스스토어",
+          memo: "세종인테리어전달완료",
+        },
+        {
+          category: "가전",
+          name: "인덕션",
+          expectedWon: 650000,
+          status: "purchased",
+          actualWon: 613800,
+          purchaseDate: "2026-05-18",
+          purchaseRoute: "쿠팡",
+          memo: "롯데카드 5할",
+          deliveryDate: "2026-06-02",
+          deliveryType: "설치",
+        },
+        {
+          category: "가전",
+          name: "iptime wifi 공유기",
+          expectedWon: 34600,
+          status: "purchased",
+          actualWon: 34600,
+          purchaseDate: "2026-05-08",
+          purchaseRoute: "지불완료",
+          memo: "쿠팡",
+        },
+        {
+          category: "가구",
+          name: "안방TV장",
+          expectedWon: 220000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "",
+          memo: "",
+        },
+        {
+          category: "가구",
+          name: "쇼파",
+          expectedWon: 1700000,
+          status: "purchased",
+          actualWon: 2200000,
+          purchaseDate: "2026-05-30",
+          purchaseRoute: "다채움가구",
+          memo: "삼성-23할",
+          deliveryDate: "2026-06-05",
+          deliveryType: "설치",
+          deliveryNote: "설치 요청",
+        },
+        {
+          category: "가구",
+          name: "침대X2,매트리스X2,커버X2,베게X3",
+          expectedWon: 2200000,
+          status: "purchased",
+          actualWon: 2200000,
+          purchaseDate: "2026-05-31",
+          purchaseRoute: "송파가구단지",
+          memo: "삼성-23할",
+          deliveryDate: "2026-06-05",
+          deliveryType: "설치",
+          deliveryNote: "설치 요청",
+        },
+        {
+          category: "가구",
+          name: "이케아-가구, 용품 묶음",
+          expectedWon: 800000,
+          status: "purchased",
+          actualWon: 798200,
+          purchaseDate: "2026-05-27",
+          purchaseRoute: "이케아",
+          memo: "롯카. 하위 금액은 총 결제액 기준 임시 배분",
+          deliveryDate: "2026-06-04",
+          deliveryType: "배송",
+          deliveryTime: "09:00~20:00",
+          subItems: [
+            { name: "화장대", expectedWon: 180000, actualWon: 179000 },
+            { name: "서랍장 2개", expectedWon: 220000, actualWon: 220000 },
+            { name: "협탁", expectedWon: 60000, actualWon: 59900 },
+            { name: "옷장", expectedWon: 140000, actualWon: 139000 },
+            { name: "스툴", expectedWon: 36000, actualWon: 36400 },
+            { name: "탁상스탠드", expectedWon: 30000, actualWon: 29900 },
+            { name: "휴지통 2개", expectedWon: 20000, actualWon: 19800 },
+            { name: "도마", expectedWon: 15000, actualWon: 14900 },
+            { name: "수납걸이", expectedWon: 10000, actualWon: 9900 },
+            { name: "거울", expectedWon: 40000, actualWon: 39900 },
+            { name: "식기건조대 2개", expectedWon: 30000, actualWon: 29900 },
+            { name: "전구 1개", expectedWon: 10000, actualWon: 9900 },
+            { name: "설거지솔", expectedWon: 5000, actualWon: 4900 },
+            { name: "바닥보호스티커 2개", expectedWon: 4000, actualWon: 4800 },
+          ],
+        },
+        {
+          category: "가구",
+          name: "까사미아-식탁/수납 묶음",
+          expectedWon: 5212680,
+          status: "purchased",
+          actualWon: 5212680,
+          purchaseDate: "2026-05-26",
+          purchaseRoute: "까사미아",
+          memo: "롯카. 하위 금액은 총 결제액 기준 임시 배분",
+          deliveryDate: "2026-06-04",
+          deliveryType: "설치",
+          subItems: [
+            { name: "포멜로 식탁", expectedWon: 1450000, actualWon: 1450000 },
+            { name: "포멜로 의자 4개", expectedWon: 760000, actualWon: 760000 },
+            { name: "바젤 거실장", expectedWon: 1850000, actualWon: 1850000 },
+            { name: "라펠 붙박이장", expectedWon: 1152680, actualWon: 1152680 },
+          ],
+        },
+        {
+          category: "가구",
+          name: "식탁등-뉘모네, 천장등후크, 전구",
+          expectedWon: 90700,
+          status: "purchased",
+          actualWon: 90700,
+          purchaseDate: "2026-05-18",
+          purchaseRoute: "이케아",
+          memo: "롯카",
+        },
+        {
+          category: "가구",
+          name: "한샘머그아일랜드-100x45",
+          expectedWon: 229000,
+          status: "purchased",
+          actualWon: 229000,
+          purchaseDate: "2026-05-21",
+          purchaseRoute: "한샘몰",
+          memo: "롯카",
+          deliveryDate: "2026-06-05",
+          deliveryType: "설치",
+          deliveryTime: "1타임(09:00~14:00)",
+        },
+        {
+          category: "수납",
+          name: "발코니 수납 선반 3개",
+          expectedWon: 300000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "",
+          memo: "",
+        },
+        {
+          category: "이사집",
+          name: "이사집 월세",
+          expectedWon: 770000,
+          status: "paid",
+          actualWon: 770000,
+          purchaseDate: "2026-05-04",
+          purchaseRoute: "지불완료",
+          memo: "인천광역시 부평구 부평동 341-114, 302호",
+        },
+        {
+          category: "이사집",
+          name: "이사집 보증금",
+          expectedWon: 500000,
+          status: "paid",
+          actualWon: 500000,
+          purchaseDate: "2026-05-04",
+          purchaseRoute: "지불완료",
+          memo: "인천광역시 부평구 부평동 341-114, 302호",
+        },
+        {
+          category: "이사집",
+          name: "이사집 보증금 환급",
+          expectedWon: -500000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "환급 예정",
+          memo: "보증금 반환 예정 금액. 이사 예산에서 차감",
+        },
+        {
+          category: "이사집",
+          name: "이사집 수도세",
+          expectedWon: 40000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "",
+          memo: "인천광역시 부평구 부평동 341-114, 302호",
+        },
+        {
+          category: "이사집",
+          name: "이사집 부동산 중개수수료",
+          expectedWon: 100000,
+          status: "paid",
+          actualWon: 100000,
+          purchaseDate: "2026-05-04",
+          purchaseRoute: "지불완료",
+          memo: "인천광역시 부평구 부평동 341-114, 302호",
+        },
+        {
+          category: "이사집",
+          name: "가전가구폐기물",
+          expectedWon: 500000,
+          status: "paid",
+          actualWon: 500000,
+          purchaseDate: "2026-05-08",
+          purchaseRoute: "지불완료",
+          memo: "",
+        },
+        {
+          category: "이사집",
+          name: "도시가스-가스비",
+          expectedWon: 16920,
+          status: "paid",
+          actualWon: 16920,
+          purchaseDate: "2026-05-09",
+          purchaseRoute: "지불완료",
+          memo: "",
+        },
+        {
+          category: "생활살림",
+          name: "화장실 매트 2개 / 세탁실 매트 / 주방 매트",
+          expectedWon: 60000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "",
+          memo: "주방 매트는 주방살림으로 분리",
+        },
+        {
+          category: "생활살림",
+          name: "이불 퀸, 슈퍼싱글",
+          expectedWon: 150000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "모던하우스",
+          memo: "ON 3도씨 쿨나잇 냉감 얇은 솜이불 S 기준",
+        },
+        {
+          category: "생활살림",
+          name: "퀸, 슈퍼싱글 매트",
+          expectedWon: 100000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "모던하우스",
+          memo: "3도씨 슈퍼익스트림쿨 PCM 냉감 패드 SS 기준",
+        },
+        {
+          category: "생활살림",
+          name: "베개 4개, 베개커버 4개",
+          expectedWon: 160000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "모던하우스",
+          memo: "모달 100% 베개커버 50x70 4개 기준",
+        },
+        {
+          category: "생활살림",
+          name: "거실 커튼",
+          expectedWon: 128000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "모던하우스",
+          memo: "ON 높이조절 셀프맞춤 100% 빛차단 암막커튼 140x240 4장 기준",
+        },
+        {
+          category: "생활살림",
+          name: "안방 커튼",
+          expectedWon: 128000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "모던하우스",
+          memo: "ON 높이조절 셀프맞춤 100% 빛차단 암막커튼 140x240 2장 기준",
+        },
+        {
+          category: "생활살림",
+          name: "작은방 커튼 3개 방",
+          expectedWon: 100000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "모던하우스",
+          memo: "작은방 3곳, 방마다 140x240 2장씩 총 6장 기준",
+        },
+        {
+          category: "생활살림",
+          name: "커튼봉 5개",
+          expectedWon: 10000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "모던하우스",
+          memo: "ON 25mm 커튼봉 5개 기준",
+        },
+        {
+          category: "생활살림",
+          name: "기타생활용품",
+          expectedWon: 500000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "",
+          memo: "생활용품 예비비",
+        },
+        {
+          category: "주방살림",
+          name: "냄비세트",
+          expectedWon: 500000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "",
+          memo: "",
+        },
+        {
+          category: "주방살림",
+          name: "칼가위세트",
+          expectedWon: 250000,
+          status: "planned",
+          actualWon: 0,
+          purchaseDate: "",
+          purchaseRoute: "",
+          memo: "",
+        },
+      ];
+
+      initializePage();
+    </script>
+  </body>
 </html>
