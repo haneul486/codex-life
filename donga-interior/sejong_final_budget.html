@@ -762,6 +762,46 @@
         font-weight: 800;
       }
 
+      .payment-overview {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .payment-stat {
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--surface-soft);
+      }
+
+      .payment-stat-total {
+        border-color: rgba(59, 111, 246, 0.28);
+        background: var(--primary-soft);
+      }
+
+      .payment-stat-label {
+        color: var(--muted);
+        font-size: 0.86rem;
+        font-weight: 850;
+        line-height: 1.3;
+      }
+
+      .payment-stat-value {
+        margin-top: 8px;
+        font-size: 1.12rem;
+        font-weight: 900;
+        line-height: 1.3;
+      }
+
+      .payment-stat-note {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+
       .panel {
         margin-top: 18px;
         padding: 20px 22px;
@@ -1154,6 +1194,7 @@
         .visual-grid,
         .summary-list,
         .move-overview,
+        .payment-overview,
         .transfer-overview,
         .split-tables {
           grid-template-columns: 1fr;
@@ -1539,6 +1580,31 @@
         </div>
       </section>
 
+      <section class="panel" aria-label="결제카드별 사용 합계">
+        <div class="section-head">
+          <div class="section-copy">
+            <h2 class="section-title">결제카드별 사용 합계</h2>
+            <div class="section-note">
+              이사집 비용과 현금 결제를 제외하고, 구비 항목의 카드 예정·완료 금액과 인테리어 카드 결제를 합산합니다.
+            </div>
+          </div>
+        </div>
+        <div class="payment-overview" id="paymentCardOverview"></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>카드 종류</th>
+                <th>할부</th>
+                <th>항목 수</th>
+                <th>합계 금액</th>
+              </tr>
+            </thead>
+            <tbody id="paymentCardTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="panel" aria-label="가전가구 구매 항목">
         <div class="section-head">
           <div class="section-copy">
@@ -1659,6 +1725,11 @@
           return Number(item.actualWon);
         }
         return Number(item.expectedWon || 0);
+      }
+
+      function formatInstallment(months) {
+        const normalizedMonths = Number(months || 1);
+        return normalizedMonths > 1 ? `${normalizedMonths}개월` : "일시불";
       }
 
       function addDays(date, days) {
@@ -2026,6 +2097,115 @@
           .join("");
       }
 
+      function getPaymentCardSummary() {
+        const summaryMap = new Map();
+        const addPaymentItem = (item, amount) => {
+          const card = item.paymentCard;
+          if (!card || card === "현금") return;
+
+          const installmentMonths = Number(item.installmentMonths || 1);
+          const current = summaryMap.get(card) || {
+            card,
+            count: 0,
+            amount: 0,
+            installmentCounts: new Map(),
+          };
+          current.count += 1;
+          current.amount += amount;
+          current.installmentCounts.set(
+            installmentMonths,
+            (current.installmentCounts.get(installmentMonths) || 0) + 1,
+          );
+          summaryMap.set(card, current);
+        };
+
+        purchaseData
+          .filter((item) => !isMovingPurchase(item) && item.paymentCard)
+          .forEach((item) => {
+            addPaymentItem(item, getDisplayPurchaseAmount(item));
+          });
+
+        constructionData
+          .filter((item) => item.status === "paid")
+          .forEach((item) => {
+            addPaymentItem(item, Number(item.amountWon || 0));
+          });
+
+        return Array.from(summaryMap.values())
+          .map((item) => ({
+            ...item,
+            installmentLabel: Array.from(item.installmentCounts.entries())
+              .sort(([a], [b]) => a - b)
+              .map(
+                ([months, count]) =>
+                  `${formatInstallment(months)} ${count}건`,
+              )
+              .join(" · "),
+          }))
+          .sort((a, b) => {
+            if (b.amount !== a.amount) return b.amount - a.amount;
+            return a.card.localeCompare(b.card, "ko-KR");
+          });
+      }
+
+      function renderPaymentCardSummary() {
+        const summaryItems = getPaymentCardSummary();
+        const totalAmount = summaryItems.reduce(
+          (sum, item) => sum + item.amount,
+          0,
+        );
+        const totalCount = summaryItems.reduce(
+          (sum, item) => sum + item.count,
+          0,
+        );
+        const overviewItems = [
+          ...summaryItems.slice(0, 3),
+          {
+            card: "총 합계",
+            installmentLabel: "전체 결제",
+            count: totalCount,
+            amount: totalAmount,
+            isTotal: true,
+          },
+        ];
+
+        document.getElementById("paymentCardOverview").innerHTML =
+          overviewItems
+            .map(
+              (item) => `
+        <article class="payment-stat${item.isTotal ? " payment-stat-total" : ""}">
+          <div class="payment-stat-label">${item.card}</div>
+          <div class="payment-stat-value">${formatWon(item.amount)}</div>
+          <div class="payment-stat-note">${item.installmentLabel} · ${item.count}건</div>
+        </article>
+      `,
+            )
+            .join("");
+
+        document.getElementById("paymentCardTableBody").innerHTML =
+          [
+            ...summaryItems,
+            {
+              card: "총 합계",
+              installmentLabel: "전체 결제",
+              count: totalCount,
+              amount: totalAmount,
+              isTotal: true,
+            },
+          ]
+            .map(
+              (item) => `
+        <tr>
+          <td>${item.card}</td>
+          <td>${item.isTotal ? "-" : item.installmentLabel}</td>
+          <td>${item.count}건</td>
+          <td class="amount-cell">${formatWon(item.amount)}</td>
+        </tr>
+      `,
+            )
+            .join("");
+      }
+
       function renderPurchaseSummary() {
         const container = document.getElementById("pricedItemsSummary");
         const visibleItems = purchaseData.filter(
@@ -2043,6 +2223,9 @@
               ? `${item.deliveryType || "배송"} ${formatDateLabel(item.deliveryDate)}${item.deliveryTime ? ` ${item.deliveryTime}` : ""}`
               : "";
             const routeLabel = item.purchaseRoute || "경로 미정";
+            const paymentLabel = item.paymentCard
+              ? `${item.paymentCard} · ${formatInstallment(item.installmentMonths)}`
+              : "";
             const amountClass = amount < 0 ? " is-negative" : "";
             const subItems = Array.isArray(item.subItems) ? item.subItems : [];
             const subItemsId = `purchaseSubItems-${index}`;
@@ -2075,6 +2258,7 @@
                 <span class="${statusMeta.className}">${statusMeta.label}</span>
               </div>
               <div class="summary-item-meta">${item.category} · ${dateLabel} · ${routeLabel}</div>
+              ${paymentLabel ? `<div class="summary-item-note">${paymentLabel}</div>` : ""}
               ${deliveryLabel ? `<div class="summary-item-note">${deliveryLabel}</div>` : ""}
               ${item.memo ? `<div class="summary-item-note">${item.memo}</div>` : ""}
               ${subItemsMarkup}
@@ -2468,6 +2652,7 @@
         renderMovingSection();
         renderTransferSection();
         renderConstructionTable();
+        renderPaymentCardSummary();
         renderPurchaseSummary();
         renderDashboard();
         renderVisualAnalytics();
@@ -2674,7 +2859,9 @@
           status: "paid",
           date: "2026-05-02",
           route: "하늘농협",
-          memo: "24개월 할부",
+          paymentCard: "하늘농협",
+          installmentMonths: 24,
+          memo: "",
         },
         {
           stage: "중도금 1 - 연미삼성",
@@ -2682,7 +2869,9 @@
           status: "paid",
           date: "2026-05-02",
           route: "연미삼성",
-          memo: "23개월 할부",
+          paymentCard: "연미삼성",
+          installmentMonths: 23,
+          memo: "",
         },
         {
           stage: "중도금 2 - 현금",
@@ -2767,17 +2956,17 @@
       ];
 
       const purchaseData = [
-        { category: "가전", name: "냉장고+김치냉장고", expectedWon: 3747000, status: "purchased", actualWon: 3747000, purchaseDate: "2026-05-20", purchaseRoute: "네이버플러스스토어", memo: "연미롯카 일시불", deliveryDate: "2026-06-04", deliveryType: "설치", deliveryNote: "설치 요청" },
-        { category: "가전", name: "워시타워", expectedWon: 2409320, status: "purchased", actualWon: 2409320, purchaseDate: "2026-05-31", purchaseRoute: "쿠팡", memo: "삼성-23할", deliveryDate: "2026-06-04", deliveryType: "설치", deliveryNote: "설치 요청" },
-        { category: "가전", name: "에어컨", expectedWon: 2500000, status: "purchased", actualWon: 2579000, purchaseDate: "2026-05-31", purchaseRoute: "쿠팡", memo: "삼성-23할", deliveryDate: "2026-06-04", deliveryType: "설치", deliveryNote: "설치 요청" },
-        { category: "가전", name: "게이트맨 도어락", expectedWon: 250000, status: "purchased", actualWon: 234740, purchaseDate: "2026-04-27", purchaseRoute: "쿠팡", memo: "세종인테리어전달완료" },
-        { category: "가전", name: "게이트맨 도어락 보강판", expectedWon: 15000, status: "purchased", actualWon: 15000, purchaseDate: "2026-04-29", purchaseRoute: "네이버플러스스토어", memo: "세종인테리어전달완료" },
-        { category: "가전", name: "인덕션", expectedWon: 650000, status: "purchased", actualWon: 613800, purchaseDate: "2026-05-18", purchaseRoute: "쿠팡", memo: "롯데카드 5할", deliveryDate: "2026-06-02", deliveryType: "설치" },
-        { category: "가전", name: "iptime wifi 공유기", expectedWon: 34600, status: "purchased", actualWon: 34600, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", memo: "쿠팡" },
-        { category: "가구", name: "안방TV장", expectedWon: 212890, status: "purchased", actualWon: 212890, purchaseDate: "2026-05-31", purchaseRoute: "쿠팡-리바트", memo: "삼성", deliveryDate: "2026-06-05", deliveryType: "설치", deliveryNote: "설치 요청" },
-        { category: "가구", name: "쇼파", expectedWon: 1700000, status: "purchased", actualWon: 1750000, purchaseDate: "2026-05-30", purchaseRoute: "다채움가구", memo: "삼성-23할", deliveryDate: "2026-06-05", deliveryType: "설치", deliveryNote: "설치 요청" },
-        { category: "가구", name: "침대X2,매트리스X2,커버X2,베게X3", expectedWon: 2200000, status: "purchased", actualWon: 2200000, purchaseDate: "2026-05-31", purchaseRoute: "송파가구단지", memo: "삼성-23할", deliveryDate: "2026-06-05", deliveryType: "설치", deliveryNote: "설치 요청" },
-        { category: "가구", name: "이케아-가구, 용품 묶음", expectedWon: 800000, status: "purchased", actualWon: 798200, purchaseDate: "2026-05-27", purchaseRoute: "이케아", memo: "롯카. 하위 금액은 총 결제액 기준 임시 배분", deliveryDate: "2026-06-04", deliveryType: "배송", deliveryTime: "09:00~20:00",
+        { category: "가전", name: "냉장고+김치냉장고", expectedWon: 3747000, status: "purchased", actualWon: 3747000, purchaseDate: "2026-05-20", purchaseRoute: "네이버플러스스토어", paymentCard: "연미롯카", installmentMonths: 1, memo: "", deliveryDate: "2026-06-04", deliveryType: "설치", deliveryNote: "설치 요청" },
+        { category: "가전", name: "워시타워", expectedWon: 2409320, status: "purchased", actualWon: 2409320, purchaseDate: "2026-05-31", purchaseRoute: "쿠팡", paymentCard: "연미삼성", installmentMonths: 23, memo: "", deliveryDate: "2026-06-04", deliveryType: "설치", deliveryNote: "설치 요청" },
+        { category: "가전", name: "에어컨", expectedWon: 2500000, status: "purchased", actualWon: 2579000, purchaseDate: "2026-05-31", purchaseRoute: "쿠팡", paymentCard: "연미삼성", installmentMonths: 23, memo: "", deliveryDate: "2026-06-04", deliveryType: "설치", deliveryNote: "설치 요청" },
+        { category: "가전", name: "게이트맨 도어락", expectedWon: 250000, status: "purchased", actualWon: 234740, purchaseDate: "2026-04-27", purchaseRoute: "쿠팡", paymentCard: "하늘롯카", installmentMonths: 1, memo: "세종인테리어전달완료" },
+        { category: "가전", name: "게이트맨 도어락 보강판", expectedWon: 15000, status: "purchased", actualWon: 15000, purchaseDate: "2026-04-29", purchaseRoute: "네이버플러스스토어", paymentCard: "하늘롯카", installmentMonths: 1, memo: "세종인테리어전달완료" },
+        { category: "가전", name: "인덕션", expectedWon: 650000, status: "purchased", actualWon: 613800, purchaseDate: "2026-05-18", purchaseRoute: "쿠팡", paymentCard: "하늘롯카", installmentMonths: 5, memo: "", deliveryDate: "2026-06-02", deliveryType: "설치" },
+        { category: "가전", name: "iptime wifi 공유기", expectedWon: 34600, status: "purchased", actualWon: 34600, purchaseDate: "2026-05-08", purchaseRoute: "지불완료", paymentCard: "하늘롯카", installmentMonths: 1, memo: "쿠팡" },
+        { category: "가구", name: "안방TV장", expectedWon: 212890, status: "purchased", actualWon: 212890, purchaseDate: "2026-05-31", purchaseRoute: "쿠팡-리바트", paymentCard: "연미삼성", installmentMonths: 1, memo: "", deliveryDate: "2026-06-05", deliveryType: "설치", deliveryNote: "설치 요청" },
+        { category: "가구", name: "쇼파", expectedWon: 1700000, status: "purchased", actualWon: 1750000, purchaseDate: "2026-05-30", purchaseRoute: "다채움가구", paymentCard: "현금", installmentMonths: 1, memo: "", deliveryDate: "2026-06-05", deliveryType: "설치", deliveryNote: "설치 요청" },
+        { category: "가구", name: "침대X2,매트리스X2,커버X2,베게X3", expectedWon: 2200000, status: "purchased", actualWon: 2200000, purchaseDate: "2026-05-31", purchaseRoute: "송파가구단지", paymentCard: "연미삼성", installmentMonths: 23, memo: "", deliveryDate: "2026-06-05", deliveryType: "설치", deliveryNote: "설치 요청" },
+        { category: "가구", name: "이케아-가구, 용품 묶음", expectedWon: 800000, status: "purchased", actualWon: 798200, purchaseDate: "2026-05-27", purchaseRoute: "이케아", paymentCard: "연미롯카", installmentMonths: 1, memo: "하위 금액은 총 결제액 기준 임시 배분", deliveryDate: "2026-06-04", deliveryType: "배송", deliveryTime: "09:00~20:00",
           subItems: [
             { name: "화장대-쉬브데", expectedWon: 180000, actualWon: 179000 },
             { name: "서랍장-말름", expectedWon: 220000, actualWon: 159000},
@@ -2795,16 +2984,16 @@
             { name: "설거지솔", expectedWon: 5000, actualWon: 2900 },
             { name: "바닥보호스티커 2개", expectedWon: 4000, actualWon: 1000 }]
         },
-        { category: "가구", name: "까사미아-식탁/수납 묶음", expectedWon: 5212680, status: "purchased", actualWon: 5212680, purchaseDate: "2026-05-26", purchaseRoute: "까사미아", memo: "롯카. 하위 금액은 총 결제액 기준 임시 배분", deliveryDate: "2026-06-04", deliveryType: "설치",
+        { category: "가구", name: "까사미아-식탁/수납 묶음", expectedWon: 5212680, status: "purchased", actualWon: 5212680, purchaseDate: "2026-05-26", purchaseRoute: "까사미아", paymentCard: "연미롯카", installmentMonths: 1, memo: "하위 금액은 총 결제액 기준 임시 배분", deliveryDate: "2026-06-04", deliveryType: "설치",
           subItems: [
             { name: "포멜로 식탁", expectedWon: 1450000, actualWon: 1450000 },
             { name: "포멜로 의자 4개", expectedWon: 760000, actualWon: 760000 },
             { name: "바젤 거실장", expectedWon: 1850000, actualWon: 1850000 },
             { name: "라펠 붙박이장", expectedWon: 1152680, actualWon: 1152680 }]
         },
-        { category: "가구", name: "식탁등-뉘모네, 천장등후크, 전구", expectedWon: 90700, status: "purchased", actualWon: 90700, purchaseDate: "2026-05-18", purchaseRoute: "이케아", memo: "롯카" },
-        { category: "가구", name: "한샘머그아일랜드-100x45", expectedWon: 229000, status: "purchased", actualWon: 229000, purchaseDate: "2026-05-21", purchaseRoute: "한샘몰", memo: "롯카", deliveryDate: "2026-06-05", deliveryType: "설치", deliveryTime: "1타임(09:00~14:00)" },
-        { category: "생활살림", name: "쿠팡-생활용품 묶음", expectedWon: 300620, status: "purchased", actualWon: 212890, purchaseDate: "2026-05-31", purchaseRoute: "쿠팡", memo: "삼성. 하위 금액은 총 결제액 기준 임시 배분", deliveryDate: "2026-06-05", deliveryType: "배송", deliveryNote: "배송만",
+        { category: "가구", name: "식탁등-뉘모네, 천장등후크, 전구", expectedWon: 90700, status: "purchased", actualWon: 90700, purchaseDate: "2026-05-18", purchaseRoute: "이케아", paymentCard: "하늘롯카", installmentMonths: 1, memo: "" },
+        { category: "가구", name: "한샘머그아일랜드-100x45", expectedWon: 229000, status: "purchased", actualWon: 229000, purchaseDate: "2026-05-21", purchaseRoute: "한샘몰", paymentCard: "하늘롯카", installmentMonths: 1, memo: "", deliveryDate: "2026-06-05", deliveryType: "설치", deliveryTime: "1타임(09:00~14:00)" },
+        { category: "생활살림", name: "쿠팡-생활용품 묶음", expectedWon: 300620, status: "purchased", actualWon: 212890, purchaseDate: "2026-05-31", purchaseRoute: "쿠팡", paymentCard: "연미삼성", installmentMonths: 1, memo: "하위 금액은 총 결제액 기준 임시 배분", deliveryDate: "2026-06-05", deliveryType: "배송", deliveryNote: "배송만",
           subItems: [
             { name: "매트1", expectedWon: 120000, actualWon: 11900 },
             { name: "매트2", expectedWon: 120000, actualWon: 11900 },
@@ -2821,13 +3010,7 @@
             { name: "가구소음방지스티커", expectedWon: 5620, actualWon: 3000 },            
           ]
         },
-        { category: "생활살림", name: "이불 퀸, 슈퍼싱글", expectedWon: 150000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 3도씨 쿨나잇 냉감 얇은 솜이불 S 기준" },
-        { category: "생활살림", name: "퀸, 슈퍼싱글 매트", expectedWon: 100000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "3도씨 슈퍼익스트림쿨 PCM 냉감 패드 SS 기준" },
-        { category: "생활살림", name: "베개 4개, 베개커버 4개", expectedWon: 160000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "모달 100% 베개커버 50x70 4개 기준" },
-        { category: "생활살림", name: "거실 커튼", expectedWon: 128000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 높이조절 셀프맞춤 100% 빛차단 암막커튼 140x240 4장 기준" },
-        { category: "생활살림", name: "안방 커튼", expectedWon: 128000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 높이조절 셀프맞춤 100% 빛차단 암막커튼 140x240 2장 기준" },
-        { category: "생활살림", name: "작은방 커튼 3개 방", expectedWon: 100000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "작은방 3곳, 방마다 140x240 2장씩 총 6장 기준" },
-        { category: "생활살림", name: "커튼봉 5개", expectedWon: 10000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "모던하우스", memo: "ON 25mm 커튼봉 5개 기준" },
+        { category: "생활살림", name: "구비항목 카드 결제 예정", expectedWon: 3400000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "미정", paymentCard: "미정카드", installmentMonths: 1, memo: "1040만원-700만원 기준" },
         { category: "이사집", name: "이사집 월세", expectedWon: 770000, status: "paid", actualWon: 770000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
         { category: "이사집", name: "이사집 보증금", expectedWon: 500000, status: "paid", actualWon: 500000, purchaseDate: "2026-05-04", purchaseRoute: "지불완료", memo: "인천광역시 부평구 부평동 341-114, 302호" },
         { category: "이사집", name: "이사집 보증금 환급", expectedWon: -500000, status: "planned", actualWon: 0, purchaseDate: "", purchaseRoute: "환급 예정", memo: "보증금 반환 예정 금액. 이사 예산에서 차감" },

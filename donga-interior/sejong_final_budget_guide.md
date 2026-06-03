@@ -89,11 +89,14 @@
   status: "paid 또는 planned",
   date: "YYYY-MM-DD 또는 빈 문자열",
   route: "지급 경로",
+  paymentCard: "카드 종류 또는 결제수단",
+  installmentMonths: 1,
   memo: "메모"
 }
 ```
 
 - 공사비 금액 단위는 모두 `원`이다.
+- 공사비 중 카드 결제 항목은 `paymentCard`, `installmentMonths`에 결제 카드와 할부 개월 수를 기록한다.
 - 상단 `공사비` 카드, `공사비 지급 현황` 표, 전체 비용 계산은 모두 이 JSON을 기준으로 연동된다.
 
 ## 구매 필요항목 규칙
@@ -111,6 +114,8 @@
   actualWon: 0,
   purchaseDate: "",
   purchaseRoute: "",
+  paymentCard: "카드 종류 또는 결제수단",
+  installmentMonths: 1,
   deliveryDate: "YYYY-MM-DD 또는 빈 문자열",
   deliveryType: "배송 또는 설치 또는 배송/설치",
   deliveryTime: "시간대 또는 빈 문자열",
@@ -126,6 +131,9 @@
 - `actualWon`은 실제 결제 금액이다.
 - 여러 품목이 한 번에 결제된 묶음 구매는 부모 항목에 총액을 기록하고, 구성품별 금액은 선택 필드인 `subItems`에 나누어 기록한다.
 - `subItems` 금액은 화면 표시용이며, 전체 합계 계산은 부모 항목의 `expectedWon`, `actualWon`을 기준으로 한다.
+- 결제 카드 또는 결제수단은 `memo`에 섞어 쓰지 않고 `paymentCard`에 기록한다.
+- 할부 개월 수는 `installmentMonths`에 숫자로 기록하며, 할부 표기가 없으면 `1`로 두어 일시불로 해석한다.
+- 카드/결제수단별 사용 합계 섹션은 현금과 이사집 비용을 제외하고, 구비 항목의 카드 예정·완료 금액과 인테리어 카드 결제 항목을 기준으로 계산한다. 구매완료 항목은 `actualWon`, 예정 항목은 `expectedWon`을 사용한다.
 - 배송 또는 설치 일정이 있으면 `memo`에 섞어 쓰지 않고 `deliveryDate`, `deliveryType`, `deliveryTime`, `deliveryNote`에 나누어 기록한다.
 - `deliveryDate`가 있는 구매 항목은 상단 `진행 일정` 캘린더에 자동으로 표시된다.
 - 예상 금액과 실결제 금액은 모두 `원` 단위로 통일한다.
@@ -168,6 +176,7 @@
   - 가족 간 입출금 기록
   - 지출 계산에서 제외되는 참고 금액
 - 공사비 지급 현황 표
+- 결제카드별 사용 합계
 - 구매 상태 요약
 - 구매 필요항목 상세표
 
