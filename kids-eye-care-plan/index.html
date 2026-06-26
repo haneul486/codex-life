@@ -1,0 +1,2072 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>김범준·김서연 시력관리 대시보드</title>
+  <style>
+    :root {
+      --bg: #f4f7fa;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #64748b;
+      --soft: #f8fafc;
+      --line: #e2e8f0;
+      --line-strong: #cbd5e1;
+      --blue: #2563eb;
+      --blue-soft: #eaf2ff;
+      --mint: #0f9f8f;
+      --mint-soft: #e6fbf7;
+      --green: #15803d;
+      --green-soft: #ecfdf3;
+      --amber: #b45309;
+      --amber-soft: #fff7ed;
+      --red: #b42318;
+      --red-soft: #fff1f0;
+      --shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+      --shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    :target {
+      scroll-margin-top: 84px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, #f8fafc 0, var(--bg) 100%);
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .app {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 22px;
+      align-items: start;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.14;
+    }
+
+    h2 {
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    p {
+      margin: 8px 0 0;
+    }
+
+    .lead {
+      max-width: 800px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 220px;
+    }
+
+    .action-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .action-button.secondary {
+      color: var(--ink);
+      border-color: var(--line);
+      background: var(--soft);
+    }
+
+    .action-button.mint {
+      background: var(--mint);
+    }
+
+    .summary-meta {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .quick-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin: 14px 0 0;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .quick-nav a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink);
+      background: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid.four {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .section {
+      margin-top: 18px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .section-header p {
+      max-width: 720px;
+      color: var(--muted);
+    }
+
+    .stat-card,
+    .mini-card,
+    .child-card,
+    .decision-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+    }
+
+    .stat-card {
+      padding: 16px;
+    }
+
+    .stat-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .stat-card strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--blue);
+      font-size: 28px;
+      line-height: 1.05;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-card.mint strong {
+      color: var(--mint);
+    }
+
+    .stat-card.amber strong {
+      color: var(--amber);
+    }
+
+    .stat-card.red strong {
+      color: var(--red);
+    }
+
+    .hero-insight {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid #bfdbfe;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f8fbff 0%, var(--blue-soft) 100%);
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: 142px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .score-circle {
+      display: grid;
+      place-items: center;
+      width: 118px;
+      height: 118px;
+      border-radius: 999px;
+      background:
+        conic-gradient(var(--mint) var(--score-angle, 0deg), #e2e8f0 0);
+    }
+
+    .score-circle span {
+      display: grid;
+      place-items: center;
+      width: 88px;
+      height: 88px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 26px;
+      font-weight: 950;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .progress-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .progress-item {
+      display: grid;
+      grid-template-columns: 132px 1fr 48px;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      height: 10px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e2e8f0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--mint);
+    }
+
+    .clinic-summary {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .summary-card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .summary-card b {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--blue);
+    }
+
+    .chart-wrap {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .chart {
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 220px;
+    }
+
+    .chart-label {
+      fill: #64748b;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .chart-value {
+      fill: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .readiness-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .readiness-item {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .data-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .data-tools .saved-note {
+      margin: 0;
+    }
+
+    .schedule-card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .schedule-card strong {
+      color: var(--blue);
+    }
+
+    .time-block {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .time-block:last-child {
+      border-bottom: 0;
+    }
+
+    .time-block b {
+      color: var(--mint);
+    }
+
+    .child-card {
+      overflow: hidden;
+    }
+
+    .child-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, #fff 0%, var(--blue-soft) 100%);
+    }
+
+    .child-card.mint .child-head {
+      background: linear-gradient(135deg, #fff 0%, var(--mint-soft) 100%);
+    }
+
+    .child-body {
+      padding: 18px;
+    }
+
+    .name-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .pill.blue {
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .pill.mint {
+      color: var(--mint);
+      background: var(--mint-soft);
+    }
+
+    .pill.green {
+      color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .pill.amber {
+      color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .pill.red {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .metric-box {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .metric-box span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .metric-box strong,
+    .metric-value {
+      display: inline-block;
+      margin-top: 3px;
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 950;
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-value {
+      margin-top: 0;
+      font-size: inherit;
+    }
+
+    .metric-box.mint strong,
+    .metric-value.mint {
+      color: var(--mint);
+    }
+
+    .metric-box.red strong,
+    .metric-value.red {
+      color: var(--red);
+    }
+
+    .mini-card {
+      padding: 14px;
+    }
+
+    .mini-card p {
+      color: var(--muted);
+    }
+
+    .photo {
+      display: block;
+      width: 100%;
+      max-height: 210px;
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--soft);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+    }
+
+    .milestone {
+      display: grid;
+      grid-template-columns: 116px 104px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .milestone b {
+      display: block;
+    }
+
+    .milestone p {
+      color: var(--muted);
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 26px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .done {
+      color: var(--green);
+      background: var(--green-soft);
+      border: 1px solid #a7e2bd;
+    }
+
+    .doing {
+      color: var(--amber);
+      background: var(--amber-soft);
+      border: 1px solid #f1c27d;
+    }
+
+    .todo {
+      color: var(--muted);
+      background: var(--soft);
+      border: 1px solid var(--line-strong);
+    }
+
+    .danger {
+      color: var(--red);
+      background: var(--red-soft);
+      border: 1px solid #f0aaa4;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    th,
+    td {
+      padding: 10px 11px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    th {
+      color: #334155;
+      background: var(--soft);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: 0;
+    }
+
+    .compact th,
+    .compact td {
+      padding: 8px 9px;
+      font-size: 13px;
+    }
+
+    .decision-card {
+      padding: 16px;
+    }
+
+    .decision-card strong {
+      color: var(--blue);
+    }
+
+    .question-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .question-list li,
+    .check-row {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 8px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .check {
+      display: inline-grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      border: 1px solid var(--line-strong);
+      border-radius: 7px;
+      color: var(--muted);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .check-input {
+      width: 22px;
+      height: 22px;
+      margin: 0;
+      accent-color: var(--mint);
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 11px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .field textarea {
+      min-height: 94px;
+      resize: vertical;
+    }
+
+    .saved-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .triage-result {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+    }
+
+    .triage-result.safe {
+      border-color: #a7e2bd;
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .triage-result.warn {
+      border-color: #f1c27d;
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .triage-result.stop {
+      border-color: #f0aaa4;
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .danger-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .danger-card {
+      padding: 13px;
+      border: 1px solid #ffd1cc;
+      border-radius: 16px;
+      background: #fffafa;
+    }
+
+    .danger-card b {
+      color: var(--red);
+    }
+
+    .review-log {
+      counter-reset: review;
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .review-log li {
+      counter-increment: review;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .review-log li::before {
+      content: counter(review, decimal-leading-zero);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 24px;
+      margin-right: 8px;
+      border-radius: 999px;
+      color: var(--mint);
+      background: var(--mint-soft);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .print-footer {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .grid.two,
+      .grid.three,
+      .grid.four,
+      .metric-strip,
+      .danger-grid,
+      .input-grid,
+      .clinic-summary,
+      .score-row,
+      .readiness-item,
+      .time-block {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions {
+        width: 100%;
+      }
+
+      .milestone {
+        grid-template-columns: 1fr;
+      }
+
+      .score-circle {
+        width: 104px;
+        height: 104px;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 10mm;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .app {
+        width: auto;
+        padding: 0;
+      }
+
+      .quick-nav,
+      .hero-actions {
+        display: none;
+      }
+
+      .hero,
+      .section,
+      .child-card,
+      .mini-card,
+      .decision-card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      .action-button {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">KIDS EYE CARE DASHBOARD · 2026-06-26 기준</p>
+        <h1>김범준·김서연 시력관리 대시보드</h1>
+        <p class="lead">
+          이 화면은 렌즈 구매 결정지가 아니라, 부모가 앞으로 1년 동안 두 아이의 시력 변화, 검사값, 생활 루틴, 위험 신호,
+          병원 질문과 비용을 한곳에서 관리하기 위한 실행 대시보드입니다.
+        </p>
+        <div class="hero-insight" id="heroInsight"></div>
+      </div>
+      <div class="hero-actions">
+        <button class="action-button" type="button" onclick="window.print()">A4 보고서 인쇄</button>
+        <button class="action-button mint" type="button" id="exportButton">관리 데이터 내보내기</button>
+        <button class="action-button secondary" type="button" id="resetButton">저장 상태 초기화</button>
+        <a class="action-button secondary" href="../index.html">작업 인덱스</a>
+        <div class="summary-meta">
+          현재 단계: 처방 기록 완료<br>
+          다음 행동: 2026년 7월 안과 정밀검사 예약
+        </div>
+      </div>
+    </section>
+
+    <nav class="quick-nav" aria-label="시력관리 빠른 이동">
+      <a href="#overview">핵심 지표</a>
+      <a href="#children">아이별 카드</a>
+      <a href="#trend">추세 그래프</a>
+      <a href="#daily">오늘 기록</a>
+      <a href="#danger">위험 신호</a>
+      <a href="#clinic">진료 준비</a>
+      <a href="#precision">정밀검진</a>
+      <a href="#recheck">렌즈 재판정</a>
+      <a href="#screen">PC 사용</a>
+      <a href="#routine">생활 루틴</a>
+      <a href="#purchase">비용</a>
+      <a href="#review">검토 로그</a>
+    </nav>
+
+    <section class="section" id="overview">
+      <div class="section-header">
+        <div>
+          <h2>오늘 바로 봐야 할 핵심 지표</h2>
+          <p>시력표 숫자와 안경 도수는 다릅니다. 이 대시보드는 두 값을 분리해서 관리하고, 아직 비어 있는 병원 검사값을 명확히 표시합니다.</p>
+        </div>
+      </div>
+      <div class="grid four" id="topStats"></div>
+    </section>
+
+    <section class="section" id="milestones">
+      <div class="section-header">
+        <div>
+          <h2>1년 관리 마일스톤</h2>
+          <p>완료, 진행 필요, 미진행을 구분해서 다음 행동이 화면 맨 위에서 바로 보이도록 구성했습니다.</p>
+        </div>
+      </div>
+      <div class="timeline" id="milestoneList"></div>
+    </section>
+
+    <section class="section" id="children">
+      <div class="section-header">
+        <div>
+          <h2>아이별 관리 카드</h2>
+          <p>각 아이의 현재 도수, 시력 변화, 다음 검사, 위험 관찰 항목을 같은 형식으로 관리합니다.</p>
+        </div>
+      </div>
+      <div class="grid two" id="childCards"></div>
+    </section>
+
+    <section class="section" id="trend">
+      <div class="section-header">
+        <div>
+          <h2>시력 변화 추세</h2>
+          <p>처방전 도수와 시력표 숫자는 다르지만, 부모가 체감하는 변화 폭을 한눈에 보기 위해 나안시력 기록 흐름을 시각화했습니다.</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="chart-wrap" id="visionTrendChart"></div>
+        <div class="mini-card">
+          <h3>그래프 해석</h3>
+          <p>현재 기록은 2025년까지의 기준 시력과 2026년 6월 기준 시력 두 점입니다. 다음 검사부터는 `examRecords`에 새 행을 추가해 변화선을 이어가면 됩니다.</p>
+          <p>김서연은 변화 폭과 현재 시력 기준으로 우선 관리 대상입니다. 김범준도 원거리 시야 확보와 진행 추적이 필요합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="actions">
+      <div class="section-header">
+        <div>
+          <h2>이번 달 액션 센터</h2>
+          <p>부모가 실제로 움직여야 하는 일을 병원, 안경원, 생활 루틴으로 나눴습니다.</p>
+        </div>
+      </div>
+      <div class="grid three" id="actionCenter"></div>
+    </section>
+
+    <section class="section" id="readiness">
+      <div class="section-header">
+        <div>
+          <h2>시력관리 준비도 체크</h2>
+          <p>검사 예약부터 예비안경, 생활 루틴, 위험 대응까지 준비가 되어 있는지 확인합니다. 체크 상태는 자동 저장됩니다.</p>
+        </div>
+      </div>
+      <div class="readiness-list" id="readinessList"></div>
+    </section>
+
+    <section class="section" id="daily">
+      <div class="section-header">
+        <div>
+          <h2>오늘의 관찰 기록</h2>
+          <p>오늘 보인 증상이나 생활 루틴을 적어두면 다음 진료 때 훨씬 정확하게 설명할 수 있습니다. 입력값은 이 브라우저에 자동 저장됩니다.</p>
+        </div>
+      </div>
+      <div class="input-grid">
+        <div class="field">
+          <label for="dailyDate">날짜</label>
+          <input id="dailyDate" type="date">
+        </div>
+        <div class="field">
+          <label for="dailyChild">아이</label>
+          <select id="dailyChild">
+            <option value="김범준">김범준</option>
+            <option value="김서연">김서연</option>
+            <option value="공통">공통</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="dailyRoutine">오늘 루틴</label>
+          <select id="dailyRoutine">
+            <option>특이사항 없음</option>
+            <option>눈 비빔/찡그림 있음</option>
+            <option>화면을 가까이 봄</option>
+            <option>야외활동 부족</option>
+            <option>충혈/통증 확인 필요</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-top:10px">
+        <label for="dailyMemo">메모</label>
+        <textarea id="dailyMemo" placeholder="예: 김서연이 저녁에 책을 가까이 봄. 김범준은 칠판 글씨가 흐렸다고 함."></textarea>
+      </div>
+      <p class="saved-note" id="saveStatus">저장 대기 중</p>
+      <div class="data-tools" style="margin-top:12px">
+        <span class="saved-note" id="lastSaved">마지막 저장: 없음</span>
+      </div>
+    </section>
+
+    <section class="section" id="exam">
+      <div class="section-header">
+        <div>
+          <h2>검사 기록 누적표</h2>
+          <p>앞으로 진료 때마다 같은 칸을 채우면 도수 변화와 안축장 변화를 비교할 수 있습니다.</p>
+        </div>
+      </div>
+      <table class="compact" id="examTable"></table>
+    </section>
+
+    <section class="section" id="precision">
+      <div class="section-header">
+        <div>
+          <h2>안과 정밀검진에서 반드시 받아올 것</h2>
+          <p>정밀검진의 목적은 오늘 안경 도수를 맞추는 것에서 끝나지 않습니다. 앞으로 3개월, 6개월, 1년 뒤 근시가 얼마나 진행됐는지 비교할 기준값을 만드는 일입니다.</p>
+        </div>
+      </div>
+      <div class="grid two" id="precisionChecklist"></div>
+      <h3 style="margin-top:16px">병원에서 바로 보여줄 요청 문장</h3>
+      <div class="mini-card" id="clinicScript"></div>
+    </section>
+
+    <section class="section" id="decision">
+      <div class="section-header">
+        <div>
+          <h2>선택 기준 엔진</h2>
+          <p>드림렌즈가 메인이 아니고, 시력관리가 메인입니다. 교정 수단은 검사값과 생활 루틴을 보고 선택합니다.</p>
+        </div>
+      </div>
+      <div class="grid four" id="decisionCards"></div>
+    </section>
+
+    <section class="section" id="recheck">
+      <div class="section-header">
+        <div>
+          <h2>드림렌즈 vs 일반안경 재판정</h2>
+          <p>의사가 말한 핵심은 “잘 보이게 하는 것”보다 “근시 진행을 늦추는 관리”입니다. 일반안경과 드림렌즈의 역할을 분리해서 다시 판단합니다.</p>
+        </div>
+      </div>
+      <div class="grid two" id="treatmentRecheck"></div>
+    </section>
+
+    <section class="section" id="danger">
+      <div class="section-header">
+        <div>
+          <h2>즉시 중단·문의해야 할 위험 신호</h2>
+          <p>드림렌즈를 시작하면 이 영역이 가장 중요합니다. 아래 증상이 있으면 착용을 쉬고 안과에 문의하는 기준으로 둡니다.</p>
+        </div>
+      </div>
+      <div class="danger-grid" id="dangerSignals"></div>
+      <div class="triage-result" id="triageResult">위험 신호를 체크하면 행동 기준이 여기에 표시됩니다.</div>
+    </section>
+
+    <section class="section" id="questions">
+      <div class="section-header">
+        <div>
+          <h2>병원·안경원 질문지</h2>
+          <p>진료실에서 빠뜨리기 쉬운 질문을 체크리스트로 묶었습니다. 다음 방문 때 이 영역을 그대로 열고 확인하면 됩니다.</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <div>
+          <h3>안과</h3>
+          <ul class="question-list" id="clinicQuestions"></ul>
+        </div>
+        <div>
+          <h3>안경원</h3>
+          <ul class="question-list" id="opticalQuestions"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="clinic">
+      <div class="section-header">
+        <div>
+          <h2>다음 진료 준비 요약</h2>
+          <p>진료 전날 이 영역만 확인해도 됩니다. 아직 비어 있는 검사값, 질문, 관찰 메모를 한 번에 모읍니다.</p>
+        </div>
+      </div>
+      <div class="grid three" id="visitPrep"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h2>진료실 30초 브리핑</h2>
+          <p>의사에게 바로 보여줄 수 있는 압축 요약입니다. 검사 전 대기실에서 이 영역만 열어도 충분합니다.</p>
+        </div>
+      </div>
+      <div class="clinic-summary" id="clinicBrief"></div>
+    </section>
+
+    <section class="section" id="screen">
+      <div class="section-header">
+        <div>
+          <h2>온라인 학습·게임·PC 사용 시간분배</h2>
+          <p>통제가 아니라 아이들이 납득하고 스스로 조절하는 루틴이 목표입니다. 오래 붙어서 가까이 보는 패턴을 줄이고, 학습·게임·야외활동·휴식을 균형 있게 배치합니다.</p>
+        </div>
+      </div>
+      <div class="grid three" id="screenPlan"></div>
+    </section>
+
+    <section class="section" id="routine">
+      <div class="section-header">
+        <div>
+          <h2>생활 루틴 점검</h2>
+          <p>검사와 구매만으로는 관리가 끝나지 않습니다. 매일 반복되는 행동이 실제 진행 속도를 좌우합니다.</p>
+        </div>
+      </div>
+      <div class="grid two" id="routineList"></div>
+    </section>
+
+    <section class="section" id="monthly">
+      <div class="section-header">
+        <div>
+          <h2>월간 리뷰 보드</h2>
+          <p>매월 말 5분만 투자해서 다음 달 관리 강도를 조정합니다. 숫자가 아니어도 기록이 쌓이면 다음 진료 때 큰 도움이 됩니다.</p>
+        </div>
+      </div>
+      <table class="compact" id="monthlyReviewTable"></table>
+    </section>
+
+    <section class="section" id="lens">
+      <div class="section-header">
+        <div>
+          <h2>드림렌즈 시작 시 밤·아침 프로토콜</h2>
+          <p>드림렌즈를 시작한 뒤에는 위생과 이상 신호 판단이 핵심입니다. 아래 순서를 가족 루틴으로 고정합니다.</p>
+        </div>
+      </div>
+      <div class="grid two" id="lensProtocol"></div>
+    </section>
+
+    <section class="section" id="purchase">
+      <div class="section-header">
+        <div>
+          <h2>구매·비용 관리</h2>
+          <p>구매비와 관리비를 분리해서 봐야 현실적인 예산 판단이 됩니다. 아래 금액은 실제 견적 전까지 쓰는 평균/예상 범위입니다.</p>
+        </div>
+      </div>
+      <div class="grid three" id="costSummary"></div>
+      <h3 style="margin-top:16px">1년 예산 시나리오</h3>
+      <table class="compact" id="budgetScenarioTable"></table>
+      <h3 style="margin-top:16px">구매·관리 비용 기록표</h3>
+      <table class="compact" id="purchaseTable"></table>
+    </section>
+
+    <section class="section" id="review">
+      <div class="section-header">
+        <div>
+          <h2>10회 자체 검토 및 보완 로그</h2>
+          <p>부모 관점에서 빠진 요소를 직접 점검한 기록입니다. 이후 업데이트 때도 이 기준으로 다시 보완합니다.</p>
+        </div>
+      </div>
+      <ol class="review-log" id="reviewLog"></ol>
+    </section>
+
+    <p class="print-footer">
+      원본 처방전 사진: <a href="assets/prescription-2026-06-26-original.jpeg">assets/prescription-2026-06-26-original.jpeg</a>.
+      이 문서는 가족 관리용 기록이며 진료를 대신하지 않습니다.
+    </p>
+  </main>
+
+  <script>
+    const children = [
+      {
+        id: "beomjun",
+        name: "김범준",
+        grade: "초등 5학년",
+        accent: "blue",
+        previousVision: "1.0",
+        currentVision: "0.3",
+        rightSph: "-1.00D",
+        leftSph: "-1.00D",
+        pd: "60mm",
+        cylAxis: "미기재",
+        priority: "중요",
+        image: "assets/son-prescription-2026-06-26-readable.jpeg",
+        imageAlt: "김범준 2026년 6월 26일 안경 처방전",
+        summary: "양안 경도 근시로 보입니다. 칠판, 원거리 화면, 운동 중 거리감에서 불편이 생길 수 있어 정밀검사와 예비안경 준비가 필요합니다.",
+        nextChecks: ["나안시력 재확인", "교정시력", "안축장", "각막 지형도", "드림렌즈 적합성"],
+        watch: ["눈 비빔", "칠판 글씨 흐림", "두통", "책을 가까이 봄", "오후 시야 저하"]
+      },
+      {
+        id: "seoyeon",
+        name: "김서연",
+        grade: "초등 4학년",
+        accent: "mint",
+        previousVision: "0.8",
+        currentVision: "0.1",
+        rightSph: "-1.25D",
+        leftSph: "-1.50D",
+        pd: "59mm",
+        cylAxis: "미기재",
+        priority: "높음",
+        image: "assets/daughter-prescription-2026-06-26-readable.jpeg",
+        imageAlt: "김서연 2026년 6월 26일 안경 처방전",
+        summary: "김범준보다 근시 도수가 조금 높고 좌안이 더 높습니다. 나안시력 기록도 낮아 진행 관리 우선순위를 더 높게 둡니다.",
+        nextChecks: ["나안시력 재확인", "교정시력", "안축장", "각막 지형도", "근시 진행 억제 상담"],
+        watch: ["눈 찡그림", "야간 시야 불편", "책을 가까이 봄", "야외활동 감소", "렌즈 착용 거부감"]
+      }
+    ];
+
+    const milestones = [
+      { title: "처방전 사진 보관", due: "2026-06-26", status: "done", statusText: "완료", detail: "원본과 아이별 크롭 이미지를 assets 폴더에 저장했습니다." },
+      { title: "기준값 정리", due: "2026-06-26", status: "done", statusText: "완료", detail: "시력표 숫자와 안경 도수 SPH를 분리해서 기록했습니다." },
+      { title: "안과 정밀검사 예약", due: "2026-07", status: "doing", statusText: "진행 필요", detail: "나안시력, 교정시력, 조절마비 굴절검사 여부, 안축장, 각막 지형도를 확보합니다." },
+      { title: "교정 수단 결정", due: "검사 직후", status: "todo", statusText: "미진행", detail: "드림렌즈, 일반안경, 근시억제 안경, 저농도 아트로핀 상담 여부를 결정합니다." },
+      { title: "일반 예비안경 준비", due: "렌즈 시작 전후 1-2주", status: "todo", statusText: "미진행", detail: "드림렌즈를 못 끼는 날에도 학교생활 시야를 확보합니다." },
+      { title: "1주 적응 점검", due: "시작 후 1주", status: "todo", statusText: "미진행", detail: "충혈, 통증, 이물감, 아침/오후 시력 유지, 렌즈 위치를 확인합니다." },
+      { title: "3개월 추적검사", due: "2026-09~10", status: "todo", statusText: "미진행", detail: "도수 변화와 안축장을 비교하고 치료 강화 여부를 상담합니다." },
+      { title: "6개월 중간평가", due: "2026-12", status: "todo", statusText: "미진행", detail: "유지, 전환, 병행 치료 여부와 비용 효율을 다시 판단합니다." }
+    ];
+
+    const actions = [
+      { title: "병원", badge: "이번 달", items: ["안과 정밀검사 예약", "안축장 측정 가능 여부 확인", "조절마비 굴절검사 필요 여부 확인", "드림렌즈 적합 검사 비용 확인"] },
+      { title: "안경원", badge: "준비", items: ["일반 예비안경 견적", "튼튼한 초등학생용 테 확인", "도수 변경 시 렌즈 교체 비용 확인", "불필요한 고가 옵션 제외"] },
+      { title: "집 루틴", badge: "매일", items: ["근거리 45분 후 먼 곳 보기", "야외활동 시간 확보", "눈 비빔/충혈 기록", "책과 화면 거리 관찰", "온라인 학습 25분 단위로 끊기", "게임은 합의한 시간 안에서 스스로 종료하기"] }
+    ];
+
+    const screenPlans = [
+      {
+        title: "평일 기본안",
+        badge: "권장",
+        blocks: [
+          ["온라인 학습", "25분 + 눈 휴식 5분을 2-3세트, 총 60-90분"],
+          ["게임", "평일은 30-45분 정도를 기본으로, 학습·숙제·야외활동 뒤에 배치"],
+          ["많은 날 상한", "최대 120분 정도까지, 중간 휴식은 반드시 유지"],
+          ["야외활동", "최소 60분, 가능하면 80-120분"],
+          ["밤 시간", "취침 전 1시간은 PC·태블릿·폰 학습 피하기"]
+        ]
+      },
+      {
+        title: "주말·방학안",
+        badge: "자율",
+        blocks: [
+          ["게임", "하루 60-90분 정도를 기본 범위로 두고, 길어지는 날은 30분마다 쉬기"],
+          ["긴 게임", "친구와 약속된 게임은 시작 전에 종료 시간을 정하고 알람을 맞추기"],
+          ["균형 조건", "야외활동, 숙제, 가족 일정이 먼저 확보되면 게임 시간을 유연하게 조정"],
+          ["부모 역할", "갑자기 끊기보다 10분 전 예고, 스스로 종료하면 긍정 피드백"]
+        ]
+      },
+      {
+        title: "PC 환경 기준",
+        badge: "세팅",
+        blocks: [
+          ["거리", "모니터 50-60cm 이상, 책·태블릿 30cm 이상"],
+          ["자세", "화면은 눈높이보다 살짝 낮게, 고개를 앞으로 빼지 않기"],
+          ["조명", "방 전체 조명과 책상 조명을 같이 사용하고 화면만 밝은 상태 피하기"],
+          ["장비", "가능하면 노트북보다 큰 모니터와 안정적인 의자 사용"]
+        ]
+      },
+      {
+        title: "기록할 항목",
+        badge: "체크",
+        blocks: [
+          ["학습 시간", "온라인 학습 총 시간과 가장 긴 연속 사용 시간"],
+          ["게임 시간", "총 게임 시간, 30분마다 쉬었는지, 약속한 종료 시간을 지켰는지"],
+          ["휴식", "20-20-20 또는 25분+5분 휴식을 지켰는지"],
+          ["야외", "햇빛 아래 활동 시간이 60분 이상이었는지"],
+          ["증상", "눈 비빔, 찡그림, 두통, 오후 시야 흐림 여부"]
+        ]
+      }
+    ];
+
+    const readinessItems = [
+      { id: "clinic-booked", label: "안과 정밀검사 예약", why: "다음 의사결정의 출발점" },
+      { id: "prescription-saved", label: "처방전 이미지 보관", why: "기준 도수 확인용", done: true },
+      { id: "backup-glasses-plan", label: "일반 예비안경 구매 계획", why: "렌즈를 쉬는 날 대비" },
+      { id: "axial-length-question", label: "안축장 질문 준비", why: "근시 진행 추적 핵심값" },
+      { id: "routine-agreed", label: "가족 생활 루틴 합의", why: "야외활동·근거리 휴식 관리" },
+      { id: "danger-rule-shared", label: "위험 신호 대응 기준 공유", why: "충혈·통증 때 지체하지 않기" },
+      { id: "cost-tracker-ready", label: "비용·보증 기록 준비", why: "교체와 재피팅 조건 관리" },
+      { id: "monthly-review-date", label: "월간 리뷰 날짜 정하기", why: "3-6개월 추적까지 흐름 유지" }
+    ];
+
+    const examRecords = [
+      ["2026-06-26", "김범준", "처방전 기록", "0.3", "확인 필요", "우 -1.00D / 좌 -1.00D", "확인 필요", "확인 필요", "2026-07 검사 필요"],
+      ["2026-06-26", "김서연", "처방전 기록", "0.1", "확인 필요", "우 -1.25D / 좌 -1.50D", "확인 필요", "확인 필요", "2026-07 검사 필요"],
+      ["", "", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", "", ""]
+    ];
+
+    const precisionChecklist = [
+      {
+        title: "나안시력",
+        required: "필수",
+        why: "안경 없이 실제로 얼마나 보이는지 확인합니다. 학교생활 불편과 현재 체감 시야의 기준입니다.",
+        record: "우안/좌안 각각 기록. 예: 우 0.3, 좌 0.4",
+        ask: "안경 없이 잰 나안시력을 오른쪽/왼쪽 각각 알려주세요."
+      },
+      {
+        title: "교정시력",
+        required: "필수",
+        why: "도수를 맞췄을 때 1.0까지 나오는지 확인합니다. 교정시력이 낮으면 다른 원인도 확인해야 합니다.",
+        record: "안경 또는 렌즈로 교정했을 때 우안/좌안 각각 기록",
+        ask: "이 도수로 교정했을 때 교정시력은 몇까지 나오나요?"
+      },
+      {
+        title: "굴절검사 도수",
+        required: "필수",
+        why: "근시·난시가 어느 정도인지 숫자로 남기는 기준입니다. 다음 검사와 직접 비교합니다.",
+        record: "SPH, CYL, AXIS를 우안/좌안 각각 기록",
+        ask: "근시 도수 SPH, 난시 CYL, 축 AXIS를 양쪽 눈 각각 적어주세요."
+      },
+      {
+        title: "조절마비 굴절검사 여부",
+        required: "확인",
+        why: "아이들은 눈 조절 힘 때문에 실제보다 도수가 다르게 나올 수 있습니다. 정확한 기준값이 필요할 때 중요합니다.",
+        record: "검사 실시 여부와 결과 도수 기록",
+        ask: "조절마비 굴절검사가 필요한 상태인가요? 했다면 결과 도수는 어떻게 되나요?"
+      },
+      {
+        title: "안축장",
+        required: "매우 중요",
+        why: "근시 진행을 추적하는 핵심 숫자입니다. 도수보다 진행 여부를 객관적으로 비교하는 데 도움이 됩니다.",
+        record: "mm 단위로 우안/좌안 각각 기록. 같은 장비로 추적 가능한지 확인",
+        ask: "안축장 길이를 mm 단위로 양쪽 눈 각각 알려주시고, 다음에도 같은 장비로 추적 가능한가요?"
+      },
+      {
+        title: "각막 지형도",
+        required: "드림렌즈 전 필수",
+        why: "드림렌즈가 각막 모양에 맞는지 판단합니다. 부적합하면 무리해서 시작하면 안 됩니다.",
+        record: "드림렌즈 적합/주의/부적합, 이유 기록",
+        ask: "각막 지형도상 드림렌즈에 적합한가요? 주의할 각막 모양이나 위험은 없나요?"
+      },
+      {
+        title: "눈 건강 상태",
+        required: "필수",
+        why: "알레르기, 건조, 충혈, 각막 상처가 있으면 렌즈 착용 계획이 달라집니다.",
+        record: "각막, 결막, 알레르기, 건조 여부와 렌즈 중단 기준 기록",
+        ask: "충혈, 알레르기, 건조, 각막 상처가 있나요? 어떤 증상이 있으면 렌즈를 쉬어야 하나요?"
+      },
+      {
+        title: "치료 강화 기준",
+        required: "추적용",
+        why: "3개월 뒤 어떤 수치가 나오면 드림렌즈 유지, 아트로핀 병행, 안경 전환을 할지 기준을 정합니다.",
+        record: "도수 변화, 안축장 변화, 다음 예약일, 치료 변경 기준",
+        ask: "3개월 뒤 어떤 변화가 있으면 치료를 강화하거나 방법을 바꿔야 하나요?"
+      }
+    ];
+
+    const decisionRules = [
+      { title: "드림렌즈", tone: "blue", conclusion: "진행 억제 후보", body: "잘 보이게 하는 것뿐 아니라 근시 진행 관리 목적까지 기대할 수 있습니다. 단, 각막 적합성, 위생, 수면시간, 아이 협조가 맞아야 합니다." },
+      { title: "일반 예비안경", tone: "mint", conclusion: "시야 확보·예비용", body: "일반안경은 학교생활과 학습 시야를 안정적으로 확보하는 역할입니다. 일반 예비안경만으로 근시 진행 억제 효과를 기대하긴 어렵습니다." },
+      { title: "근시억제 안경", tone: "amber", conclusion: "조건부", body: "안경을 매일 오래 착용하는 메인 수단이 될 때 검토합니다. 가끔 쓰는 예비용으로는 우선순위가 낮습니다." },
+      { title: "저농도 아트로핀", tone: "red", conclusion: "추적 후 상담", body: "3-6개월 검사에서 진행 속도가 빠르거나 안과가 권할 때 병행 여부를 상담합니다." }
+    ];
+
+    const treatmentRecheck = [
+      {
+        title: "김범준",
+        status: "드림렌즈 후보",
+        conclusion: "경도 근시로 보이지만 시력 0.3이면 원거리 시야 확보가 필요합니다. 각막 지형도와 안축장 확인 후 드림렌즈 적합하면 시작을 검토합니다.",
+        best: ["드림렌즈 적합 검사", "일반 예비안경 준비", "3개월 도수·안축장 추적"],
+        caution: ["위생 루틴이 흔들리면 중단", "충혈·통증 시 렌즈 쉬기", "수면 시간이 짧으면 효과 변동 가능"]
+      },
+      {
+        title: "김서연",
+        status: "우선 검토",
+        conclusion: "김범준보다 도수가 높고 현재 시력 기록도 낮아 진행 관리 우선순위가 더 높습니다. 드림렌즈 적합 판정이 나오면 더 적극적으로 검토합니다.",
+        best: ["드림렌즈 적합 검사 우선", "일반 예비안경 필수", "진행 빠르면 아트로핀 병행 상담"],
+        caution: ["착용 거부감 확인", "좌안 도수 변화 추적", "3개월 검사에서 안축장 변화 확인"]
+      },
+      {
+        title: "일반안경만 선택할 때",
+        status: "시야 확보 중심",
+        conclusion: "일반안경은 잘 보이게 하는 기본 교정입니다. 아이가 렌즈를 거부하거나 각막·위생 조건이 맞지 않으면 일반안경 또는 근시억제 안경을 메인으로 봅니다.",
+        best: ["도수에 맞는 안경 착용", "근시억제 안경 옵션 상담", "야외활동·근거리 휴식 강화"],
+        caution: ["일반안경만으로 진행 억제 기대는 낮음", "정기검사 없이 방치 금지", "예비용과 메인용을 구분"]
+      },
+      {
+        title: "최종 판단 기준",
+        status: "검사값 우선",
+        conclusion: "드림렌즈가 무조건 정답은 아닙니다. 근시 진행 관리 목적이라면 안축장, 교정시력, 각막 지형도, 생활 루틴 유지 가능성을 함께 봅니다.",
+        best: ["안축장 측정", "각막 지형도", "교정시력 확인", "가족 위생 루틴 합의"],
+        caution: ["가격만으로 결정하지 않기", "친구가 한다고 따라 하지 않기", "통증을 참고 착용하지 않기"]
+      }
+    ];
+
+    const dangerSignals = [
+      { title: "충혈 또는 통증", level: "stop", body: "렌즈 착용을 쉬고 안과에 문의합니다. 통증이 있으면 기다리지 않습니다." },
+      { title: "눈곱, 심한 이물감", level: "stop", body: "각막 자극 또는 감염 가능성을 배제해야 합니다." },
+      { title: "아침 시야가 계속 흐림", level: "warn", body: "렌즈 위치, 수면 시간, 도수 적합성을 다시 확인합니다." },
+      { title: "렌즈 착용 거부감", level: "warn", body: "아이의 협조가 어렵다면 근시억제 안경 전환 가능성을 열어둡니다." },
+      { title: "반복되는 눈 비빔", level: "warn", body: "알레르기, 건조감, 렌즈 불편 여부를 확인합니다." },
+      { title: "도수 또는 안축장 빠른 증가", level: "warn", body: "저농도 아트로핀 병행 등 치료 강화를 상담합니다." }
+    ];
+
+    const clinicQuestions = [
+      "김범준·김서연 각각 나안시력과 교정시력은 얼마인가요?",
+      "조절마비 굴절검사를 했거나 필요한가요?",
+      "안축장 길이는 얼마이고 앞으로 같은 장비로 추적 가능한가요?",
+      "각막 지형도 기준으로 드림렌즈에 적합한가요?",
+      "일반안경만 착용할 경우 근시 진행 억제 관점에서 부족한 부분은 무엇인가요?",
+      "김범준과 김서연 중 드림렌즈를 더 우선해야 할 아이가 있나요?",
+      "드림렌즈가 맞지 않으면 근시억제 안경이나 저농도 아트로핀 중 무엇을 먼저 검토해야 하나요?",
+      "충혈·통증·알레르기 때 렌즈를 쉬어야 하는 기준은 무엇인가요?",
+      "3개월 뒤 어떤 변화가 있으면 치료를 강화해야 하나요?",
+      "드림렌즈와 저농도 아트로핀 병행이 필요한 상황은 어떤 경우인가요?"
+    ];
+
+    const opticalQuestions = [
+      "드림렌즈 예비용 일반안경이면 어느 렌즈 등급이면 충분한가요?",
+      "아이들이 떨어뜨려도 버틸 수 있는 가볍고 튼튼한 테가 있나요?",
+      "도수 변경 또는 렌즈 파손 시 교체 비용은 얼마인가요?",
+      "예비안경에 고가 코팅이나 옵션이 꼭 필요한가요?",
+      "드림렌즈 중단 시 근시억제 안경으로 바꾸면 비용이 어떻게 달라지나요?"
+    ];
+
+    const routines = [
+      ["야외활동", "가능하면 매일 햇빛 아래 활동 시간을 확보합니다."],
+      ["근거리 휴식", "45분 이상 독서·화면 후 잠깐 먼 곳을 보게 합니다."],
+      ["화면 거리", "태블릿, 책, 문제집을 너무 가까이 보지 않게 합니다."],
+      ["온라인 학습 분할", "PC 학습은 25분 단위로 끊고 5분은 눈과 몸을 쉬게 합니다."],
+      ["게임 자율 종료", "게임 시작 전에 종료 시간을 아이와 정하고, 10분 전 알림 뒤 스스로 끄게 합니다."],
+      ["게임 중 눈 휴식", "게임도 30분마다 멈춰 물 마시기, 먼 곳 보기, 몸 움직이기를 넣습니다."],
+      ["취침 전 화면 줄이기", "잠들기 1시간 전에는 PC·태블릿·폰 학습을 피합니다."],
+      ["드림렌즈 위생", "손 씻기, 수돗물 접촉 금지, 보존액 관리를 지킵니다."],
+      ["예비안경 위치", "집 또는 등교 가방에 바로 쓸 수 있게 둡니다."],
+      ["증상 메모", "눈 비빔, 두통, 찡그림, 흐림, 충혈을 다음 진료 질문으로 남깁니다."]
+    ];
+
+    const monthlyReviews = [
+      ["2026-07", "김범준", "정밀검사 완료 여부", "나안/교정시력, 안축장, 각막 지형도 확보", ""],
+      ["2026-07", "김서연", "정밀검사 완료 여부", "나안/교정시력, 안축장, 각막 지형도 확보", ""],
+      ["2026-08", "공통", "루틴 안정성", "렌즈 착용·세척·수면시간·예비안경 위치 점검", ""],
+      ["2026-08", "공통", "온라인 학습·게임 시간", "PC 총량, 게임 총량, 가장 긴 연속 사용 시간, 야외활동 시간 점검", ""],
+      ["2026-09", "공통", "3개월 추적 준비", "도수 변화, 안축장 변화, 증상 메모 정리", ""],
+      ["2026-12", "공통", "6개월 평가", "유지/전환/병행 치료 여부 결정", ""]
+    ];
+
+    const lensProtocol = [
+      ["밤 착용 전", ["손 씻기", "렌즈 상태 확인", "수돗물 접촉 금지", "충혈·통증이 있으면 착용 중단"]],
+      ["아침 제거 후", ["렌즈 위치와 눈 상태 확인", "낮 시야가 나오는지 확인", "통증·눈곱·심한 이물감 기록", "렌즈 세척·보존액 교체"]],
+      ["학교 가기 전", ["예비안경 위치 확인", "오후에 흐려지는지 아이에게 물어보기", "눈 비빔이 잦으면 메모"]],
+      ["주말 점검", ["케이스 세척·교체 주기 확인", "보존액 잔량 확인", "아이 착용 거부감 확인", "다음 병원 질문 업데이트"]]
+    ];
+
+    const purchases = [
+      ["", "공통", "드림렌즈 적합검사", "", "예상 5-15만원", "검사 항목과 환불/재피팅 조건 확인", "2026-07"],
+      ["", "김범준", "일반 예비안경", "", "예상 8-20만원", "튼튼한 테, 기본 렌즈, 도수 변경 비용 확인", ""],
+      ["", "김서연", "일반 예비안경", "", "예상 8-20만원", "튼튼한 테, 기본 렌즈, 도수 변경 비용 확인", ""],
+      ["", "김범준", "드림렌즈", "", "예상 80-150만원", "분실, 파손, 재피팅, 교체 주기 확인", "1년 전후"],
+      ["", "김서연", "드림렌즈", "", "예상 80-150만원", "분실, 파손, 재피팅, 교체 주기 확인", "1년 전후"],
+      ["", "공통", "드림렌즈 관리용품", "", "월 1-3만원", "보존액, 세척액, 렌즈케이스, 흡착봉 등", "매월"],
+      ["", "조건부", "근시억제 안경", "", "예상 30-70만원", "메인 안경 전환 시 검토", ""],
+      ["", "조건부", "저농도 아트로핀", "", "월 2-5만원", "안과 처방 시 병행 여부 확인", "매월"]
+    ];
+
+    const costItems = [
+      { title: "일반 예비안경", range: "1인 8-20만원", type: "구매비", note: "드림렌즈를 쉬는 날 학교생활 시야를 지키는 기본 안전장치입니다." },
+      { title: "드림렌즈", range: "1인 80-150만원", type: "구매비", note: "병원·렌즈 종류·재피팅 조건에 따라 차이가 큽니다. 분실·파손 조건을 확인합니다." },
+      { title: "드림렌즈 관리용품", range: "월 1-3만원", type: "관리비", note: "보존액, 세척액, 렌즈케이스, 흡착봉 등 반복 지출입니다." },
+      { title: "근시억제 안경", range: "1인 30-70만원", type: "조건부", note: "안경을 메인으로 매일 착용할 때 검토합니다. 예비용으로는 우선순위가 낮습니다." },
+      { title: "저농도 아트로핀", range: "월 2-5만원", type: "상담", note: "3-6개월 추적 후 진행 속도가 빠르면 안과 상담 항목으로 둡니다." },
+      { title: "정밀검사/피팅", range: "5-15만원+", type: "초기비", note: "각막 지형도, 안축장, 피팅 비용 포함 여부를 병원에 확인합니다." }
+    ];
+
+    const budgetScenarios = [
+      ["최소 예비안경 우선", "일반 예비안경 2명", "약 16-40만원", "드림렌즈 검사 전 임시 시야 확보"],
+      ["드림렌즈 2명 시작", "드림렌즈 2명 + 예비안경 2명 + 초기검사", "약 186-370만원+", "관리용품 월 1-3만원 추가"],
+      ["드림렌즈 1명 우선", "우선순위 높은 아이 1명 드림렌즈 + 예비안경 2명", "약 101-205만원+", "김서연 우선 시작 같은 단계적 선택 가능"],
+      ["안경 메인 전환", "근시억제 안경 2명", "약 60-140만원", "드림렌즈 부적합·거부감·관리 어려움 시"]
+    ];
+
+    const reviewLog = [
+      "첫 화면에서 다음 행동이 바로 보이는지 검토하고, 핵심 지표와 마일스톤을 상단에 배치했습니다.",
+      "렌즈 선택 기준이 메인이 되지 않도록 선택 기준을 중간 이후로 내리고 시력관리 목표를 우선했습니다.",
+      "아이별 상태를 같은 구조로 비교할 수 있게 현재 시력, 도수, PD, 다음 확인값을 카드화했습니다.",
+      "아직 확인되지 않은 교정시력, 안축장, 각막 상태를 명시해서 다음 진료 때 빠뜨리지 않게 했습니다.",
+      "부모가 실제로 움직일 일을 병원, 안경원, 집 루틴으로 나누어 이번 달 액션 센터를 만들었습니다.",
+      "드림렌즈 시작 후 위험할 수 있는 충혈, 통증, 눈곱, 흐림 같은 중단 기준을 별도 위험 신호로 분리했습니다.",
+      "추적검사 기록표를 추가해 도수와 안축장을 장기 비교할 수 있게 했습니다.",
+      "구매·비용 관리표를 넣어 예비안경, 드림렌즈, 근시억제 안경의 보증과 교체 조건을 놓치지 않게 했습니다.",
+      "병원과 안경원 질문을 체크리스트화해 진료실에서 물어볼 내용을 바로 확인할 수 있게 했습니다.",
+      "화면 톤을 화이트·연그레이·블루·민트 기반 앱 대시보드로 정리하고 카드/그림자/인쇄 스타일을 맞췄습니다.",
+      "월간 리뷰 보드를 추가해 매월 생활 루틴과 검사 준비 상태를 다시 점검할 수 있게 했습니다.",
+      "드림렌즈 시작 후 밤·아침 프로토콜을 추가해 위생, 예비안경, 이상 신호 판단을 가족 루틴으로 만들었습니다.",
+      "오늘의 관찰 기록을 추가하고 브라우저 자동 저장을 붙여 매일 작은 메모가 누적되도록 했습니다.",
+      "위험 신호 체크 시 착용 중단·병원 문의 기준이 즉시 표시되도록 빠른 판정 영역을 추가했습니다.",
+      "다음 진료 준비 요약과 관리 데이터 내보내기를 추가해 병원 방문 전 준비물을 한 번에 확인하게 했습니다.",
+      "상단 관리점수와 진행률을 추가해 현재 관리 상태를 한눈에 판단할 수 있게 했습니다.",
+      "빠른 이동 내비게이션을 추가해 모바일에서도 필요한 영역으로 바로 이동할 수 있게 했습니다.",
+      "진료실 30초 브리핑을 추가해 의사에게 보여줄 압축 요약을 별도 영역으로 만들었습니다.",
+      "시력 변화 추세 그래프를 추가해 두 아이의 변화 폭을 시각적으로 비교할 수 있게 했습니다.",
+      "시력관리 준비도 체크를 추가해 예약, 예비안경, 안축장 질문, 생활 루틴 준비 상태를 관리하게 했습니다.",
+      "마지막 저장 시간과 저장 상태 초기화를 추가해 장기 사용 중 데이터 관리가 가능하게 했습니다.",
+      "온라인 학습과 PC 사용 시간분배 기준을 추가해 화면 거리, 연속 사용 시간, 야외활동 시간을 함께 관리하게 했습니다.",
+      "게임을 통제 대상이 아니라 가족 합의와 자율 종료 루틴으로 관리하도록 평일·주말 권장 범위와 체크 항목을 추가했습니다.",
+      "드림렌즈, 일반 예비안경, 관리용품, 근시억제 안경, 아트로핀의 평균 예상 비용과 1년 예산 시나리오를 추가했습니다."
+      ,"의사의 근시 진행 관리 조언을 반영해 드림렌즈와 일반안경의 역할을 재판정하고 아이별 적합성 기준을 다시 정리했습니다."
+      ,"정밀검진을 왜 하는지, 병원에서 어떤 숫자를 받아와야 하는지, 각 항목을 어떻게 기록하고 물어볼지 별도 체크리스트로 명시했습니다."
+    ];
+
+    const statusClass = {
+      done: "done",
+      doing: "doing",
+      todo: "todo",
+      danger: "danger"
+    };
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function storageKey(id) {
+      return `kids-eye-care-plan:${id}`;
+    }
+
+    function readStorage(id, fallback = "") {
+      try {
+        return localStorage.getItem(storageKey(id)) ?? fallback;
+      } catch (error) {
+        return fallback;
+      }
+    }
+
+    function writeStorage(id, value) {
+      try {
+        localStorage.setItem(storageKey(id), value);
+        localStorage.setItem(storageKey("lastSavedAt"), new Date().toISOString());
+      } catch (error) {
+        // Local storage can be unavailable in private modes; the screen still works without persistence.
+      }
+    }
+
+    function checkbox(id, label) {
+      return `
+        <label class="check-row">
+          <input class="check-input persist-check" type="checkbox" data-store-id="${escapeHtml(id)}">
+          <span>${escapeHtml(label)}</span>
+        </label>
+      `;
+    }
+
+    function metricText(value, tone = "blue") {
+      return `<span class="metric-value ${tone === "mint" ? "mint" : tone === "red" ? "red" : ""}">${escapeHtml(value)}</span>`;
+    }
+
+    function getCareProgress() {
+      const completedMilestones = milestones.filter(item => item.status === "done").length;
+      const milestoneScore = Math.round((completedMilestones / milestones.length) * 100);
+      const requiredValues = children.length * 5;
+      const filledValues = children.length * 2;
+      const dataScore = Math.round((filledValues / requiredValues) * 100);
+      const routineChecked = Array.from(document.querySelectorAll("[data-store-id^='routine:']")).filter(input => input.checked).length;
+      const routineScore = routines.length ? Math.round((routineChecked / routines.length) * 100) : 0;
+      const actionChecked = Array.from(document.querySelectorAll("[data-store-id^='action:']")).filter(input => input.checked).length;
+      const totalActions = actions.reduce((sum, action) => sum + action.items.length, 0);
+      const actionScore = totalActions ? Math.round((actionChecked / totalActions) * 100) : 0;
+      const overall = Math.round((milestoneScore * 0.35) + (dataScore * 0.25) + (routineScore * 0.2) + (actionScore * 0.2));
+      return { overall, milestoneScore, dataScore, routineScore, actionScore };
+    }
+
+    function renderHeroInsight() {
+      const progress = getCareProgress();
+      const rows = [
+        ["마일스톤", progress.milestoneScore],
+        ["검사값 확보", progress.dataScore],
+        ["생활 루틴", progress.routineScore],
+        ["이번 달 액션", progress.actionScore]
+      ];
+      document.getElementById("heroInsight").innerHTML = `
+        <h3>우리 집 시력관리 준비도</h3>
+        <div class="score-row">
+          <div class="score-circle" style="--score-angle:${Math.round(progress.overall * 3.6)}deg"><span>${progress.overall}</span></div>
+          <div class="progress-list">
+            ${rows.map(([label, value]) => `
+              <div class="progress-item">
+                <span>${escapeHtml(label)}</span>
+                <div class="progress-track"><div class="progress-fill" style="width:${value}%"></div></div>
+                <b>${value}%</b>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+        <p class="lead">점수는 완료된 마일스톤, 확보된 검사값, 체크된 생활 루틴, 이번 달 액션을 기준으로 계산합니다.</p>
+      `;
+    }
+
+    function renderTopStats() {
+      const needs = children.flatMap(child => child.nextChecks).filter(item => item.includes("안축장") || item.includes("교정시력")).length;
+      const html = [
+        ["관리 대상", `${children.length}명`, "blue"],
+        ["다음 필수 행동", "정밀검사 예약", "mint"],
+        ["확인 필요 검사값", `${needs}개+`, "amber"],
+        ["가장 우선 관리", "김서연", "red"]
+      ].map(([label, value, tone]) => `
+        <article class="stat-card ${tone}">
+          <span>${label}</span>
+          <strong>${value}</strong>
+        </article>
+      `).join("");
+      document.getElementById("topStats").innerHTML = html;
+    }
+
+    function renderVisionTrendChart() {
+      const maxVision = 1.0;
+      const minVision = 0;
+      const points = children.map((child, index) => {
+        const y1 = 38 + (1 - (Number(child.previousVision) - minVision) / (maxVision - minVision)) * 148;
+        const y2 = 38 + (1 - (Number(child.currentVision) - minVision) / (maxVision - minVision)) * 148;
+        const color = child.accent === "mint" ? "var(--mint)" : "var(--blue)";
+        const offset = index * 22;
+        return { child, y1: y1 + offset, y2: y2 + offset, color };
+      });
+      document.getElementById("visionTrendChart").innerHTML = `
+        <svg class="chart" viewBox="0 0 520 240" role="img" aria-label="김범준과 김서연의 시력 변화 추세">
+          <line x1="72" y1="38" x2="72" y2="198" stroke="#cbd5e1" />
+          <line x1="72" y1="198" x2="470" y2="198" stroke="#cbd5e1" />
+          <text x="42" y="42" class="chart-label">1.0</text>
+          <text x="42" y="126" class="chart-label">0.5</text>
+          <text x="42" y="202" class="chart-label">0</text>
+          <text x="112" y="224" class="chart-label">2025년까지</text>
+          <text x="354" y="224" class="chart-label">2026-06</text>
+          ${points.map(({ child, y1, y2, color }) => `
+            <line x1="150" y1="${y1.toFixed(1)}" x2="390" y2="${y2.toFixed(1)}" stroke="${color}" stroke-width="5" stroke-linecap="round" />
+            <circle cx="150" cy="${y1.toFixed(1)}" r="7" fill="${color}" />
+            <circle cx="390" cy="${y2.toFixed(1)}" r="7" fill="${color}" />
+            <text x="405" y="${(y2 + 4).toFixed(1)}" class="chart-value">${escapeHtml(child.name)} ${escapeHtml(child.currentVision)}</text>
+          `).join("")}
+        </svg>
+      `;
+    }
+
+    function renderMilestones() {
+      document.getElementById("milestoneList").innerHTML = milestones.map(item => `
+        <article class="milestone">
+          <div><b>${escapeHtml(item.title)}</b><p>${escapeHtml(item.due)}</p></div>
+          <div><span class="status ${statusClass[item.status]}">${escapeHtml(item.statusText)}</span></div>
+          <p>${escapeHtml(item.detail)}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderChildren() {
+      document.getElementById("childCards").innerHTML = children.map(child => `
+        <article class="child-card ${child.accent === "mint" ? "mint" : ""}">
+          <div class="child-head">
+            <div>
+              <div class="name-row">
+                <h3>${escapeHtml(child.name)}</h3>
+                <span class="pill">${escapeHtml(child.grade)}</span>
+                <span class="pill ${child.priority === "높음" ? "red" : "amber"}">관리 우선순위 ${escapeHtml(child.priority)}</span>
+              </div>
+              <p>${escapeHtml(child.summary)}</p>
+            </div>
+          </div>
+          <div class="child-body">
+            <div class="metric-strip">
+              <div class="metric-box"><span>2025년까지</span><strong>${escapeHtml(child.previousVision)}</strong></div>
+              <div class="metric-box mint"><span>2026년 기준</span><strong>${escapeHtml(child.currentVision)}</strong></div>
+              <div class="metric-box"><span>PD</span><strong>${escapeHtml(child.pd)}</strong></div>
+            </div>
+            <div class="grid two" style="margin-top:14px">
+              <div class="mini-card">
+                <h3>처방전 도수</h3>
+                <p>우안 ${metricText(child.rightSph)} / 좌안 ${metricText(child.leftSph)}</p>
+                <p class="muted">난시 CYL/AXIS: ${escapeHtml(child.cylAxis)}</p>
+              </div>
+              <div class="mini-card">
+                <h3>다음 진료에서 채울 값</h3>
+                <p>${child.nextChecks.map(item => `<span class="pill mint">${escapeHtml(item)}</span>`).join(" ")}</p>
+              </div>
+            </div>
+            <div class="grid two" style="margin-top:14px">
+              <img class="photo" src="${escapeHtml(child.image)}" alt="${escapeHtml(child.imageAlt)}">
+              <div class="mini-card">
+                <h3>집에서 볼 관찰 신호</h3>
+                ${child.watch.map((item, index) => checkbox(`watch:${child.id}:${index}`, item)).join("")}
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderActions() {
+      document.getElementById("actionCenter").innerHTML = actions.map(action => `
+        <article class="mini-card">
+          <div class="name-row"><h3>${escapeHtml(action.title)}</h3><span class="pill blue">${escapeHtml(action.badge)}</span></div>
+          ${action.items.map((item, index) => checkbox(`action:${action.title}:${index}`, item)).join("")}
+        </article>
+      `).join("");
+    }
+
+    function renderScreenPlan() {
+      document.getElementById("screenPlan").innerHTML = screenPlans.map(plan => `
+        <article class="schedule-card">
+          <div class="name-row">
+            <h3>${escapeHtml(plan.title)}</h3>
+            <span class="pill mint">${escapeHtml(plan.badge)}</span>
+          </div>
+          ${plan.blocks.map(([label, body]) => `
+            <div class="time-block">
+              <b>${escapeHtml(label)}</b>
+              <span>${escapeHtml(body)}</span>
+            </div>
+          `).join("")}
+        </article>
+      `).join("");
+    }
+
+    function renderReadiness() {
+      document.getElementById("readinessList").innerHTML = readinessItems.map(item => `
+        <label class="readiness-item">
+          <input class="check-input persist-check" type="checkbox" data-store-id="readiness:${escapeHtml(item.id)}" ${item.done ? "checked" : ""}>
+          <span><b>${escapeHtml(item.label)}</b><br><span class="muted">${escapeHtml(item.why)}</span></span>
+          <span class="pill ${item.done ? "green" : "blue"}">${item.done ? "기록됨" : "준비"}</span>
+        </label>
+      `).join("");
+    }
+
+    function renderTable(id, headers, rows) {
+      const thead = `<thead><tr>${headers.map(header => `<th>${escapeHtml(header)}</th>`).join("")}</tr></thead>`;
+      const tbody = `<tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${renderCell(cell)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+      document.getElementById(id).innerHTML = thead + tbody;
+    }
+
+    function renderPrecisionChecklist() {
+      document.getElementById("precisionChecklist").innerHTML = precisionChecklist.map(item => `
+        <article class="decision-card">
+          <div class="name-row">
+            <h3>${escapeHtml(item.title)}</h3>
+            <span class="pill ${item.required === "매우 중요" ? "red" : item.required === "필수" ? "blue" : "mint"}">${escapeHtml(item.required)}</span>
+          </div>
+          <p><strong>왜 필요한가:</strong> ${escapeHtml(item.why)}</p>
+          <p><strong>기록 방법:</strong> ${escapeHtml(item.record)}</p>
+          <div class="check-row" style="margin-top:10px">
+            <span class="check">?</span>
+            <span>${escapeHtml(item.ask)}</span>
+          </div>
+        </article>
+      `).join("");
+
+      document.getElementById("clinicScript").innerHTML = `
+        <p><strong>“선생님, 단순히 안경을 맞추는 것보다 앞으로 근시가 더 진행되는지 추적 관리하려고 합니다. 오늘 기준값으로 남겨야 할 나안시력, 교정시력, 굴절검사 도수, 안축장, 각막 지형도 결과를 아이별로 알려주세요. 3개월 뒤 어떤 수치가 나오면 치료를 강화해야 하는지도 같이 알고 싶습니다.”</strong></p>
+      `;
+    }
+
+    function renderCell(cell) {
+      const text = escapeHtml(cell || "\u00a0");
+      return text
+        .replace(/0\.3/g, metricText("0.3", "mint"))
+        .replace(/0\.1/g, metricText("0.1", "mint"))
+        .replace(/-1\.00D/g, metricText("-1.00D"))
+        .replace(/-1\.25D/g, metricText("-1.25D"))
+        .replace(/-1\.50D/g, metricText("-1.50D"));
+    }
+
+    function renderDecisionCards() {
+      document.getElementById("decisionCards").innerHTML = decisionRules.map(rule => `
+        <article class="decision-card">
+          <div class="name-row">
+            <h3>${escapeHtml(rule.title)}</h3>
+            <span class="pill ${escapeHtml(rule.tone)}">${escapeHtml(rule.conclusion)}</span>
+          </div>
+          <p>${escapeHtml(rule.body)}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderTreatmentRecheck() {
+      document.getElementById("treatmentRecheck").innerHTML = treatmentRecheck.map(item => `
+        <article class="decision-card">
+          <div class="name-row">
+            <h3>${escapeHtml(item.title)}</h3>
+            <span class="pill ${item.status.includes("우선") ? "red" : item.status.includes("후보") ? "blue" : "mint"}">${escapeHtml(item.status)}</span>
+          </div>
+          <p>${escapeHtml(item.conclusion)}</p>
+          <div class="grid two" style="margin-top:12px">
+            <div>
+              <h3>추천 흐름</h3>
+              ${item.best.map((text, index) => `<div class="check-row"><span class="check">${index + 1}</span><span>${escapeHtml(text)}</span></div>`).join("")}
+            </div>
+            <div>
+              <h3>주의 조건</h3>
+              ${item.caution.map(text => `<div class="check-row"><span class="check">!</span><span>${escapeHtml(text)}</span></div>`).join("")}
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderCostSummary() {
+      document.getElementById("costSummary").innerHTML = costItems.map(item => `
+        <article class="schedule-card">
+          <div class="name-row">
+            <h3>${escapeHtml(item.title)}</h3>
+            <span class="pill ${item.type === "관리비" ? "mint" : item.type === "조건부" ? "amber" : "blue"}">${escapeHtml(item.type)}</span>
+          </div>
+          <p><strong>${escapeHtml(item.range)}</strong></p>
+          <p>${escapeHtml(item.note)}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderDangerSignals() {
+      document.getElementById("dangerSignals").innerHTML = dangerSignals.map((signal, index) => `
+        <article class="danger-card">
+          <label class="name-row">
+            <input class="check-input danger-check" type="checkbox" data-level="${escapeHtml(signal.level)}" data-store-id="danger:${index}">
+            <b>${escapeHtml(signal.title)}</b>
+          </label>
+          <p>${escapeHtml(signal.body)}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderQuestions(id, questions) {
+      document.getElementById(id).innerHTML = questions.map((question, index) => `
+        <li><input class="check-input persist-check" type="checkbox" data-store-id="${escapeHtml(id)}:${index}"><span>${escapeHtml(question)}</span></li>
+      `).join("");
+    }
+
+    function renderRoutines() {
+      document.getElementById("routineList").innerHTML = routines.map(([title, body]) => `
+        <article class="mini-card">
+          <label class="name-row"><input class="check-input persist-check" type="checkbox" data-store-id="routine:${escapeHtml(title)}"><h3>${escapeHtml(title)}</h3></label>
+          <p>${escapeHtml(body)}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderLensProtocol() {
+      document.getElementById("lensProtocol").innerHTML = lensProtocol.map(([title, items]) => `
+        <article class="mini-card">
+          <h3>${escapeHtml(title)}</h3>
+          ${items.map((item, index) => checkbox(`lens:${title}:${index}`, item)).join("")}
+        </article>
+      `).join("");
+    }
+
+    function renderVisitPrep() {
+      const missingValues = ["나안시력", "교정시력", "안축장", "각막 지형도", "조절마비 굴절검사 여부"];
+      const recentMemo = readStorage("dailyMemo", "아직 저장된 오늘 메모가 없습니다.");
+      const cards = [
+        {
+          title: "가져갈 검사 질문",
+          items: missingValues.map(item => `${item} 확인`)
+        },
+        {
+          title: "아이별 우선순위",
+          items: children.map(child => `${child.name}: ${child.priority} 관리, 현재 ${child.currentVision}, ${child.rightSph}/${child.leftSph}`)
+        },
+        {
+          title: "최근 메모",
+          items: [recentMemo]
+        }
+      ];
+      document.getElementById("visitPrep").innerHTML = cards.map(card => `
+        <article class="mini-card">
+          <h3>${escapeHtml(card.title)}</h3>
+          ${card.items.map((item, index) => `<div class="check-row"><span class="check">${index + 1}</span><span>${escapeHtml(item)}</span></div>`).join("")}
+        </article>
+      `).join("");
+    }
+
+    function renderClinicBrief() {
+      const memo = readStorage("dailyMemo", "최근 관찰 메모 없음");
+      document.getElementById("clinicBrief").innerHTML = children.map(child => `
+        <article class="summary-card">
+          <b>${escapeHtml(child.name)} · ${escapeHtml(child.grade)}</b>
+          <p>시력 변화: ${metricText(child.previousVision)} → ${metricText(child.currentVision, "mint")}</p>
+          <p>처방전: 우안 ${metricText(child.rightSph)} / 좌안 ${metricText(child.leftSph)}, PD ${escapeHtml(child.pd)}</p>
+          <p>필수 확인: ${child.nextChecks.map(item => escapeHtml(item)).join(", ")}</p>
+          <p>최근 메모: ${escapeHtml(memo)}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderReviewLog() {
+      document.getElementById("reviewLog").innerHTML = reviewLog.map(item => `<li>${escapeHtml(item)}</li>`).join("");
+    }
+
+    function hydratePersistentControls() {
+      document.querySelectorAll(".persist-check, .danger-check").forEach(input => {
+        const key = input.dataset.storeId;
+        const defaultChecked = input.checked ? "true" : "false";
+        input.checked = readStorage(key, defaultChecked) === "true";
+        input.addEventListener("change", () => {
+          writeStorage(key, String(input.checked));
+          updateTriage();
+          renderHeroInsight();
+          updateLastSaved();
+        });
+      });
+
+      ["dailyDate", "dailyChild", "dailyRoutine", "dailyMemo"].forEach(id => {
+        const input = document.getElementById(id);
+        if (!input) return;
+        if (id === "dailyDate" && !readStorage(id)) {
+          input.value = new Date().toISOString().slice(0, 10);
+        } else {
+          input.value = readStorage(id, input.value);
+        }
+        input.addEventListener("input", () => {
+          writeStorage(id, input.value);
+          document.getElementById("saveStatus").textContent = "자동 저장됨";
+          renderVisitPrep();
+          renderClinicBrief();
+          updateLastSaved();
+        });
+      });
+
+      updateTriage();
+      renderHeroInsight();
+      updateLastSaved();
+    }
+
+    function updateLastSaved() {
+      const target = document.getElementById("lastSaved");
+      if (!target) return;
+      const value = readStorage("lastSavedAt", "");
+      target.textContent = value ? `마지막 저장: ${new Date(value).toLocaleString("ko-KR")}` : "마지막 저장: 없음";
+    }
+
+    function updateTriage() {
+      const checked = Array.from(document.querySelectorAll(".danger-check:checked"));
+      const result = document.getElementById("triageResult");
+      if (!result) return;
+      result.className = "triage-result";
+      if (checked.some(input => input.dataset.level === "stop")) {
+        result.classList.add("stop");
+        result.innerHTML = "<b>착용 중단 + 안과 문의</b><br>충혈, 통증, 눈곱, 심한 이물감은 기다리지 말고 렌즈를 쉬는 기준으로 둡니다.";
+      } else if (checked.length > 0) {
+        result.classList.add("warn");
+        result.innerHTML = "<b>관찰 강화 + 다음 진료 질문 등록</b><br>반복되면 렌즈 적합성, 알레르기, 수면 시간, 교정 수단 전환을 상담합니다.";
+      } else {
+        result.classList.add("safe");
+        result.innerHTML = "<b>현재 체크된 위험 신호 없음</b><br>생활 루틴과 월간 리뷰를 유지합니다.";
+      }
+    }
+
+    function exportCareData() {
+      const state = {};
+      document.querySelectorAll("[data-store-id]").forEach(input => {
+        state[input.dataset.storeId] = input.type === "checkbox" ? input.checked : input.value;
+      });
+      ["dailyDate", "dailyChild", "dailyRoutine", "dailyMemo"].forEach(id => {
+        const input = document.getElementById(id);
+        if (input) state[id] = input.value;
+      });
+      const payload = {
+        exportedAt: new Date().toISOString(),
+        children,
+        milestones,
+        readinessItems,
+        examRecords,
+        costItems,
+        budgetScenarios,
+        monthlyReviews,
+        purchases,
+        savedState: state
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "kids-eye-care-plan-export.json";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function resetSavedState() {
+      if (!confirm("이 브라우저에 저장된 체크와 메모를 초기화할까요? 기준 데이터는 지워지지 않습니다.")) return;
+      Object.keys(localStorage)
+        .filter(key => key.startsWith("kids-eye-care-plan:"))
+        .forEach(key => localStorage.removeItem(key));
+      location.reload();
+    }
+
+    renderHeroInsight();
+    renderTopStats();
+    renderVisionTrendChart();
+    renderMilestones();
+    renderChildren();
+    renderActions();
+    renderScreenPlan();
+    renderReadiness();
+    renderTable("examTable", ["날짜", "아이", "병원", "나안시력", "교정시력", "SPH/CYL/AXIS", "안축장", "각막 상태", "다음 예약"], examRecords);
+    renderPrecisionChecklist();
+    renderDecisionCards();
+    renderTreatmentRecheck();
+    renderDangerSignals();
+    renderQuestions("clinicQuestions", clinicQuestions);
+    renderQuestions("opticalQuestions", opticalQuestions);
+    renderVisitPrep();
+    renderClinicBrief();
+    renderRoutines();
+    renderTable("monthlyReviewTable", ["월", "대상", "점검 주제", "확인 기준", "메모"], monthlyReviews);
+    renderLensProtocol();
+    renderCostSummary();
+    renderTable("budgetScenarioTable", ["시나리오", "구성", "예상 1년 비용", "판단 포인트"], budgetScenarios);
+    renderTable("purchaseTable", ["날짜", "아이", "품목", "구매처", "금액", "보증·교체 조건", "다음 교체"], purchases);
+    renderReviewLog();
+    hydratePersistentControls();
+    document.getElementById("exportButton").addEventListener("click", exportCareData);
+    document.getElementById("resetButton").addEventListener("click", resetSavedState);
+  </script>
+</body>
+</html>
