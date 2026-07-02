@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>부평 동아아파트 2단지 30평대 인테리어 시공 사례</title>
+  <style>
+    :root {
+      --text: #222222;
+      --sub: #767676;
+      --soft: #f7f7f5;
+      --line: #e2e2de;
+      --line-strong: #262626;
+      --paper: #ffffff;
+      --accent: #222222;
+      --accent-dark: #222222;
+      --title: #171717;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: #ffffff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      font-size: 16.5px;
+      line-height: 1.7;
+    }
+
+    main {
+      width: min(1360px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 0 0 96px;
+    }
+
+    article {
+      background: var(--paper);
+      padding: clamp(28px, 5vw, 84px);
+      border: 0;
+    }
+
+    header {
+      max-width: 1120px;
+      margin: 0 auto 42px;
+      padding: 54px 0 34px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--accent-dark);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--title);
+      font-family: "Noto Serif KR", "Nanum Myeongjo", Georgia, serif;
+      font-size: clamp(38px, 6vw, 72px);
+      font-weight: 500;
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      max-width: 820px;
+      margin: 12px auto 24px;
+      color: var(--title);
+      font-family: "Noto Serif KR", "Nanum Myeongjo", Georgia, serif;
+      font-size: clamp(27px, 4.2vw, 42px);
+      font-weight: 500;
+      line-height: 1.32;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      max-width: 820px;
+      margin: 40px auto 14px;
+      color: var(--title);
+      font-size: 21px;
+      line-height: 1.45;
+    }
+
+    p {
+      max-width: 820px;
+      margin: 0 auto 22px;
+      color: var(--text);
+      font-size: 16.5px;
+    }
+
+    strong {
+      font-weight: 800;
+    }
+
+    a {
+      color: var(--accent-dark);
+    }
+
+    figure {
+      margin: 24px auto 34px;
+      max-width: 1080px;
+      overflow: hidden;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    figcaption {
+      padding: 10px 0 0;
+      border-top: 0;
+      color: var(--sub);
+      background: transparent;
+      font-size: 13.5px;
+      line-height: 1.55;
+      text-align: left;
+    }
+
+    .lead {
+      margin-top: 24px;
+      color: #555555;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(18px, 3vw, 34px);
+      max-width: 1180px;
+      margin: 44px auto 46px;
+    }
+
+    .hero-grid figure {
+      margin: 0;
+    }
+
+    .hero-grid img,
+    .photo-grid img {
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+
+    .intro-panel,
+    .note-panel {
+      max-width: 820px;
+      margin: 42px auto 54px;
+      padding: 18px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      border-left: 0;
+    }
+
+    .intro-panel p,
+    .note-panel p {
+      max-width: none;
+      margin: 0;
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--line);
+      color: #4f4f4f;
+      font-size: 16px;
+    }
+
+    .intro-panel p:last-child,
+    .note-panel p:last-child {
+      border-bottom: 0;
+    }
+
+    .project-meta {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 24px;
+      max-width: 1180px;
+      margin: 42px auto 50px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .meta-item {
+      padding: 18px 0;
+      border-right: 0;
+      background: #fff;
+    }
+
+    .meta-item:last-child {
+      border-right: 0;
+    }
+
+    .meta-item b {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--title);
+      font-size: 13px;
+    }
+
+    .meta-item span {
+      color: var(--sub);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 26px;
+      max-width: 1180px;
+      margin: 0 auto 66px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tabs a {
+      display: block;
+      padding: 15px 0;
+      border-right: 0;
+      color: #555555;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.4;
+      text-align: left;
+      text-decoration: none;
+    }
+
+    .tabs a:hover {
+      background: transparent;
+      color: var(--accent-dark);
+    }
+
+    .tabs a:last-child {
+      border-right: 0;
+    }
+
+    .section-label {
+      max-width: 1180px;
+      margin: 96px auto 14px;
+      padding-top: 34px;
+      border-top: 1px solid var(--line);
+      color: var(--accent-dark);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .section-label::after {
+      content: none;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(18px, 3vw, 32px);
+      max-width: 1180px;
+      margin: 34px auto 54px;
+    }
+
+    .photo-grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .photo-grid figure {
+      margin: 0;
+      max-width: none;
+    }
+
+    .photo-grid.portrait img {
+      aspect-ratio: 3 / 4;
+    }
+
+    .management-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+      max-width: 1180px;
+      margin: 26px auto 42px;
+    }
+
+    .management-card {
+      padding: 18px 0;
+      border-top: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+    }
+
+    .management-card b {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--title);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .management-card span {
+      display: block;
+      color: var(--sub);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .swipe-gallery {
+      max-width: 1180px;
+      margin: 48px auto 68px;
+      padding-top: 26px;
+      border-top: 1px solid var(--line);
+    }
+
+    .swipe-title {
+      max-width: 820px;
+      margin: 0 auto 20px;
+      color: var(--title);
+      font-family: "Noto Serif KR", "Nanum Myeongjo", Georgia, serif;
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    .swipe-title::before {
+      content: none;
+    }
+
+    .swipe-track {
+      display: flex;
+      align-items: stretch;
+      gap: 18px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      padding: 0 2px 14px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .swipe-card {
+      flex: 0 0 min(72%, 560px);
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      scroll-snap-align: center;
+    }
+
+    .swipe-card img {
+      height: clamp(360px, 50vw, 520px);
+      object-fit: contain;
+      background: #fff;
+    }
+
+    .swipe-card.portrait img {
+      object-fit: contain;
+    }
+
+    .swipe-card.contain img {
+      object-fit: contain;
+      background: #fff;
+    }
+
+    .swipe-card figcaption {
+      flex: 1;
+      min-height: 68px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    .swipe-hint {
+      max-width: 900px;
+      margin: 0 auto;
+      color: var(--sub);
+      font-size: 13px;
+    }
+
+    .wide-image img {
+      max-height: 680px;
+      object-fit: cover;
+    }
+
+    @media (max-width: 820px) {
+      main {
+        width: min(100% - 8px, 1180px);
+        padding-top: 8px;
+      }
+
+      article {
+        padding: 18px 12px 40px;
+      }
+
+      header {
+        margin-bottom: 24px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+
+      .hero-grid,
+      .photo-grid,
+      .photo-grid.three,
+      .management-grid,
+      .project-meta,
+      .tabs {
+        grid-template-columns: 1fr;
+      }
+
+      .tabs {
+        gap: 0;
+      }
+
+      .tabs a {
+        text-align: left;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .section-label {
+        margin-top: 64px;
+        padding-top: 22px;
+      }
+
+      .swipe-card {
+        flex-basis: 88%;
+      }
+
+      .swipe-card img {
+        height: clamp(360px, 70vh, 520px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <article>
+      <header>
+        <p class="eyebrow">세종인테리어 시공 사례</p>
+        <h1>부평 동아아파트 2단지 30평대 인테리어</h1>
+        <p class="lead">오래 머물수록 편안한 온기가 느껴지는 구축 아파트 리모델링</p>
+      </header>
+
+      <div class="hero-grid">
+        <figure>
+          <img src="새 폴더 (3)/IMG_9294.JPG" alt="부평 동아아파트 2단지 거실과 주방 완성 사진">
+          <figcaption>거실 메인 - 밝은 우드톤 바닥과 눈이 편안한 조명으로 정리한 중심 공간</figcaption>
+        </figure>
+        <figure>
+          <img src="새 폴더 (3)/IMG_9347.JPG" alt="부평 동아아파트 2단지 한샘 주방 완성 사진">
+          <figcaption>주방 메인 - 한샘 주방과 현장 마감을 자연스럽게 연결한 공간</figcaption>
+        </figure>
+      </div>
+
+      <p>안녕하세요. 세종인테리어입니다. 오늘 소개해드릴 곳은 부평 동아아파트 2단지 30평대 현장입니다. 오래된 구축 아파트였지만, 무리하게 화려한 장식을 더하기보다 앞으로 오래 편안하게 지낼 수 있는 집을 만드는 데 초점을 맞췄습니다.</p>
+      <p>전체 분위기는 밝은 우드와 크림톤을 중심으로 잡았습니다. 현관에서 거실, 주방, 방으로 이어질 때 색감이 끊기지 않도록 방문과 중문, 바닥, 주방 하부장의 톤을 맞췄고, 조명은 눈부심보다 편안함을 우선했습니다.</p>
+
+      <div class="project-meta">
+        <div class="meta-item"><b>현장</b><span>부평 동아아파트 2단지 30평대</span></div>
+        <div class="meta-item"><b>방향</b><span>따뜻한 우드톤과 밝은 기본 마감</span></div>
+        <div class="meta-item"><b>공간</b><span>거실, 주방, 현관, 방, 욕실, 베란다</span></div>
+        <div class="meta-item"><b>주방</b><span>한샘 주방 설치와 현장 마감 조율</span></div>
+        <div class="meta-item"><b>관리</b><span>공정, 비용, 자재 선택 기록</span></div>
+      </div>
+
+      <nav class="tabs" aria-label="본문 목차">
+        <a href="#concept">인테리어 컨셉</a>
+        <a href="#process">공정 흐름</a>
+        <a href="#living">거실·현관</a>
+        <a href="#kitchen">주방·다이닝</a>
+        <a href="#bath">욕실·설비</a>
+        <a href="#rooms">방·베란다</a>
+      </nav>
+
+      <p class="section-label" id="concept">CONCEPT</p>
+      <h2>따뜻하지만 과하지 않게, 밝지만 차갑지 않게</h2>
+      <p>이번 현장은 은퇴 후의 일상을 생각하며 진행한 집입니다. 집 안에서 보내는 시간이 길어지는 만큼 화려한 디자인보다 매일의 편안함이 더 중요했습니다. 그래서 현관에는 앉아서 신발을 신을 수 있는 벤치를 두고, 거실에는 오래 켜두어도 부담스럽지 않은 조명을 계획했습니다.</p>
+      <p>30평대 구축 아파트는 공간마다 마감이 따로 놀면 오히려 좁고 복잡해 보일 수 있습니다. 이번 집은 현관 중문, 실내 방문, 바닥, 주방 하부장의 우드톤을 맞추고 벽과 천장은 밝은 크림톤으로 정리해 전체가 하나의 흐름으로 보이도록 했습니다.</p>
+
+      <div class="intro-panel">
+        <p><strong>전체 톤</strong> 밝은 우드, 크림톤 벽면, 차분한 뉴트럴 계열의 욕실 마감</p>
+        <p><strong>생활감</strong> 현관 벤치, 편안한 조명, 관리하기 쉬운 마감재 중심</p>
+        <p><strong>공사 방향</strong> 보이는 곳은 부드럽게, 보이지 않는 설비는 꼼꼼하게 정리</p>
+      </div>
+
+      <section class="swipe-gallery" aria-label="설계와 3D 계획 자료">
+        <p class="swipe-title">설계와 3D 계획 자료</p>
+        <div class="swipe-track">
+          <figure class="swipe-card contain">
+            <img src="새 폴더 (2)/IMG_8988.PNG" alt="현관 벤치와 수납 계획 도면">
+            <figcaption>현관 벤치와 수납 치수를 확인한 계획 자료</figcaption>
+          </figure>
+          <figure class="swipe-card contain">
+            <img src="새 폴더 (2)/IMG_8989.JPG" alt="주방 3D 설계 이미지">
+            <figcaption>한샘 주방 설치 전 톤과 동선을 확인한 3D 계획 이미지</figcaption>
+          </figure>
+          <figure class="swipe-card contain">
+            <img src="새 폴더 (2)/IMG_8990.JPG" alt="식탁 공간 3D 설계 이미지">
+            <figcaption>식탁 자리와 오픈 선반 구성을 함께 검토한 설계 이미지</figcaption>
+          </figure>
+          <figure class="swipe-card contain">
+            <img src="새 폴더/JXYB7491.JPG" alt="한샘 주방 3D 설계도">
+            <figcaption>상부장, 후드, 조리대 위치를 확인한 주방 3D 설계도</figcaption>
+          </figure>
+          <figure class="swipe-card contain">
+            <img src="새 폴더 (2)/QMNX1119.JPG" alt="주방과 식탁 공간 3D 설계도">
+            <figcaption>주방과 다이닝이 함께 보이는 전체 3D 계획 이미지</figcaption>
+          </figure>
+        </div>
+        <p class="swipe-hint">좌우로 넘기면 설계 도면과 3D 계획 이미지를 확인할 수 있습니다.</p>
+      </section>
+
+      <p class="section-label" id="process">PROCESS</p>
+      <h2>철거부터 설비, 마감까지 차근차근</h2>
+      <p>구축 아파트 리모델링은 완성된 모습만큼 공정의 흐름도 중요합니다. 다만 철거 사진은 말 그대로 기존 마감을 걷어내는 과정이기 때문에, 과하게 의미를 붙이기보다 공사 전후의 변화가 보이도록 한곳에 모아두었습니다.</p>
+      <p>이번 현장은 철거 이후 설비와 배관, 전기와 조명, 목공과 중문, 타일과 욕실집기, 도배와 장판, 한샘 주방 설치 순서로 진행했습니다. 실제 생활 만족도와 연결되는 설명은 설비와 마감 공정부터 조금 더 자세히 풀어가겠습니다.</p>
+
+      <section class="swipe-gallery" aria-label="철거 과정 사진">
+        <p class="swipe-title">철거 과정 사진 모음</p>
+        <div class="swipe-track">
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_8467.JPG" alt="철거 전 내부 상태"><figcaption>공사 전 기존 내부 모습입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_8468.JPG" alt="철거 전 방 내부"><figcaption>기존 방 마감과 창가 주변 모습입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_8471.JPG" alt="기존 주방 철거 전"><figcaption>철거 전 기존 주방 모습입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_8478.JPG" alt="철거 전 거실"><figcaption>공사 전 거실 모습입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_8348.JPG" alt="욕실 철거 전 상태"><figcaption>철거 전 욕실 상태입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_8870.JPG" alt="욕실 철거 과정"><figcaption>욕실 철거가 진행되는 과정입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_8466.JPG" alt="기존 현관"><figcaption>공사 전 현관 모습입니다.</figcaption></figure>
+        </div>
+        <p class="swipe-hint">기존 상태와 철거 과정 사진은 이 구간에만 모아두었습니다.</p>
+      </section>
+
+      <section class="swipe-gallery" aria-label="설비와 배관 공정 사진">
+        <p class="swipe-title">설비와 배관 정리</p>
+        <div class="swipe-track">
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_8661.JPG" alt="기존 배관 라인 확인"><figcaption>기존 배관 라인을 확인하고 교체 범위를 점검했습니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_8662.JPG" alt="바닥 배관 위치 확인"><figcaption>바닥을 열고 물길과 배관 위치를 점검했습니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_8663.JPG" alt="설비 작업 현장"><figcaption>마감 전 수도 배관과 바닥을 정리하는 과정입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더/IMG_9378.JPG" alt="욕실 배관 설비"><figcaption>수도관과 배관 라인을 새로 정리하며 욕실 바탕을 만들었습니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더/IMG_9381.JPG" alt="욕실 배관 교체"><figcaption>오래된 배관 라인을 정리하며 사용 중 불안 요소를 줄였습니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더/IMG_9384.JPG" alt="욕실 벽체 배관 공정"><figcaption>벽체와 배관 연결부까지 마감 전에 확인했습니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/TOYJ8355.JPG" alt="세탁실 바닥 설비 확인"><figcaption>세탁실 바닥은 급수와 배수 위치를 표시해 작업 기준을 잡았습니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/VRFH3005.JPG" alt="주방 하부 배관 확인"><figcaption>싱크대 하부 배관도 설치 전후 사용성을 생각해 점검했습니다.</figcaption></figure>
+        </div>
+        <p class="swipe-hint">보이지 않는 설비 공정은 완성 후 안심감을 만드는 중요한 단계입니다.</p>
+      </section>
+
+      <section class="swipe-gallery" aria-label="전기 조명 마감 공정 사진">
+        <p class="swipe-title">조명과 마감 공정</p>
+        <div class="swipe-track">
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9322.JPG" alt="거실 천장 엣지등"><figcaption>거실 천장은 평탄화 후 엣지등으로 깔끔하게 정리했습니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9303.JPG" alt="거실 조명 라인"><figcaption>공간 전체에 빛이 고르게 퍼지도록 조명 라인을 잡았습니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9296.JPG" alt="거실 바닥 마감"><figcaption>밝은 우드톤 바닥으로 집 전체의 온기를 잡았습니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9301.JPG" alt="방 도배 장판 완성"><figcaption>방은 가구가 들어오기 좋은 밝은 바탕으로 정리했습니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (3)/IMG_9346.JPG" alt="베란다 마감"><figcaption>베란다는 밝고 관리 쉬운 마감으로 정리했습니다.</figcaption></figure>
+        </div>
+      </section>
+
+      <p class="section-label" id="living">LIVING & ENTRANCE</p>
+      <h2>집의 첫인상과 중심이 되는 거실, 현관</h2>
+      <p>거실은 밝고 넓게 보이되 차갑지 않게 완성하는 것이 목표였습니다. 천장은 평탄하게 정리하고 엣지등과 매입등을 사용해 빛이 한쪽으로 몰리지 않도록 했습니다. 밝은 바닥과 크림톤 벽면이 만나 은은하고 편안한 분위기가 만들어졌습니다.</p>
+      <p>현관은 매일 가장 자주 사용하는 공간입니다. 앉아서 신발을 신을 수 있는 벤치를 두고, 중문과 신발장, 실내 방문의 우드톤을 맞춰 집에 들어오는 순간부터 부드러운 인상이 느껴지도록 정리했습니다.</p>
+
+      <div class="photo-grid">
+        <figure>
+          <img src="새 폴더 (3)/IMG_9322.JPG" alt="부평 동아아파트 거실 조명 완성 사진">
+          <figcaption>천장 평탄화와 엣지등으로 정리한 거실</figcaption>
+        </figure>
+        <figure>
+          <img src="새 폴더 (3)/IMG_9306.JPG" alt="거실에서 주방으로 이어지는 동선">
+          <figcaption>거실에서 주방까지 밝게 이어지는 동선</figcaption>
+        </figure>
+      </div>
+
+      <section class="swipe-gallery" aria-label="거실 완성 사진">
+        <p class="swipe-title">거실 완성 사진</p>
+        <div class="swipe-track">
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9290.JPG" alt="거실 완성 사진 1"><figcaption>밝은 벽과 우드 바닥으로 정리한 거실입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9292.JPG" alt="거실 완성 사진 2"><figcaption>전체 조도가 고르게 퍼져 오래 머물러도 편안합니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9293.JPG" alt="거실과 주방 완성 사진"><figcaption>거실과 주방이 하나의 톤으로 이어집니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9311.JPG" alt="거실 완성 사진 3"><figcaption>가구가 들어오기 전에도 공간의 바탕이 단정하게 보입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9335.JPG" alt="거실 완성 디테일"><figcaption>과하지 않은 마감으로 오래 보아도 편안한 거실입니다.</figcaption></figure>
+        </div>
+      </section>
+
+      <section class="swipe-gallery" aria-label="현관 중문 벤치 사진">
+        <p class="swipe-title">현관과 중문</p>
+        <div class="swipe-track">
+          <figure class="swipe-card portrait"><img src="새 폴더 (3)/IMG_9330.JPG" alt="현관 벤치와 중문 완성 사진"><figcaption>현관 벤치는 외출 전후의 동작을 편하게 만들어줍니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (3)/IMG_9331.JPG" alt="현관 벤치와 패턴 타일"><figcaption>패턴 타일과 벤치가 함께 작은 현관의 포인트가 됩니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (3)/IMG_9326.JPG" alt="거실에서 본 중문"><figcaption>거실에서 보이는 중문도 전체 분위기와 맞췄습니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (3)/IMG_9327.JPG" alt="우드톤 중문 디테일"><figcaption>우드톤 중문으로 입구의 첫인상을 부드럽게 만들었습니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (3)/IMG_9309.JPG" alt="현관에서 거실 방향"><figcaption>현관에서 거실로 이어지는 시야가 답답하지 않습니다.</figcaption></figure>
+        </div>
+      </section>
+
+      <p class="section-label" id="kitchen">KITCHEN & DINING</p>
+      <h2>한샘 주방과 따뜻한 식탁 공간</h2>
+      <p>주방은 고객님이 원하신 한샘 주방을 기준으로 진행했습니다. 브랜드 주방이 들어온다고 해서 자동으로 완성도가 생기는 것은 아니기 때문에, 세종인테리어는 벽면과 조명, 바닥, 식탁 자리, 선반 라인이 자연스럽게 이어지도록 현장 마감을 함께 맞췄습니다.</p>
+      <p>화이트 상부장은 주방을 밝게 보이게 하고, 우드톤 하부장은 거실과 이어지는 안정감을 만듭니다. 식탁 주변에는 오픈 선반과 펜던트 조명을 더해 조리 공간을 넘어 식사와 대화가 머무는 공간처럼 보이게 했습니다.</p>
+
+      <div class="photo-grid">
+        <figure>
+          <img src="새 폴더 (3)/IMG_9347.JPG" alt="한샘 주방 완성 사진">
+          <figcaption>화이트 상부장과 우드 하부장을 조합한 한샘 주방</figcaption>
+        </figure>
+        <figure>
+          <img src="새 폴더 (3)/IMG_9338.JPG" alt="식탁 공간과 오픈 선반">
+          <figcaption>오픈 선반과 펜던트 조명으로 따뜻하게 정리한 식탁 공간</figcaption>
+        </figure>
+      </div>
+
+      <section class="swipe-gallery" aria-label="한샘 주방 상세 사진">
+        <p class="swipe-title">주방 디테일</p>
+        <div class="swipe-track">
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_9005.PNG" alt="식탁 공간 완성 사진"><figcaption>식탁과 오픈 선반이 함께 보이는 실제 다이닝 공간 모습입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_9009.JPG" alt="주방과 거실 연결 동선"><figcaption>주방에서 거실까지 시선이 길게 이어지는 동선입니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (2)/IMG_9008.JPG" alt="주방 하부장 마감 확인"><figcaption>하부장과 상판 마감선을 현장에서 확인했습니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (2)/IMG_9011.JPG" alt="화이트 상부장 우드 하부장"><figcaption>화이트 상부장과 우드 하부장의 조합입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (2)/IMG_9012.JPG" alt="한샘 주방 전체 완성"><figcaption>조리대와 수납, 창가까지 밝게 정리된 한샘 주방입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9348.JPG" alt="한샘 주방 완성 상세"><figcaption>거실에서 보아도 정돈감이 살아나는 주방입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9341.JPG" alt="식탁 공간 완성"><figcaption>식탁 공간까지 따뜻한 분위기로 이어집니다.</figcaption></figure>
+        </div>
+      </section>
+
+      <p class="section-label" id="bath">BATHROOM & UTILITY</p>
+      <h2>욕실은 차분하게, 속공정은 꼼꼼하게</h2>
+      <p>욕실은 집 전체 톤과 맞춰 차분한 뉴트럴 그레이 계열로 정리했습니다. 벽과 바닥의 색 차이를 크게 두지 않아 공간이 좁아 보이지 않고, 슬라이드 거울장과 간접 조명으로 실용성을 높였습니다.</p>
+      <p>구축 욕실은 예쁜 타일보다 바탕 공정이 먼저입니다. 배관과 바닥 상태를 확인하고, 방수와 타일 공정으로 이어지는 과정을 기록해두어 완성 후에도 안심할 수 있는 욕실을 목표로 했습니다.</p>
+
+      <section class="swipe-gallery" aria-label="욕실 공정과 완성 사진">
+        <p class="swipe-title">욕실 공정과 완성</p>
+        <div class="swipe-track">
+          <figure class="swipe-card portrait"><img src="새 폴더/IMG_9367.JPG" alt="욕실 철거 후 바탕"><figcaption>기존 마감을 걷어낸 뒤 드러난 욕실 바탕 상태입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더/IMG_9371.JPG" alt="욕실 방수 전 바탕"><figcaption>방수 전 바탕을 정리해 타일 마감의 기본을 만들었습니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더/IMG_9374.JPG" alt="욕실 바닥 방수 공정"><figcaption>바닥 공정은 물 사용이 많은 욕실의 기본이라 더 꼼꼼히 진행했습니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더/IMG_9379.JPG" alt="욕실 타일 공정"><figcaption>타일 공정에서는 바닥과 벽의 연결부를 꼼꼼히 봤습니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (3)/IMG_9318.JPG" alt="욕실 완성 전체"><figcaption>차분한 뉴트럴 톤으로 완성한 욕실 전체 모습입니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (3)/IMG_9324.JPG" alt="욕실 거울장과 간접 조명"><figcaption>거울장 하부 조명으로 밤에도 부담스럽지 않습니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (3)/IMG_9325.JPG" alt="욕조와 타일 마감"><figcaption>욕조와 타일 마감은 오래 보아도 질리지 않는 톤으로 잡았습니다.</figcaption></figure>
+        </div>
+      </section>
+
+      <div class="photo-grid">
+        <figure>
+          <img src="새 폴더 (3)/IMG_9319.JPG" alt="욕실 세면대와 양변기 욕조">
+          <figcaption>세면대와 양변기, 거울장 수납을 한 컷에서 볼 수 있는 욕실 구성입니다. 필요한 집기를 단정하게 배치하고, 거울장 하부 조명으로 사용감까지 편하게 잡았습니다.</figcaption>
+        </figure>
+      </div>
+
+      <p class="section-label" id="rooms">ROOMS & BALCONY</p>
+      <h2>방과 베란다는 가구가 들어오기 좋은 바탕으로</h2>
+      <p>방들은 전체 톤을 크게 흔들지 않고 밝은 바닥과 크림톤 벽으로 정리했습니다. 가구가 들어오기 전에는 더 넓고 깨끗한 느낌이 나고, 이후 어떤 가구를 배치해도 무난하게 어울리는 바탕이 됩니다.</p>
+      <p>베란다와 세탁실은 꾸미기보다 쓰기 편한 쪽이 중요합니다. 밝고 관리하기 쉬운 마감으로 정리해 세탁, 수납, 청소 동선이 부담스럽지 않도록 했습니다.</p>
+
+      <div class="photo-grid">
+        <figure>
+          <img src="새 폴더 (3)/IMG_9301.JPG" alt="방 완성 사진">
+          <figcaption>가구 배치 전 밝고 깨끗하게 정리한 방</figcaption>
+        </figure>
+        <figure>
+          <img src="새 폴더 (3)/IMG_9304.JPG" alt="방 창가 마감">
+          <figcaption>창가와 조명까지 단정하게 마감한 방</figcaption>
+        </figure>
+        <figure>
+          <img src="새 폴더 (3)/IMG_9346.JPG" alt="베란다 완성 사진">
+          <figcaption>밝고 관리하기 쉬운 베란다</figcaption>
+        </figure>
+        <figure>
+          <img src="새 폴더 (3)/IMG_9353.JPG" alt="베란다 안쪽 완성 사진">
+          <figcaption>세탁과 수납을 고려한 베란다 안쪽</figcaption>
+        </figure>
+      </div>
+
+      <section class="swipe-gallery" aria-label="방과 베란다 상세 사진">
+        <p class="swipe-title">방, 베란다, 세탁실</p>
+        <div class="swipe-track">
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9291.JPG" alt="입구방 완성"><figcaption>서재나 손님방으로 쓰기 좋은 밝은 방입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9302.JPG" alt="방 조명과 창가 마감"><figcaption>창가와 천장 조명을 단정하게 정리한 방입니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9314.JPG" alt="안방 완성 사진"><figcaption>안방도 밝은 바탕과 편안한 조도로 맞췄습니다.</figcaption></figure>
+          <figure class="swipe-card"><img src="새 폴더 (3)/IMG_9321.JPG" alt="거실 옆 방 완성"><figcaption>가구가 들어오기 전에도 단정한 바탕이 보입니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (3)/IMG_9363.JPG" alt="우드톤 방문"><figcaption>방문과 문틀 톤도 전체 분위기와 맞췄습니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (3)/IMG_9298.JPG" alt="베란다 완성"><figcaption>창가와 바닥을 밝게 정리한 베란다입니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더/IMG_9365.JPG" alt="세탁실 완성 사진"><figcaption>세탁실은 물 사용과 청소가 편하도록 밝게 정리했습니다.</figcaption></figure>
+        </div>
+      </section>
+
+      <p class="section-label">가구 배치 후</p>
+      <h2>가구와 소품이 들어오며 더 자연스러워진 집</h2>
+      <p>인테리어는 마감 공사가 끝났을 때 한 번 완성되고, 실제 가구와 소품이 들어오면서 다시 한 번 집다운 분위기가 만들어집니다. 아래에는 입주 후 식탁과 소품이 들어온 실제 모습을 중심으로 다시 골라 담았습니다.</p>
+
+      <section class="swipe-gallery" aria-label="가구와 소품이 들어온 사진">
+        <p class="swipe-title">실제 입주 후 사진</p>
+        <div class="swipe-track">
+          <figure class="swipe-card portrait"><img src="새 폴더 (2)/IMG_9004.JPG" alt="입주 후 식탁 공간과 주방 선반"><figcaption>식탁과 의자가 들어오기 전후의 생활감이 보이는 실제 입주 후 사진입니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (2)/IMG_9005.PNG" alt="입주 후 식탁과 오픈 선반"><figcaption>오픈 선반에 소품이 놓이고 식탁이 자리 잡으면서 다이닝 공간의 온기가 살아났습니다.</figcaption></figure>
+          <figure class="swipe-card portrait"><img src="새 폴더 (2)/IMG_9060.JPG" alt="입주 후 식탁 공간 실제 사진"><figcaption>실제 생활이 시작된 뒤, 조명과 식탁이 함께 만드는 따뜻한 분위기입니다.</figcaption></figure>
+        </div>
+      </section>
+
+      <p class="section-label">PROJECT NOTE</p>
+      <h2>일정, 금액, 자재 선택은 AI 기록으로 관리했습니다</h2>
+      <p>인테리어는 현장에서 결정해야 할 일이 계속 생깁니다. 철거가 끝난 뒤 추가로 보이는 부분, 자재 발주 일정, 한샘 주방 설치 일정, 욕실 공정, 조명과 마감 순서까지 한 번에 움직이기 때문에 말로만 주고받으면 놓치는 항목이 생기기 쉽습니다.</p>
+      <p>이번 현장은 세종인테리어가 진행한 공사 흐름을 바탕으로, 일정과 금액, 자재 선택 내용을 별도 페이지에 정리해 두었습니다. AI를 활용해 항목을 빠르게 분류하고, 공정별로 필요한 내용을 다시 확인할 수 있게 만들어 두니 전체 진행 상황을 훨씬 편하게 볼 수 있었습니다.</p>
+
+      <div class="photo-grid">
+        <figure>
+          <img src="새 폴더 (2)/ai-budget-management-screenshot.png" alt="일정과 금액 관리 페이지 스크린샷">
+          <figcaption>공정 일정과 금액 흐름을 한눈에 볼 수 있도록 정리한 관리 화면입니다.</figcaption>
+        </figure>
+        <figure>
+          <img src="새 폴더 (2)/material-selection-management-screenshot.png" alt="자재 선택 기록 페이지 스크린샷">
+          <figcaption>바닥, 타일, 조명, 주방 등 자재 선택 기준을 항목별로 남겨 공사 중 기준이 흔들리지 않도록 했습니다.</figcaption>
+        </figure>
+      </div>
+
+      <div class="management-grid" aria-label="AI 관리 항목">
+        <div class="management-card">
+          <b>1. 일정 흐름 정리</b>
+          <span>철거, 설비, 목공, 타일, 주방 설치, 도배와 장판처럼 순서가 중요한 공정을 한 화면에서 볼 수 있게 정리했습니다.</span>
+        </div>
+        <div class="management-card">
+          <b>2. 금액과 지급 내역 관리</b>
+          <span>공사비와 별도 구매 항목을 구분해 기록하고, 어느 시점에 어떤 비용이 발생하는지 확인하기 쉽게 관리했습니다.</span>
+        </div>
+        <div class="management-card">
+          <b>3. 자재 선택 기준 보관</b>
+          <span>현장에서 다시 확인해야 하는 마감재, 조명, 주방 구성, 욕실 자재를 항목별로 남겨 의사결정 기준을 유지했습니다.</span>
+        </div>
+        <div class="management-card">
+          <b>4. 변경 사항 추적</b>
+          <span>구축 현장은 공사 중 조정이 생길 수 있어, 결정된 내용과 다시 확인할 내용을 구분해 놓는 방식으로 관리했습니다.</span>
+        </div>
+        <div class="management-card">
+          <b>5. 가족과 공유하기 쉬운 자료</b>
+          <span>전문 용어만 나열하지 않고, 가족이 함께 봐도 이해할 수 있도록 일정과 선택 항목을 보기 쉬운 형태로 정리했습니다.</span>
+        </div>
+        <div class="management-card">
+          <b>6. 공사 후 기록 보관</b>
+          <span>입주 후에도 어떤 기준으로 자재를 골랐고 어떤 흐름으로 공사가 진행됐는지 다시 볼 수 있는 기록으로 남겼습니다.</span>
+        </div>
+      </div>
+
+      <div class="note-panel">
+        <p><strong>AI 활용의 목적</strong> 공사를 대신 판단하게 하는 것이 아니라, 결정한 내용을 놓치지 않도록 정리하고 다시 확인하기 쉽게 만드는 데 활용했습니다.</p>
+        <p><strong>세종인테리어가 중요하게 본 부분</strong> 보이는 곳은 부드럽고 따뜻하게, 보이지 않는 설비는 오래 안심하고 사용할 수 있도록 꼼꼼하게 정리하는 것이었습니다.</p>
+        <p><strong>이 현장의 분위기</strong> 새집처럼 깨끗하지만 낯설지 않고, 매일 생활하는 분들이 편안하게 머물 수 있는 집을 목표로 했습니다.</p>
+      </div>
+
+      <h2>마치며</h2>
+      <p>좋은 인테리어는 유행하는 디자인을 그대로 가져오는 일이 아니라, 그 집에 사는 분들의 하루를 조금 더 편하게 만드는 과정이라고 생각합니다. 부평 동아아파트 2단지 30평대 현장은 은퇴 부부의 생활을 기준으로 따뜻한 톤, 편안한 조명, 현관 벤치, 한샘 주방, 배관 정리까지 함께 고려한 시공 사례입니다.</p>
+      <p>앞으로 이 집에서 두 분의 일상이 편안하게 이어지기를 바라는 마음으로, 세종인테리어가 한 공정씩 차분히 완성한 현장이었습니다.</p>
+    </article>
+  </main>
+</body>
+</html>

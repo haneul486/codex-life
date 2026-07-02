@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>부평 동아아파트 2단지 인테리어 쇼츠 제작</title>
+  <style>
+    :root {
+      --bg: #111312;
+      --panel: #1b1e1c;
+      --text: #f5f5f2;
+      --sub: #b9beb9;
+      --accent: #c9a46a;
+      --line: #333833;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background: radial-gradient(circle at top left, #30362f, var(--bg) 44%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 32px 0 48px;
+      display: grid;
+      grid-template-columns: minmax(280px, 420px) 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .phone {
+      position: sticky;
+      top: 24px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 28px;
+      background: #070807;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .42);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      border-radius: 20px;
+      background: #222;
+    }
+
+    .panel {
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 18px;
+      background: rgba(27, 30, 28, .9);
+      backdrop-filter: blur(14px);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 5vw, 44px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 16px;
+      color: var(--sub);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0;
+    }
+
+    button, a.download {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      color: #12130f;
+      background: var(--accent);
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    button.secondary {
+      color: var(--text);
+      background: #2e332f;
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: .55;
+    }
+
+    .status {
+      min-height: 28px;
+      padding: 12px 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .timeline {
+      margin-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .scene {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 14px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .scene strong {
+      color: var(--accent);
+      font-size: 14px;
+    }
+
+    .scene span {
+      display: block;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .scene em {
+      display: block;
+      margin-top: 4px;
+      color: var(--sub);
+      font-size: 13px;
+      font-style: normal;
+    }
+
+    @media (max-width: 860px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      .phone {
+        position: static;
+        max-width: 420px;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="phone" aria-label="쇼츠 미리보기">
+      <canvas id="shortsCanvas" width="1080" height="1920"></canvas>
+    </section>
+
+    <section class="panel">
+      <h1>부평 동아아파트 2단지 30평대 인테리어 쇼츠</h1>
+      <p>45초 내외 세로형 쇼츠입니다. 완성컷으로 시선을 잡고, 설계·철거·설비를 짧게 보여준 뒤 거실, 현관, 주방, 욕실, 방, 베란다, 입주 후 분위기로 이어지도록 구성했습니다.</p>
+      <p>먼저 미리보기를 눌러 흐름을 확인한 뒤, WebM 내보내기를 누르면 브라우저가 영상을 녹화해 다운로드 링크를 만듭니다.</p>
+
+      <div class="controls">
+        <button type="button" id="playBtn">미리보기</button>
+        <button type="button" id="exportBtn">WebM 내보내기</button>
+        <button type="button" id="stopBtn" class="secondary">정지</button>
+      </div>
+
+      <div class="status" id="status">준비 중...</div>
+      <div id="downloadArea"></div>
+
+      <div class="timeline" id="timeline"></div>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("shortsCanvas");
+    const ctx = canvas.getContext("2d");
+    const statusEl = document.getElementById("status");
+    const timelineEl = document.getElementById("timeline");
+    const downloadArea = document.getElementById("downloadArea");
+    const playBtn = document.getElementById("playBtn");
+    const exportBtn = document.getElementById("exportBtn");
+    const stopBtn = document.getElementById("stopBtn");
+
+    const W = canvas.width;
+    const H = canvas.height;
+    const FPS = 30;
+
+    const scenes = [
+      {
+        title: "30평 구축 아파트의 변화",
+        sub: "부평 동아아파트 2단지",
+        tag: "SEJONG INTERIOR",
+        src: "새 폴더 (3)/IMG_9294.JPG",
+        duration: 3.2
+      },
+      {
+        title: "완성된 주방의 첫인상",
+        sub: "한샘 주방과 따뜻한 다이닝",
+        tag: "KITCHEN",
+        src: "새 폴더 (3)/IMG_9347.JPG",
+        duration: 3.1
+      },
+      {
+        title: "도면과 3D로 먼저 맞춘 방향",
+        sub: "현관 벤치, 주방 동선, 수납 계획",
+        tag: "PLANNING",
+        src: "새 폴더 (2)/QMNX1119.JPG",
+        duration: 3.4,
+        contain: true
+      },
+      {
+        title: "오래된 집은 철거가 시작입니다",
+        sub: "벽, 바닥, 배관 위치를 먼저 확인",
+        tag: "BEFORE",
+        src: "새 폴더 (2)/IMG_8467.JPG",
+        duration: 3.2
+      },
+      {
+        title: "보이지 않는 배관까지 정리",
+        sub: "수도관과 가지관 교체 범위 확인",
+        tag: "PLUMBING",
+        src: "새 폴더 (2)/IMG_8661.JPG",
+        duration: 3.3
+      },
+      {
+        title: "욕실 바탕 공정도 꼼꼼하게",
+        sub: "방수와 타일 마감 전 단계",
+        tag: "BATH PROCESS",
+        src: "새 폴더/IMG_9374.JPG",
+        duration: 3.2
+      },
+      {
+        title: "눈이 편안한 거실 조명",
+        sub: "천장 평탄화와 엣지등으로 단정하게",
+        tag: "LIVING",
+        src: "새 폴더 (3)/IMG_9322.JPG",
+        duration: 4.0
+      },
+      {
+        title: "현관에는 앉을 수 있는 벤치",
+        sub: "매일의 동작을 편하게 만든 첫 공간",
+        tag: "ENTRANCE",
+        src: "새 폴더 (3)/IMG_9330.JPG",
+        duration: 3.4
+      },
+      {
+        title: "화이트와 우드가 만난 한샘 주방",
+        sub: "밝지만 차갑지 않은 조리 공간",
+        tag: "HANSSEM",
+        src: "새 폴더 (3)/IMG_9348.JPG",
+        duration: 4.0
+      },
+      {
+        title: "차분한 톤의 욕실 완성",
+        sub: "관리하기 쉽고 오래 질리지 않는 마감",
+        tag: "BATHROOM",
+        src: "새 폴더 (3)/IMG_9318.JPG",
+        duration: 3.6
+      },
+      {
+        title: "방은 가구가 들어오기 좋은 바탕으로",
+        sub: "밝은 벽과 바닥, 편안한 조도",
+        tag: "ROOM",
+        src: "새 폴더 (3)/IMG_9314.JPG",
+        duration: 3.6
+      },
+      {
+        title: "베란다와 세탁실까지 밝게",
+        sub: "쓰기 편한 마감과 물 사용 동선",
+        tag: "BALCONY",
+        src: "새 폴더 (3)/IMG_9346.JPG",
+        duration: 3.3
+      },
+      {
+        title: "가구가 들어오며 더 따뜻해진 집",
+        sub: "은퇴 부부의 일상이 편안하게 머무는 공간",
+        tag: "AFTER LIVING",
+        src: "새 폴더 (2)/XGYY9399.PNG",
+        duration: 4.1
+      },
+      {
+        title: "부평 동아아파트 2단지",
+        sub: "세종인테리어 시공 사례",
+        tag: "SEJONG INTERIOR",
+        src: "새 폴더/HAFE7027.JPG",
+        duration: 3.2
+      }
+    ];
+
+    let assets = [];
+    let rafId = 0;
+    let playing = false;
+    const totalDuration = scenes.reduce((sum, scene) => sum + scene.duration, 0);
+
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error(src));
+        image.src = src;
+      });
+    }
+
+    function ease(t) {
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    }
+
+    function wrapText(text, maxWidth, font) {
+      ctx.font = font;
+      const words = text.split(" ");
+      const lines = [];
+      let line = "";
+      for (const word of words) {
+        const test = line ? line + " " + word : word;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = test;
+        }
+      }
+      if (line) lines.push(line);
+      return lines;
+    }
+
+    function drawCover(image, progress, contain = false) {
+      ctx.fillStyle = "#111312";
+      ctx.fillRect(0, 0, W, H);
+
+      const imageRatio = image.width / image.height;
+      const canvasRatio = W / H;
+      let drawW;
+      let drawH;
+
+      if (contain) {
+        const scale = Math.min(W / image.width, H / image.height) * 0.92;
+        drawW = image.width * scale;
+        drawH = image.height * scale;
+      } else if (imageRatio > canvasRatio) {
+        drawH = H;
+        drawW = H * imageRatio;
+      } else {
+        drawW = W;
+        drawH = W / imageRatio;
+      }
+
+      const zoom = contain ? 1 : 1.04 + progress * 0.055;
+      drawW *= zoom;
+      drawH *= zoom;
+
+      const panX = Math.sin(progress * Math.PI) * 26;
+      const panY = (progress - 0.5) * 42;
+      const x = (W - drawW) / 2 + panX;
+      const y = (H - drawH) / 2 + panY;
+      ctx.drawImage(image, x, y, drawW, drawH);
+
+      const topGradient = ctx.createLinearGradient(0, 0, 0, H * 0.42);
+      topGradient.addColorStop(0, "rgba(0, 0, 0, .58)");
+      topGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = topGradient;
+      ctx.fillRect(0, 0, W, H * 0.42);
+
+      const bottomGradient = ctx.createLinearGradient(0, H * 0.42, 0, H);
+      bottomGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+      bottomGradient.addColorStop(1, "rgba(0, 0, 0, .72)");
+      ctx.fillStyle = bottomGradient;
+      ctx.fillRect(0, H * 0.42, W, H * 0.58);
+    }
+
+    function drawText(scene, localProgress) {
+      const appear = Math.min(1, localProgress / 0.22);
+      const yShift = (1 - ease(appear)) * 38;
+      const left = 78;
+      const maxWidth = W - left * 2;
+
+      ctx.save();
+      ctx.globalAlpha = ease(appear);
+
+      ctx.fillStyle = "rgba(201, 164, 106, .94)";
+      roundRect(left, 130 + yShift, 290, 58, 29);
+      ctx.fill();
+
+      ctx.fillStyle = "#17140f";
+      ctx.font = "800 28px Pretendard, Noto Sans KR, Malgun Gothic, sans-serif";
+      ctx.textBaseline = "middle";
+      ctx.fillText(scene.tag, left + 28, 159 + yShift);
+
+      const titleFont = "900 76px Pretendard, Noto Sans KR, Malgun Gothic, sans-serif";
+      const titleLines = wrapText(scene.title, maxWidth, titleFont).slice(0, 3);
+      ctx.font = titleFont;
+      ctx.fillStyle = "#fffaf0";
+      ctx.textBaseline = "top";
+      let y = 1380 - titleLines.length * 44 + yShift;
+      for (const line of titleLines) {
+        ctx.fillText(line, left, y);
+        y += 92;
+      }
+
+      const subFont = "500 39px Pretendard, Noto Sans KR, Malgun Gothic, sans-serif";
+      const subLines = wrapText(scene.sub, maxWidth, subFont).slice(0, 2);
+      ctx.font = subFont;
+      ctx.fillStyle = "rgba(255, 255, 255, .86)";
+      y += 22;
+      for (const line of subLines) {
+        ctx.fillText(line, left, y);
+        y += 55;
+      }
+
+      ctx.restore();
+    }
+
+    function roundRect(x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + width, y, x + width, y + height, radius);
+      ctx.arcTo(x + width, y + height, x, y + height, radius);
+      ctx.arcTo(x, y + height, x, y, radius);
+      ctx.arcTo(x, y, x + width, y, radius);
+      ctx.closePath();
+    }
+
+    function getSceneAt(time) {
+      let cursor = 0;
+      for (let i = 0; i < scenes.length; i += 1) {
+        const scene = scenes[i];
+        if (time <= cursor + scene.duration || i === scenes.length - 1) {
+          return {
+            index: i,
+            scene,
+            localTime: time - cursor,
+            localProgress: Math.max(0, Math.min(1, (time - cursor) / scene.duration))
+          };
+        }
+        cursor += scene.duration;
+      }
+      return { index: scenes.length - 1, scene: scenes[scenes.length - 1], localTime: 0, localProgress: 1 };
+    }
+
+    function drawFrame(time) {
+      const { index, scene, localProgress } = getSceneAt(time);
+      const image = assets[index];
+      drawCover(image, ease(localProgress), scene.contain);
+      drawText(scene, localProgress);
+
+      ctx.fillStyle = "rgba(255, 255, 255, .72)";
+      ctx.fillRect(78, H - 96, (W - 156) * (time / totalDuration), 5);
+    }
+
+    function play() {
+      playing = true;
+      const started = performance.now();
+      function tick(now) {
+        if (!playing) return;
+        const elapsed = (now - started) / 1000;
+        drawFrame(Math.min(elapsed, totalDuration));
+        statusEl.textContent = `미리보기 재생 중 ${Math.min(elapsed, totalDuration).toFixed(1)}초 / ${totalDuration.toFixed(1)}초`;
+        if (elapsed < totalDuration) {
+          rafId = requestAnimationFrame(tick);
+        } else {
+          playing = false;
+          statusEl.textContent = "미리보기 완료";
+        }
+      }
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(tick);
+    }
+
+    async function exportVideo() {
+      if (!window.MediaRecorder) {
+        statusEl.textContent = "이 브라우저는 MediaRecorder를 지원하지 않습니다.";
+        return;
+      }
+
+      exportBtn.disabled = true;
+      playBtn.disabled = true;
+      downloadArea.innerHTML = "";
+
+      const mime = MediaRecorder.isTypeSupported("video/webm;codecs=vp9")
+        ? "video/webm;codecs=vp9"
+        : "video/webm";
+      const stream = canvas.captureStream(FPS);
+      const recorder = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 8_000_000 });
+      const chunks = [];
+
+      recorder.ondataavailable = event => {
+        if (event.data && event.data.size) chunks.push(event.data);
+      };
+
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: "video/webm" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "bupyeong-donga-2danji-sejong-shorts.webm";
+        link.className = "download";
+        link.textContent = "쇼츠 영상 다운로드";
+        downloadArea.appendChild(link);
+        statusEl.textContent = "영상 생성 완료. 다운로드 버튼을 눌러 저장하세요.";
+        exportBtn.disabled = false;
+        playBtn.disabled = false;
+      };
+
+      recorder.start();
+      const startTime = performance.now();
+      playing = true;
+
+      function recordTick(now) {
+        const elapsed = (now - startTime) / 1000;
+        drawFrame(Math.min(elapsed, totalDuration));
+        statusEl.textContent = `영상 생성 중 ${Math.min(elapsed, totalDuration).toFixed(1)}초 / ${totalDuration.toFixed(1)}초`;
+        if (elapsed < totalDuration) {
+          rafId = requestAnimationFrame(recordTick);
+        } else {
+          playing = false;
+          recorder.stop();
+        }
+      }
+
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(recordTick);
+    }
+
+    function stop() {
+      playing = false;
+      cancelAnimationFrame(rafId);
+      drawFrame(0);
+      statusEl.textContent = "정지됨";
+      exportBtn.disabled = false;
+      playBtn.disabled = false;
+    }
+
+    function renderTimeline() {
+      let cursor = 0;
+      timelineEl.innerHTML = scenes.map((scene, index) => {
+        const start = cursor;
+        cursor += scene.duration;
+        return `
+          <div class="scene">
+            <strong>${String(index + 1).padStart(2, "0")} / ${start.toFixed(1)}s</strong>
+            <div>
+              <span>${scene.title}</span>
+              <em>${scene.sub}</em>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function init() {
+      renderTimeline();
+      try {
+        statusEl.textContent = "이미지를 불러오는 중...";
+        assets = await Promise.all(scenes.map(scene => loadImage(scene.src)));
+        drawFrame(0);
+        statusEl.textContent = `준비 완료. 총 ${totalDuration.toFixed(1)}초 쇼츠입니다.`;
+      } catch (error) {
+        statusEl.textContent = `이미지를 불러오지 못했습니다: ${error.message}`;
+      }
+    }
+
+    playBtn.addEventListener("click", play);
+    exportBtn.addEventListener("click", exportVideo);
+    stopBtn.addEventListener("click", stop);
+    init();
+  </script>
+</body>
+</html>
