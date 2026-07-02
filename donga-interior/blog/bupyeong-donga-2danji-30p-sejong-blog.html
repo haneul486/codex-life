@@ -282,6 +282,27 @@
       aspect-ratio: 3 / 4;
     }
 
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(18px, 3vw, 30px);
+      max-width: 1180px;
+      margin: 36px auto 64px;
+    }
+
+    .video-grid figure {
+      margin: 0;
+      max-width: none;
+    }
+
+    .video-grid video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      background: #111;
+      object-fit: contain;
+    }
+
     .management-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -407,6 +428,7 @@
       .hero-grid,
       .photo-grid,
       .photo-grid.three,
+      .video-grid,
       .management-grid,
       .project-meta,
       .tabs {
@@ -470,6 +492,7 @@
       </div>
 
       <nav class="tabs" aria-label="본문 목차">
+        <a href="#shorts">숏츠 영상</a>
         <a href="#concept">인테리어 컨셉</a>
         <a href="#process">공정 흐름</a>
         <a href="#living">거실·현관</a>
@@ -477,6 +500,41 @@
         <a href="#bath">욕실·설비</a>
         <a href="#rooms">방·베란다</a>
       </nav>
+
+      <p class="section-label" id="shorts">SHORT FILM</p>
+      <h2>짧은 영상으로 보는 부평 동아아파트 2단지</h2>
+      <p>사진으로는 차분히 공정과 디테일을 보고, 영상으로는 공간의 분위기와 전환감을 빠르게 확인할 수 있도록 숏츠를 함께 담았습니다. 각 영상은 재생 버튼을 눌러 바로 확인할 수 있습니다.</p>
+
+      <div class="video-grid" aria-label="부평 동아아파트 2단지 인테리어 숏츠 영상">
+        <figure>
+          <video controls playsinline preload="metadata" poster="bupyeong-donga-2danji-sejong-shorts-poster.jpg">
+            <source src="bupyeong-donga-2danji-sejong-shorts.mp4" type="video/mp4">
+            브라우저가 영상을 지원하지 않습니다.
+          </video>
+          <figcaption>부평 동아아파트 2단지 전체 인테리어 숏츠</figcaption>
+        </figure>
+        <figure>
+          <video controls playsinline preload="metadata" poster="../shorts/sejong-built-apartment-interior-specialist-poster.jpg">
+            <source src="../shorts/sejong-built-apartment-interior-specialist-shorts.mp4" type="video/mp4">
+            브라우저가 영상을 지원하지 않습니다.
+          </video>
+          <figcaption>구축 아파트 인테리어 전문 세종인테리어 소개 영상</figcaption>
+        </figure>
+        <figure>
+          <video controls playsinline preload="metadata" poster="../shorts/sejong-entrance-bench-middle-door-poster.jpg">
+            <source src="../shorts/sejong-entrance-bench-middle-door-shorts.mp4" type="video/mp4">
+            브라우저가 영상을 지원하지 않습니다.
+          </video>
+          <figcaption>현관 벤치와 중문을 짧게 소개한 숏츠</figcaption>
+        </figure>
+        <figure>
+          <video controls playsinline preload="metadata">
+            <source src="../shorts/영상.mp4" type="video/mp4">
+            브라우저가 영상을 지원하지 않습니다.
+          </video>
+          <figcaption>추가로 업로드한 숏츠 영상</figcaption>
+        </figure>
+      </div>
 
       <p class="section-label" id="concept">CONCEPT</p>
       <h2>따뜻하지만 과하지 않게, 밝지만 차갑지 않게</h2>
